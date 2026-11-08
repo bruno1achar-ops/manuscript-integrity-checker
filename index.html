@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#183f35">
 <title>Manuscript Integrity Suite | The Manuscript Studio</title>
 
@@ -13,227 +13,179 @@
 
 <style>
 :root {
-  --green:#183f35;
-  --green2:#285849;
-  --ivory:#f7f4eb;
-  --paper:#fffdf8;
-  --gold:#b89a58;
-  --ink:#202b27;
-  --muted:#69766f;
-  --line:#e4e1d6;
-  --red:#a53b36;
-  --orange:#95621b;
-  --shadow:0 10px 32px rgba(24,63,53,.07);
+ --green:#183f35;--green2:#285849;--ivory:#f7f4eb;
+ --paper:#fffdf8;--gold:#b89a58;--ink:#202b27;
+ --muted:#69766f;--line:#e4e1d6;--red:#a53b36;
+ --orange:#95621b;--shadow:0 8px 28px rgba(24,63,53,.07)
 }
-* {box-sizing:border-box}
-body {
-  margin:0;
-  background:var(--ivory);
-  color:var(--ink);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  line-height:1.6;
-}
-header {
-  background:var(--green);
-  color:#fffdf8;
-  padding:27px max(20px,calc((100% - 1160px)/2));
-  border-bottom:4px solid var(--gold);
-}
-.brand {font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#e4d5ae}
-header h1 {margin:8px 0 3px;font-size:clamp(24px,4vw,36px);line-height:1.2}
-header p {margin:8px 0 0;color:#e4ebe5;max-width:720px}
-main {max-width:1160px;margin:28px auto;padding:0 18px 60px}
-.notice {
-  border:1px solid #e2d6b6;background:#fbf7e9;color:#594d32;
-  border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px
-}
-.card {
-  background:var(--paper);border:1px solid var(--line);border-radius:16px;
-  padding:22px;margin-bottom:18px;box-shadow:var(--shadow)
-}
-h2 {font-size:19px;margin:0 0 14px;color:var(--green)}
-h3 {font-size:15px;margin:0 0 8px}
-p.small,.small {font-size:12px;color:var(--muted)}
-label {display:block;font-size:13px;font-weight:650;margin:12px 0 6px}
-input[type="text"],input[type="number"],select,textarea {
-  width:100%;border:1px solid #d7d9d0;background:#fff;
-  border-radius:9px;padding:11px 12px;font:inherit;color:var(--ink)
-}
-textarea {min-height:210px;resize:vertical}
-input[type="file"] {max-width:100%;font-size:13px}
-input:focus,select:focus,textarea:focus {
-  outline:2px solid #b8c9bf;outline-offset:1px
-}
-.grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.settings {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-button {
-  border:0;border-radius:9px;padding:11px 15px;font-weight:700;
-  font-size:13px;cursor:pointer;transition:opacity .15s,transform .15s
-}
-button:hover {opacity:.9}
-button:active {transform:translateY(1px)}
-button:disabled {opacity:.45;cursor:not-allowed}
-.primary {background:var(--green);color:white}
-.secondary {background:#e9eee8;color:var(--green)}
-.gold {background:#e9dec1;color:#4e4024}
-.danger {background:#f5e5e2;color:var(--red)}
-.actions {display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
-.tabs {display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
-.tab {background:#e8e8de;color:#42564b}
-.tab.active {background:var(--green);color:white}
-.panel {display:none}
-.panel.active {display:block}
-.status {font-size:13px;margin-top:12px;color:var(--muted);white-space:pre-wrap}
-.progress {height:7px;background:#e9e8df;border-radius:9px;overflow:hidden;margin-top:10px}
-.progress div {height:100%;width:0;background:var(--gold);transition:width .2s}
-.stats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
-.stat {border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
-.stat strong {display:block;color:var(--green);font-size:25px;line-height:1.2}
-.stat span {font-size:11px;color:var(--muted)}
-.source {
-  border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;
-  background:#fff;overflow-wrap:anywhere
-}
-.source-head {display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
-.source-title {font-weight:750;color:var(--green);font-size:15px}
-.meta {font-size:12px;color:var(--muted);margin:5px 0 9px}
-.pill {display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:750;background:#edf0e8;color:#43594b}
-.pill.high {background:#f7e4df;color:#8c322b}
-.pill.medium {background:#f7edd7;color:#79551c}
-.pill.low {background:#e9eee8;color:#405c49}
-.snippet {font-size:13px;line-height:1.8;white-space:pre-wrap}
-mark {background:#f4df8f;color:#302813;padding:1px 0}
-details {margin-top:10px}
-summary {cursor:pointer;font-weight:650;font-size:13px;color:var(--green)}
-.empty {padding:26px 10px;text-align:center;color:var(--muted);font-size:13px}
-.tag {display:inline-block;border:1px solid var(--line);border-radius:6px;padding:3px 7px;font-size:11px;margin:3px 3px 0 0}
-footer {text-align:center;font-size:12px;color:var(--muted);padding:20px}
-hr {border:0;border-top:1px solid var(--line);margin:20px 0}
-@media(max-width:700px) {
- .grid,.settings {grid-template-columns:1fr}
- .stats {grid-template-columns:repeat(2,minmax(0,1fr))}
- .card {padding:16px}
- header {padding:22px 18px}
-}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+header{background:var(--green);color:var(--paper);padding:28px max(20px,calc((100% - 1160px)/2));border-bottom:4px solid var(--gold)}
+.brand{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#e4d5ae}
+header h1{font-size:clamp(25px,4vw,36px);line-height:1.2;margin:8px 0}
+header p{max-width:760px;color:#e4ebe5;margin:8px 0}
+main{max-width:1160px;margin:28px auto;padding:0 18px 50px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:21px;margin-bottom:18px;box-shadow:var(--shadow)}
+h2{color:var(--green);font-size:19px;margin:0 0 13px}
+h3{font-size:15px;margin:0 0 8px}
+label{display:block;font-size:13px;font-weight:bold;margin:12px 0 6px}
+input[type=file]{max-width:100%;font-size:13px}
+input[type=text],select,textarea{width:100%;border:1px solid #d7d9d0;background:white;border-radius:9px;padding:11px;font:inherit;color:var(--ink)}
+textarea{min-height:200px;resize:vertical}
+button{border:0;border-radius:9px;padding:11px 15px;font-weight:bold;font-size:13px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--green);color:white}.secondary{background:#e9eee8;color:var(--green)}
+.gold{background:#e9dec1;color:#4e4024}.danger{background:#f5e5e2;color:var(--red)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.small{font-size:12px;color:var(--muted)}
+.notice{border:1px solid #e2d6b6;background:#fbf7e9;color:#594d32;border-radius:11px;padding:14px 16px;margin-bottom:18px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.tab{background:#e8e8de;color:#42564b}.tab.active{background:var(--green);color:white}
+.panel{display:none}.panel.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.stat{border:1px solid var(--line);border-radius:11px;padding:13px;background:white}
+.stat strong{display:block;color:var(--green);font-size:25px;line-height:1.25}
+.stat span{font-size:11px;color:var(--muted)}
+.progress{height:7px;background:#e9e8df;border-radius:8px;overflow:hidden;margin-top:10px}
+.progress div{height:100%;width:0;background:var(--gold);transition:width .2s}
+.status{font-size:13px;margin-top:12px;color:var(--muted);white-space:pre-wrap}
+.source{border:1px solid var(--line);border-radius:11px;padding:15px;margin:12px 0;background:white;overflow-wrap:anywhere}
+.source-title{font-weight:bold;color:var(--green);font-size:15px}
+.meta{font-size:12px;color:var(--muted);margin:5px 0 9px}
+.snippet{font-size:13px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.pill{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold;background:#edf0e8;color:#43594b}
+.pill.high{background:#f7e4df;color:#8c322b}.pill.medium{background:#f7edd7;color:#79551c}
+.pill.low{background:#e9eee8;color:#405c49}
+mark{background:#f4df8f;color:#302813}
+details{margin-top:10px}summary{cursor:pointer;font-weight:bold;font-size:13px;color:var(--green)}
+.empty{text-align:center;padding:24px 10px;color:var(--muted);font-size:13px}
+.test-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.test-icon{font-weight:bold;min-width:24px}
+.pass{color:#286b45}.fail{color:var(--red)}.warn{color:var(--orange)}
+footer{text-align:center;font-size:12px;color:var(--muted);padding:20px}
+hr{border:0;border-top:1px solid var(--line);margin:19px 0}
+@media(max-width:700px){.grid,.settings{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.card{padding:15px}header{padding:22px 18px}}
 </style>
 </head>
 
 <body>
 <header>
-  <div class="brand">The Manuscript Studio</div>
-  <h1>Manuscript Integrity Suite</h1>
-  <p>Scholarly similarity screening, passage review, and reference auditing in one workspace.</p>
+ <div class="brand">The Manuscript Studio</div>
+ <h1>Manuscript Integrity Suite</h1>
+ <p>Scholarly similarity screening, passage review, reference auditing, and quality checks.</p>
 </header>
 
 <main>
-  <div class="notice">
-    <strong>Important limitation:</strong> This tool identifies possible textual overlap in the scholarly metadata it can retrieve. It does not access every journal or full-text database, and it does not produce a validated plagiarism score. Similar wording may be legitimate, quoted, or correctly cited. Review every flagged result manually.
+ <div class="notice">
+  <strong>Scope and limitations:</strong> This tool searches scholarly metadata and compares selected manuscript passages with retrieved titles and abstracts. It is not Turnitin or iThenticate, does not cover all published full text, and cannot determine whether plagiarism occurred. A zero-match result is not proof of originality. Human review is essential.
+ </div>
+
+ <section class="card">
+  <h2>01 · Manuscript input</h2>
+  <p class="small">Upload one manuscript or paste text. Comparison-document uploads are not supported.</p>
+  <label for="fileInput">Manuscript file (.docx, .pdf, .txt)</label>
+  <input id="fileInput" type="file" accept=".docx,.pdf,.txt">
+  <div class="actions">
+   <button class="secondary" id="extractBtn" type="button">Extract text</button>
+   <button class="secondary" id="clearBtn" type="button">Clear session</button>
   </div>
-
-  <section class="card">
-    <h2>01 · Your manuscript</h2>
-    <p class="small">Upload one manuscript or paste its text. Comparison-document uploads are not supported.</p>
-    <label for="fileInput">Upload manuscript (DOCX, PDF, or TXT)</label>
-    <input id="fileInput" type="file" accept=".docx,.pdf,.txt">
-    <div class="actions">
-      <button class="secondary" id="extractBtn" type="button">Extract manuscript text</button>
-      <button class="secondary" id="clearBtn" type="button">Clear manuscript</button>
-    </div>
-    <label for="manuscriptText">Manuscript text</label>
-    <textarea id="manuscriptText" placeholder="Paste your manuscript here, or upload a file and select Extract manuscript text."></textarea>
-    <div class="small" id="wordCount">0 words</div>
-
-    <div class="settings">
-      <div>
-        <label for="excerptCount">Passages to search</label>
-        <select id="excerptCount">
-          <option value="3">3 passages · quicker</option>
-          <option value="6" selected>6 passages · balanced</option>
-          <option value="10">10 passages · broader</option>
-        </select>
-      </div>
-      <div>
-        <label for="resultLimit">Maximum source records</label>
-        <select id="resultLimit">
-          <option value="20">20 records</option>
-          <option value="40" selected>40 records</option>
-          <option value="60">60 records</option>
-        </select>
-      </div>
-      <div>
-        <label for="matchThreshold">Overlap flag threshold</label>
-        <select id="matchThreshold">
-          <option value="10">10% · more sensitive</option>
-          <option value="20" selected>20% · balanced</option>
-          <option value="30">30% · stricter</option>
-        </select>
-      </div>
-    </div>
-    <div class="actions">
-      <button class="primary" id="screenBtn" type="button">Run similarity screening</button>
-      <button class="gold" id="auditBtn" type="button">Run reference audit</button>
-    </div>
-    <div class="progress"><div id="progressBar"></div></div>
-    <div id="status" class="status" role="status" aria-live="polite">Ready. Add a manuscript to begin.</div>
-  </section>
-
-  <div class="tabs">
-    <button class="tab active" data-tab="similarity">Similarity results</button>
-    <button class="tab" data-tab="references">Reference audit</button>
-    <button class="tab" data-tab="report">Reports & summary</button>
+  <label for="manuscriptText">Manuscript text</label>
+  <textarea id="manuscriptText" placeholder="Paste manuscript text here, or upload a file and select Extract text."></textarea>
+  <div class="small" id="wordCount">0 words</div>
+  <div class="settings">
+   <div><label for="excerptCount">Passages to search</label>
+    <select id="excerptCount"><option value="3">3 passages</option><option value="6" selected>6 passages</option><option value="10">10 passages</option></select>
+   </div>
+   <div><label for="resultLimit">Maximum source records</label>
+    <select id="resultLimit"><option value="20">20 records</option><option value="40" selected>40 records</option><option value="60">60 records</option></select>
+   </div>
+   <div><label for="threshold">Overlap review threshold</label>
+    <select id="threshold"><option value="10">10% · sensitive</option><option value="20" selected>20% · balanced</option><option value="30">30% · stricter</option></select>
+   </div>
   </div>
+  <div class="actions">
+   <button class="primary" id="screenBtn" type="button">Run similarity screening</button>
+   <button class="gold" id="auditBtn" type="button">Run reference audit</button>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+  <div class="status" id="status" role="status" aria-live="polite">Ready. Add manuscript text to begin.</div>
+ </section>
 
-  <section id="panel-similarity" class="panel active">
-    <div class="stats">
-      <div class="stat"><strong id="statSources">0</strong><span>Unique sources retrieved</span></div>
-      <div class="stat"><strong id="statFlags">0</strong><span>Potential overlaps flagged</span></div>
-      <div class="stat"><strong id="statHigh">0</strong><span>Higher-priority matches</span></div>
-      <div class="stat"><strong id="statPassages">0</strong><span>Passages searched</span></div>
-    </div>
-    <div class="card">
-      <h2>Potential matching passages</h2>
-      <p class="small">Each result compares selected manuscript text with source titles and abstracts retrieved from OpenAlex and Crossref. The displayed overlap estimate is a heuristic, not a plagiarism percentage.</p>
-      <div id="similarityResults"><div class="empty">No screening results yet.</div></div>
-    </div>
-  </section>
+ <div class="tabs">
+  <button class="tab active" data-tab="similarity">Similarity results</button>
+  <button class="tab" data-tab="references">Reference audit</button>
+  <button class="tab" data-tab="tests">Self-tests</button>
+  <button class="tab" data-tab="report">Reports</button>
+ </div>
 
-  <section id="panel-references" class="panel">
-    <div class="stats">
-      <div class="stat"><strong id="refCount">0</strong><span>References detected</span></div>
-      <div class="stat"><strong id="doiCount">0</strong><span>DOIs detected</span></div>
-      <div class="stat"><strong id="duplicateCount">0</strong><span>Possible duplicates</span></div>
-      <div class="stat"><strong id="citationWarnings">0</strong><span>Items to review</span></div>
-    </div>
-    <div class="card">
-      <h2>Reference consistency review</h2>
-      <p class="small">Checks common author–year and numeric citation patterns, duplicate references, and Crossref DOI metadata where available. Complex citation styles may not be parsed accurately.</p>
-      <div id="referenceResults"><div class="empty">Run the reference audit to see results.</div></div>
-    </div>
-  </section>
+ <section class="panel active" id="panel-similarity">
+  <div class="stats">
+   <div class="stat"><strong id="statSources">0</strong><span>Unique source records</span></div>
+   <div class="stat"><strong id="statFlags">0</strong><span>Potential overlaps</span></div>
+   <div class="stat"><strong id="statHigh">0</strong><span>Higher-priority signals</span></div>
+   <div class="stat"><strong id="statPassages">0</strong><span>Passages searched</span></div>
+  </div>
+  <div class="card">
+   <h2>Potential matching passages</h2>
+   <p class="small">Passage coverage is a heuristic comparing five-word shingles with retrieved titles and abstracts. It is not an overall manuscript similarity score.</p>
+   <div id="similarityResults"><div class="empty">No screening results yet.</div></div>
+  </div>
+ </section>
 
-  <section id="panel-report" class="panel">
-    <div class="card">
-      <h2>Screening summary</h2>
-      <div id="summaryText" class="small">Run a screening or reference audit to generate your summary.</div>
-      <hr>
-      <h3>Export results</h3>
-      <p class="small">Download the available screening and audit findings. Reports contain only results generated during this browser session.</p>
-      <div class="actions">
-        <button class="primary" id="downloadWord" type="button">Download Word report</button>
-        <button class="secondary" id="downloadSimilarity" type="button">Download similarity CSV</button>
-        <button class="secondary" id="downloadAudit" type="button">Download audit CSV</button>
-      </div>
-      <div id="exportStatus" class="status"></div>
-    </div>
-    <div class="card">
-      <h2>Interpretation guide</h2>
-      <p><span class="pill high">Higher priority</span> Review the passage, source context, quotations, and citation carefully.</p>
-      <p><span class="pill medium">Review</span> Inspect wording and methodology-related phrases; common terminology can overlap legitimately.</p>
-      <p><span class="pill low">Lower priority</span> A weak or limited textual signal; still requires context if it is relevant.</p>
-      <p class="small">This app cannot establish intent, determine whether plagiarism occurred, or guarantee that a manuscript is original.</p>
-    </div>
-  </section>
-  <footer>The Manuscript Studio · Scholarly screening support · Human review required</footer>
+ <section class="panel" id="panel-references">
+  <div class="stats">
+   <div class="stat"><strong id="refCount">0</strong><span>References detected</span></div>
+   <div class="stat"><strong id="doiCount">0</strong><span>DOIs detected</span></div>
+   <div class="stat"><strong id="duplicateCount">0</strong><span>Possible duplicate groups</span></div>
+   <div class="stat"><strong id="warningCount">0</strong><span>Items to review</span></div>
+  </div>
+  <div class="card">
+   <h2>Reference consistency review</h2>
+   <p class="small">The parser supports common formats only. It may not correctly interpret every numeric, superscript, or author–year citation style.</p>
+   <div id="referenceResults"><div class="empty">Run the reference audit to see results.</div></div>
+  </div>
+ </section>
+
+ <section class="panel" id="panel-tests">
+  <div class="card">
+   <h2>Stage 4 · Built-in self-tests</h2>
+   <p class="small">These tests check local text-processing functions and report readiness. They do not prove that external scholarly services are reachable or that results are academically correct.</p>
+   <div class="actions"><button class="primary" id="runTests" type="button">Run self-tests</button></div>
+   <div id="testSummary" class="status">Self-tests have not run yet.</div>
+   <div id="testResults"></div>
+  </div>
+  <div class="card">
+   <h2>External service status</h2>
+   <p class="small">A service is tested only when a search or DOI request is made. The checks below make a small metadata request to OpenAlex and Crossref.</p>
+   <div class="actions"><button class="secondary" id="checkServices" type="button">Check scholarly services</button></div>
+   <div id="serviceResults" class="status"></div>
+  </div>
+ </section>
+
+ <section class="panel" id="panel-report">
+  <div class="card">
+   <h2>Screening summary</h2>
+   <div id="summaryText" class="small">Run a screening or audit to generate a summary.</div>
+   <hr>
+   <h3>Export findings</h3>
+   <p class="small">Exports contain the results currently available in this browser session.</p>
+   <div class="actions">
+    <button class="primary" id="downloadWord" type="button">Download Word report</button>
+    <button class="secondary" id="downloadSimilarity" type="button">Download similarity CSV</button>
+    <button class="secondary" id="downloadAudit" type="button">Download audit CSV</button>
+   </div>
+   <div id="exportStatus" class="status"></div>
+  </div>
+  <div class="card">
+   <h2>How to interpret results</h2>
+   <p><span class="pill high">Higher priority</span> Review the source, quotation, context, and citation carefully.</p>
+   <p><span class="pill medium">Review</span> Check whether overlap comes from standard terminology or similar phrasing.</p>
+   <p><span class="pill low">Lower priority</span> The signal is limited; it does not establish originality.</p>
+  </div>
+ </section>
+ <footer>The Manuscript Studio · Research screening support · Human review required</footer>
 </main>
 
 <script>
@@ -242,847 +194,601 @@ hr {border:0;border-top:1px solid var(--line);margin:20px 0}
 
 const $ = id => document.getElementById(id);
 const state = {
-  manuscript: "",
-  passages: [],
-  sources: [],
-  matches: [],
-  audit: [],
-  auditStats: { references: 0, dois: 0, duplicates: 0, warnings: 0 },
-  errors: [],
-  lastScreened: null,
-  lastAudited: null
+ manuscript:"",
+ passages:[],
+ sources:[],
+ matches:[],
+ audit:[],
+ auditStats:{references:0,dois:0,duplicates:0,warnings:0},
+ errors:[],
+ lastScreened:null,
+ lastAudited:null,
+ screeningComplete:false
 };
 
 if (window.pdfjsLib) {
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+ window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+ "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 
-function setStatus(message) {
-  $("status").textContent = message;
-}
-function setProgress(value) {
-  $("progressBar").style.width = Math.max(0, Math.min(100, value)) + "%";
-}
-function wordCount(text) {
-  return (text.match(/\b[\p{L}\p{N}][\p{L}\p{N}'’-]*\b/gu) || []).length;
+function escapeHTML(value) {
+ return String(value ?? "").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
 }
 function normalize(text) {
-  return (text || "")
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/https?:\/\/\S+/g, " ")
-    .replace(/\bdoi\s*:\s*\S+/g, " ")
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .trim()
-    .replace(/\s+/g, " ");
+ return String(text||"").toLowerCase().normalize("NFKD")
+  .replace(/[\u0300-\u036f]/g,"")
+  .replace(/https?:\/\/\S+/g," ")
+  .replace(/\bdoi\s*:\s*\S+/g," ")
+  .replace(/[^\p{L}\p{N}]+/gu," ").trim().replace(/\s+/g," ");
 }
-function escapeHTML(text) {
-  return String(text ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  })[ch]);
+function countWords(text) {
+ return (String(text||"").match(/\b[\p{L}\p{N}][\p{L}\p{N}'’-]*\b/gu)||[]).length;
 }
-function csvCell(value) {
-  return '"' + String(value ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ") + '"';
+function setStatus(text) {$("status").textContent=text;}
+function progress(value) {$("progressBar").style.width=Math.max(0,Math.min(100,value))+"%";}
+function updateText() {
+ state.manuscript=$("manuscriptText").value;
+ $("wordCount").textContent=countWords(state.manuscript).toLocaleString()+" words";
+ renderSummary();
 }
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-}
-function downloadCSV(rows, filename) {
-  if (!rows.length) {
-    $("exportStatus").textContent = "There are no results to export yet.";
-    return;
-  }
-  const headers = Object.keys(rows[0]);
-  const csv = "\uFEFF" + [
-    headers.map(csvCell).join(","),
-    ...rows.map(row => headers.map(h => csvCell(row[h])).join(","))
-  ].join("\r\n");
-  downloadBlob(new Blob([csv], {type:"text/csv;charset=utf-8;"}), filename);
-}
+$("manuscriptText").addEventListener("input",updateText);
 
-function updateWordCount() {
-  state.manuscript = $("manuscriptText").value;
-  $("wordCount").textContent = wordCount(state.manuscript).toLocaleString() + " words";
+function downloadBlob(blob,name) {
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-$("manuscriptText").addEventListener("input", updateWordCount);
-
-$("clearBtn").addEventListener("click", () => {
-  $("fileInput").value = "";
-  $("manuscriptText").value = "";
-  state.manuscript = "";
-  state.passages = [];
-  state.sources = [];
-  state.matches = [];
-  state.audit = [];
-  state.errors = [];
-  state.lastScreened = null;
-  state.lastAudited = null;
-  updateWordCount();
-  renderSimilarity();
-  renderAudit();
-  renderSummary();
-  setProgress(0);
-  setStatus("Manuscript and session results cleared.");
-});
-
-$("extractBtn").addEventListener("click", async () => {
-  const file = $("fileInput").files[0];
-  if (!file) {
-    setStatus("Choose a DOCX, PDF, or TXT manuscript first.");
-    return;
-  }
-  const ext = file.name.split(".").pop().toLowerCase();
-  setStatus("Extracting text from " + file.name + "…");
-  setProgress(8);
+function csvCell(v) {
+ return '"'+String(v??"").replace(/"/g,'""').replace(/\r?\n/g," ")+'"';
+}
+function downloadCSV(rows,name) {
+ if(!rows.length) {
+  $("exportStatus").textContent="No results are available to export yet.";return;
+ }
+ const headers=Object.keys(rows[0]);
+ const content="\uFEFF"+[headers.map(csvCell).join(","),...rows.map(r=>headers.map(h=>csvCell(r[h])).join(","))].join("\r\n");
+ downloadBlob(new Blob([content],{type:"text/csv;charset=utf-8;"}),name);
+ $("exportStatus").textContent="CSV file generated.";
+}
+function sleep(ms) {return new Promise(resolve=>setTimeout(resolve,ms));}
+async function fetchJSON(url, options={}) {
+ const attempts=options.attempts ?? 2;
+ const timeout=options.timeout ?? 12000;
+ let lastError;
+ for(let attempt=0;attempt<attempts;attempt++) {
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeout);
   try {
-    let text = "";
-    if (ext === "txt") {
-      text = await file.text();
-    } else if (ext === "docx") {
-      if (!window.mammoth) throw new Error("DOCX extraction library did not load. Refresh and try again.");
-      const buffer = await file.arrayBuffer();
-      const result = await window.mammoth.extractRawText({arrayBuffer:buffer});
-      text = result.value || "";
-    } else if (ext === "pdf") {
-      if (!window.pdfjsLib) throw new Error("PDF extraction library did not load. Refresh and try again.");
-      const pdf = await window.pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
-      const pages = [];
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const content = await page.getTextContent();
-        pages.push(content.items.map(item => item.str || "").join(" "));
-        setProgress(8 + Math.round(i / pdf.numPages * 85));
-      }
-      text = pages.join("\n\n");
-    } else {
-      throw new Error("Unsupported file type. Upload DOCX, PDF, or TXT.");
-    }
-    if (!text.trim()) throw new Error("No readable text was extracted. The PDF may be scanned or image-only; use OCR and paste the recognized text.");
-    $("manuscriptText").value = text;
-    updateWordCount();
-    setProgress(100);
-    setStatus("Text extracted successfully. Please check the text before screening.");
-  } catch (err) {
-    setStatus("Extraction failed: " + err.message);
-    setProgress(0);
+   const response=await fetch(url,{
+    signal:controller.signal,
+    headers:{"Accept":"application/json"}
+   });
+   if(!response.ok) {
+    const err=new Error("HTTP "+response.status);
+    err.retryable=response.status===429 || response.status>=500;
+    throw err;
+   }
+   return await response.json();
+  } catch(err) {
+   lastError=err.name==="AbortError" ? new Error("Request timed out") : err;
+   const retryable=err.name==="AbortError" || err.retryable ||
+     err instanceof TypeError;
+   if(attempt+1>=attempts || !retryable) break;
+   await sleep(500*(attempt+1));
+  } finally {
+   clearTimeout(timer);
   }
+ }
+ throw lastError || new Error("Request failed");
+}
+
+$("extractBtn").addEventListener("click",async()=>{
+ const file=$("fileInput").files[0];
+ if(!file){setStatus("Choose a manuscript file first.");return;}
+ const ext=file.name.split(".").pop().toLowerCase();
+ progress(5);setStatus("Extracting manuscript text…");
+ try {
+  let text="";
+  if(ext==="txt") text=await file.text();
+  else if(ext==="docx") {
+   if(!window.mammoth) throw Error("DOCX extraction library failed to load. Refresh and try again.");
+   const result=await window.mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
+   text=result.value||"";
+  } else if(ext==="pdf") {
+   if(!window.pdfjsLib) throw Error("PDF extraction library failed to load. Refresh and try again.");
+   const pdf=await window.pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+   const pages=[];
+   for(let i=1;i<=pdf.numPages;i++) {
+    const page=await pdf.getPage(i);
+    const content=await page.getTextContent();
+    pages.push(content.items.map(x=>x.str||"").join(" "));
+    progress(5+Math.round(i/pdf.numPages*90));
+   }
+   text=pages.join("\n\n");
+  } else throw Error("Unsupported format. Use DOCX, PDF, or TXT.");
+  if(!text.trim()) throw Error("No readable text found. Scanned PDFs may require OCR first.");
+  $("manuscriptText").value=text;updateText();progress(100);
+  setStatus("Text extracted. Check the manuscript before running analysis.");
+ } catch(err) {
+  progress(0);setStatus("Extraction failed: "+err.message);
+ }
 });
 
-function splitSentences(text) {
-  return (text.match(/[^.!?\n]+(?:[.!?]+|$)/g) || [])
-    .map(s => s.replace(/\s+/g, " ").trim())
-    .filter(s => wordCount(s) >= 8);
-}
-function buildPassages(text, limit) {
-  const sentences = splitSentences(text);
-  if (!sentences.length) {
-    const words = text.split(/\s+/).filter(Boolean);
-    const chunks = [];
-    for (let i=0; i<words.length; i+=45) chunks.push(words.slice(i,i+65).join(" "));
-    return chunks.slice(0,limit).map((text,i)=>({id:i+1,text,section:"Manuscript text"}));
-  }
-  const sections = text.split(/\n\s*\n/).filter(s=>wordCount(s)>12);
-  let candidates = [];
-  for (const section of sections) {
-    const ss = splitSentences(section);
-    if (ss.length) {
-      for (let i=0; i<ss.length; i+=2) {
-        const passage = ss.slice(i,i+3).join(" ");
-        if (wordCount(passage)>=18) candidates.push(passage);
-      }
-    }
-  }
-  if (candidates.length < limit) {
-    for (let i=0; i<sentences.length; i+=3) {
-      const passage = sentences.slice(i,i+3).join(" ");
-      if (wordCount(passage)>=18) candidates.push(passage);
-    }
-  }
-  const seen = new Set();
-  candidates = candidates.filter(p => {
-    const key = normalize(p).slice(0,180);
-    if (!key || seen.has(key)) return false;
-    seen.add(key); return true;
-  });
-  if (!candidates.length) candidates = [text.slice(0,1200)];
-  // Spread selected passages across the manuscript instead of sampling only the opening.
-  const selected = [];
-  const n = Math.min(limit,candidates.length);
-  for (let i=0;i<n;i++) selected.push(candidates[Math.floor(i*candidates.length/n)]);
-  return selected.map((text,i)=>({id:i+1,text,section:"Passage "+(i+1)}));
-}
+$("clearBtn").addEventListener("click",()=>{
+ $("fileInput").value="";$("manuscriptText").value="";
+ state.manuscript="";state.passages=[];state.sources=[];state.matches=[];
+ state.audit=[];state.errors=[];state.lastScreened=null;state.lastAudited=null;
+ state.screeningComplete=false;
+ state.auditStats={references:0,dois:0,duplicates:0,warnings:0};
+ updateText();renderSimilarity();renderAudit();renderSummary();
+ $("testResults").innerHTML="";$("testSummary").textContent="Self-tests have not run yet.";
+ progress(0);setStatus("Manuscript and session results cleared.");
+});
 
-function words(text) {
-  return normalize(text).split(" ").filter(Boolean);
+function sentences(text) {
+ return (text.match(/[^.!?\n]+(?:[.!?]+|$)/g)||[])
+  .map(s=>s.replace(/\s+/g," ").trim()).filter(s=>countWords(s)>=8);
 }
-function shingles(text, n=5) {
-  const w = words(text);
-  const set = new Set();
-  for (let i=0;i<=w.length-n;i++) set.add(w.slice(i,i+n).join(" "));
-  return set;
+function buildPassages(text,limit) {
+ const ss=sentences(text);
+ let candidates=[];
+ for(let i=0;i<ss.length;i+=2) {
+  const part=ss.slice(i,i+3).join(" ");
+  if(countWords(part)>=18)candidates.push(part);
+ }
+ if(!candidates.length) {
+  const w=text.split(/\s+/).filter(Boolean);
+  for(let i=0;i<w.length;i+=45)candidates.push(w.slice(i,i+65).join(" "));
+ }
+ const seen=new Set();
+ candidates=candidates.filter(p=>{
+  const key=normalize(p).slice(0,160);
+  if(!key||seen.has(key))return false;seen.add(key);return true;
+ });
+ if(!candidates.length)candidates=[text.slice(0,1000)];
+ const n=Math.min(limit,candidates.length),out=[];
+ for(let i=0;i<n;i++)out.push({id:i+1,text:candidates[Math.floor(i*candidates.length/n)]});
+ return out;
 }
-function overlapMetrics(passage, sourceText) {
-  const pWords = words(passage);
-  const sWords = words(sourceText);
-  const pSet = shingles(passage,5);
-  const sSet = shingles(sourceText,5);
-  let common = 0;
-  for (const sh of pSet) if (sSet.has(sh)) common++;
-  const passageCoverage = pSet.size ? common/pSet.size*100 : 0;
-  const sourceCoverage = sSet.size ? common/sSet.size*100 : 0;
-  const union = new Set([...pSet,...sSet]).size;
-  const jaccard = union ? common/union*100 : 0;
-  const phrase = longestSharedPhrase(pWords,sWords);
-  return {
-    passageCoverage:Math.round(passageCoverage),
-    sourceCoverage:Math.round(sourceCoverage),
-    jaccard:Math.round(jaccard),
-    commonShingles:common,
-    longestPhrase:phrase
-  };
+function shingles(text,n=5) {
+ const w=normalize(text).split(" ").filter(Boolean),set=new Set();
+ for(let i=0;i<=w.length-n;i++)set.add(w.slice(i,i+n).join(" "));
+ return set;
 }
 function longestSharedPhrase(a,b) {
-  // Longest common contiguous word sequence, capped for safe runtime.
-  if (!a.length || !b.length) return "";
-  if (a.length*b.length > 90000) {
-    a = a.slice(0,300);
-    b = b.slice(0,300);
+ if(!a.length||!b.length)return "";
+ if(a.length*b.length>90000){a=a.slice(0,300);b=b.slice(0,300);}
+ let prev=new Array(b.length+1).fill(0),best=0,end=0;
+ for(let i=1;i<=a.length;i++) {
+  const cur=new Array(b.length+1).fill(0);
+  for(let j=1;j<=b.length;j++)if(a[i-1]===b[j-1]) {
+   cur[j]=prev[j-1]+1;
+   if(cur[j]>best){best=cur[j];end=i;}
   }
-  let previous = new Array(b.length+1).fill(0);
-  let best = 0, end = 0;
-  for (let i=1;i<=a.length;i++) {
-    const current = new Array(b.length+1).fill(0);
-    for (let j=1;j<=b.length;j++) {
-      if (a[i-1] === b[j-1]) {
-        current[j] = previous[j-1]+1;
-        if (current[j]>best) {best=current[j];end=i;}
-      }
-    }
-    previous=current;
-  }
-  return best>=5 ? a.slice(end-best,end).join(" ") : "";
+  prev=cur;
+ }
+ return best>=5?a.slice(end-best,end).join(" "):"";
 }
-function titleFromCrossref(item) {
-  return item.title && item.title[0] ? item.title[0] : "Untitled scholarly record";
+function overlap(passage,source) {
+ const a=normalize(passage).split(" ").filter(Boolean);
+ const p=shingles(passage),s=shingles(source);
+ let common=0;for(const x of p)if(s.has(x))common++;
+ return {
+  coverage:p.size?Math.round(common/p.size*100):0,
+  common,
+  phrase:longestSharedPhrase(a,normalize(source).split(" ").filter(Boolean))
+ };
 }
-function abstractFromOpenAlex(item) {
-  if (item.abstract_inverted_index) {
-    const pairs = [];
-    for (const [word, positions] of Object.entries(item.abstract_inverted_index)) {
-      for (const pos of positions) pairs.push([pos,word]);
-    }
-    pairs.sort((a,b)=>a[0]-b[0]);
-    return pairs.map(p=>p[1]).join(" ");
-  }
-  return "";
+function sourceKey(s) {
+ const doi=(s.doi||"").toLowerCase().replace(/^https?:\/\/(dx\.)?doi\.org\//,"");
+ return doi?"doi:"+doi:s.url?"url:"+s.url.toLowerCase().replace(/\/+$/,""):"title:"+normalize(s.title).slice(0,180);
 }
-function sourceKey(source) {
-  if (source.doi) return "doi:" + source.doi.toLowerCase().replace(/^https?:\/\/(dx\.)?doi\.org\//,"");
-  if (source.url) return source.url.toLowerCase().replace(/\/+$/,"");
-  return "title:" + normalize(source.title).slice(0,180);
+function dedupe(sources) {
+ const map=new Map();
+ for(const s of sources) {
+  const key=sourceKey(s),old=map.get(key);
+  if(!old)map.set(key,s);
+  else if((s.abstract||"").length>(old.abstract||"").length)map.set(key,{...old,...s});
+ }
+ return [...map.values()];
 }
-function dedupeSources(sources) {
-  const map = new Map();
-  for (const source of sources) {
-    const key = sourceKey(source);
-    if (!map.has(key)) map.set(key,source);
-    else {
-      const existing = map.get(key);
-      if ((source.abstract || "").length > (existing.abstract || "").length) {
-        map.set(key,{...existing,...source});
-      }
-    }
-  }
-  return [...map.values()];
+function doiOf(item) {
+ return String(item.DOI||item.doi||"").replace(/^https?:\/\/(dx\.)?doi\.org\//i,"").trim();
 }
-function getDOI(item) {
-  return (item.DOI || item.doi || "").replace(/^https?:\/\/(dx\.)?doi\.org\//i,"").trim();
+function titleCrossref(item) {return item.title?.[0]||"Untitled scholarly record";}
+function abstractOpenAlex(item) {
+ if(!item.abstract_inverted_index)return "";
+ const pairs=[];
+ for(const [word,positions] of Object.entries(item.abstract_inverted_index))
+  for(const position of positions)pairs.push([position,word]);
+ pairs.sort((a,b)=>a[0]-b[0]);return pairs.map(p=>p[1]).join(" ");
 }
-function makeSourceFromCrossref(item) {
-  const title = titleFromCrossref(item);
-  const doi = getDOI(item);
-  const year = item.published?.["date-parts"]?.[0]?.[0]
-    || item["published-print"]?.["date-parts"]?.[0]?.[0]
-    || item.created?.["date-parts"]?.[0]?.[0] || "";
-  const authors = (item.author || []).slice(0,5).map(a=>[a.given,a.family].filter(Boolean).join(" ")).join(", ");
-  return {
-    title, doi, year, authors,
-    journal:item["container-title"]?.[0] || "",
-    abstract:(item.abstract || "").replace(/<[^>]+>/g," "),
-    url:doi ? "https://doi.org/"+doi : (item.URL || ""),
-    provider:"Crossref"
-  };
+function fromCrossref(item) {
+ const doi=doiOf(item);
+ return {
+  title:titleCrossref(item),doi,
+  year:item.published?.["date-parts"]?.[0]?.[0]||item["published-print"]?.["date-parts"]?.[0]?.[0]||"",
+  authors:(item.author||[]).slice(0,5).map(a=>[a.given,a.family].filter(Boolean).join(" ")).join(", "),
+  journal:item["container-title"]?.[0]||"",abstract:(item.abstract||"").replace(/<[^>]*>/g," "),
+  url:doi?"https://doi.org/"+doi:(item.URL||""),provider:"Crossref"
+ };
 }
-function makeSourceFromOpenAlex(item) {
-  const doi = getDOI(item);
-  return {
-    title:item.title || "Untitled scholarly record",
-    doi,
-    year:item.publication_year || "",
-    authors:(item.authorships || []).slice(0,5).map(a=>a.author?.display_name).filter(Boolean).join(", "),
-    journal:item.primary_location?.source?.display_name || "",
-    abstract:abstractFromOpenAlex(item),
-    url:item.doi || item.id || "",
-    provider:"OpenAlex"
-  };
+function fromOpenAlex(item) {
+ const doi=doiOf(item);
+ return {
+  title:item.title||"Untitled scholarly record",doi,year:item.publication_year||"",
+  authors:(item.authorships||[]).slice(0,5).map(a=>a.author?.display_name).filter(Boolean).join(", "),
+  journal:item.primary_location?.source?.display_name||"",
+  abstract:abstractOpenAlex(item),url:item.doi||item.id||"",provider:"OpenAlex"
+ };
 }
-function searchQueries(passage) {
-  const clean = passage.replace(/\s+/g," ").trim();
-  const sentences = splitSentences(clean);
-  const candidates = [];
-  if (sentences.length) candidates.push(sentences[0]);
-  const tokens = clean.split(/\s+/).filter(Boolean);
-  if (tokens.length>18) candidates.push(tokens.slice(0,18).join(" "));
-  if (tokens.length>35) candidates.push(tokens.slice(Math.floor(tokens.length/2),Math.floor(tokens.length/2)+18).join(" "));
-  return [...new Set(candidates)].filter(q=>wordCount(q)>=8).slice(0,2);
+function makeQueries(passage) {
+ const ss=sentences(passage),w=passage.split(/\s+/).filter(Boolean),q=[];
+ if(ss[0])q.push(ss[0]);
+ if(w.length>20)q.push(w.slice(0,20).join(" "));
+ if(w.length>45)q.push(w.slice(Math.floor(w.length/2),Math.floor(w.length/2)+18).join(" "));
+ return [...new Set(q)].filter(x=>countWords(x)>=8).slice(0,2);
 }
-async function fetchJSON(url) {
-  const response = await fetch(url, {headers:{"Accept":"application/json"}});
-  if (!response.ok) throw new Error("HTTP "+response.status);
-  return response.json();
-}
-async function retrieveSources(passages, limit) {
-  const all = [];
-  const errors = [];
-  const jobs = [];
-  for (const passage of passages) {
-    for (const query of searchQueries(passage.text)) {
-      const encoded = encodeURIComponent(query.slice(0,250));
-      jobs.push(async () => {
-        try {
-          const data = await fetchJSON("https://api.openalex.org/works?search="+encoded+"&per-page=10&select=id,doi,title,publication_year,authorships,primary_location,abstract_inverted_index");
-          for (const item of data.results || []) all.push(makeSourceFromOpenAlex(item));
-        } catch(e) { errors.push("OpenAlex: "+e.message); }
-        try {
-          const data = await fetchJSON("https://api.crossref.org/works?query.bibliographic="+encoded+"&rows=10&select=DOI,title,author,published,published-print,created,container-title,URL,abstract");
-          for (const item of data.message?.items || []) all.push(makeSourceFromCrossref(item));
-        } catch(e) { errors.push("Crossref: "+e.message); }
-      });
-    }
-  }
-  let done = 0;
-  for (const job of jobs) {
-    await job();
-    done++;
-    setProgress(10+Math.round(done/jobs.length*65));
-  }
-  const unique = dedupeSources(all).filter(s=>s.title);
-  // Rank by text overlap across all selected passages.
-  const ranked = unique.map(source=>{
-    let best = {passageCoverage:0,sourceCoverage:0,jaccard:0,commonShingles:0,longestPhrase:""};
-    let bestPassage = null;
-    for (const passage of passages) {
-      const metrics = overlapMetrics(passage.text,[source.title,source.abstract].filter(Boolean).join(". "));
-      if (metrics.passageCoverage>best.passageCoverage ||
-          (metrics.passageCoverage===best.passageCoverage && metrics.longestPhrase.length>best.longestPhrase.length)) {
-        best=metrics; bestPassage=passage;
-      }
-    }
-    return {...source,metrics:best,matchedPassage:bestPassage};
-  });
-  ranked.sort((a,b)=>b.metrics.passageCoverage-a.metrics.passageCoverage || b.metrics.longestPhrase.length-a.metrics.longestPhrase.length);
-  return {sources:ranked.slice(0,limit),errors};
-}
-function highlightedText(text, phrase) {
-  const safe = escapeHTML(text);
-  if (!phrase) return safe;
-  const terms = phrase.split(" ").filter(Boolean);
-  if (terms.length<5) return safe;
-  // Escape regex terms; preserve original capitalization in matched source.
-  const pattern = terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("\\s+");
+async function searchScholarly(passages,limit) {
+ const all=[],errors=[],jobs=[];
+ for(const p of passages)for(const query of makeQueries(p.text))jobs.push(async()=>{
+  const q=encodeURIComponent(query.slice(0,250));
   try {
-    const re = new RegExp("("+pattern+")","ig");
-    return safe.replace(re,"<mark>$1</mark>");
-  } catch { return safe; }
+   const data=await fetchJSON("https://api.openalex.org/works?search="+q+"&per-page=10&select=id,doi,title,publication_year,authorships,primary_location,abstract_inverted_index");
+   for(const item of data.results||[])all.push(fromOpenAlex(item));
+  } catch(e){errors.push("OpenAlex: "+e.message);}
+  try {
+   const data=await fetchJSON("https://api.crossref.org/works?query.bibliographic="+q+"&rows=10&select=DOI,title,author,published,published-print,created,container-title,URL,abstract");
+   for(const item of data.message?.items||[])all.push(fromCrossref(item));
+  } catch(e){errors.push("Crossref: "+e.message);}
+ });
+ let done=0;
+ for(const job of jobs) {
+  await job();done++;
+  progress(8+Math.round(done/Math.max(1,jobs.length)*65));
+ }
+ const unique=dedupe(all).filter(s=>s.title);
+ const ranked=unique.map(source=>{
+  let best={coverage:0,common:0,phrase:""},bestPassage=null;
+  const sourceText=[source.title,source.abstract].filter(Boolean).join(". ");
+  for(const p of passages) {
+   const m=overlap(p.text,sourceText);
+   if(m.coverage>best.coverage||(m.coverage===best.coverage&&m.phrase.length>best.phrase.length)) {
+    best=m;bestPassage=p;
+   }
+  }
+  return {...source,metrics:best,matchedPassage:bestPassage};
+ });
+ ranked.sort((a,b)=>b.metrics.coverage-a.metrics.coverage||b.metrics.phrase.length-a.metrics.phrase.length);
+ return {sources:ranked.slice(0,limit),errors};
 }
-function matchPriority(metrics) {
-  const threshold = Number($("matchThreshold").value);
-  if (metrics.passageCoverage>=Math.max(40,threshold+15) || (metrics.longestPhrase && metrics.longestPhrase.split(" ").length>=12)) return "high";
-  if (metrics.passageCoverage>=threshold || (metrics.longestPhrase && metrics.longestPhrase.split(" ").length>=7)) return "medium";
-  return "low";
+function priority(m) {
+ const t=Number($("threshold").value);
+ if(m.coverage>=Math.max(40,t+15)||(m.phrase&&m.phrase.split(" ").length>=12))return "high";
+ if(m.coverage>=t||(m.phrase&&m.phrase.split(" ").length>=7))return "medium";
+ return "low";
+}
+function markPhrase(text,phrase) {
+ let safe=escapeHTML(text);
+ if(!phrase)return safe;
+ const parts=phrase.split(/\s+/).filter(Boolean).map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+ if(parts.length<5)return safe;
+ try {
+  const re=new RegExp("("+parts.join("\\s+")+")","ig");
+  safe=safe.replace(re,"<mark>$1</mark>");
+ }catch(e){}
+ return safe;
 }
 function renderSimilarity() {
-  $("statSources").textContent = state.sources.length;
-  $("statFlags").textContent = state.matches.length;
-  $("statHigh").textContent = state.matches.filter(m=>m.priority==="high").length;
-  $("statPassages").textContent = state.passages.length;
-  const root = $("similarityResults");
-  if (!state.lastScreened) {
-    root.innerHTML = '<div class="empty">No screening results yet.</div>';
-    return;
-  }
-  if (!state.sources.length) {
-    root.innerHTML = '<div class="empty">No source records were retrieved. This does not establish originality; try again later or broaden the manuscript passages.</div>';
-    return;
-  }
-  root.innerHTML = state.sources.map((source,index)=>{
-    const m = source.metrics || {};
-    const priority = matchPriority(m);
-    const passage = source.matchedPassage?.text || "";
-    const flagged = m.passageCoverage >= Number($("matchThreshold").value) || !!m.longestPhrase;
-    const phrase = m.longestPhrase || "";
-    return `<article class="source">
-      <div class="source-head">
-        <div>
-          <div class="source-title">${index+1}. ${escapeHTML(source.title)}</div>
-          <div class="meta">${escapeHTML([source.authors,source.journal,source.year,source.provider].filter(Boolean).join(" · "))}</div>
-        </div>
-        <span class="pill ${priority}">${flagged ? priority.toUpperCase()+" PRIORITY" : "WEAK SIGNAL"}</span>
-      </div>
-      <div class="meta">Heuristic passage coverage: <strong>${m.passageCoverage || 0}%</strong> · Shared 5-word phrases: ${m.commonShingles || 0}</div>
-      ${source.doi ? `<div class="meta">DOI: <a href="https://doi.org/${encodeURIComponent(source.doi)}" target="_blank" rel="noopener noreferrer">${escapeHTML(source.doi)}</a></div>` : ""}
-      ${source.url ? `<div class="meta"><a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">Open source record ↗</a></div>` : ""}
-      ${phrase ? `<div><strong>Longest shared phrase found</strong><div class="snippet">${highlightedText(phrase,phrase)}</div></div>` : ""}
-      <details>
-        <summary>View compared passage and retrieved source text</summary>
-        <p class="small"><strong>Selected manuscript passage</strong></p>
-        <div class="snippet">${highlightedText(passage,phrase)}</div>
-        <p class="small"><strong>Retrieved title/abstract text</strong></p>
-        <div class="snippet">${highlightedText([source.title,source.abstract].filter(Boolean).join("\n\n") || "No abstract available in retrieved metadata.",phrase)}</div>
-        <p class="small">This comparison uses available metadata, not the complete article. Absence of a match is not proof of originality.</p>
-      </details>
-    </article>`;
-  }).join("");
+ $("statSources").textContent=state.sources.length;
+ $("statFlags").textContent=state.matches.length;
+ $("statHigh").textContent=state.matches.filter(s=>priority(s.metrics)==="high").length;
+ $("statPassages").textContent=state.passages.length;
+ const root=$("similarityResults");
+ if(!state.lastScreened){root.innerHTML='<div class="empty">No screening results yet.</div>';return;}
+ if(!state.sources.length){root.innerHTML='<div class="empty">No source records retrieved. This does not establish originality. Try again later or adjust the selected passages.</div>';return;}
+ root.innerHTML=state.sources.map((s,i)=>{
+  const m=s.metrics||{},p=s.matchedPassage?.text||"",level=priority(m);
+  const flag=m.coverage>=Number($("threshold").value)||!!m.phrase;
+  return `<article class="source">
+   <div class="source-title">${i+1}. ${escapeHTML(s.title)}</div>
+   <div class="meta">${escapeHTML([s.authors,s.journal,s.year,s.provider].filter(Boolean).join(" · "))}</div>
+   <span class="pill ${level}">${flag?level.toUpperCase()+" PRIORITY":"WEAK SIGNAL"}</span>
+   <p class="meta">Heuristic passage coverage: <strong>${m.coverage||0}%</strong> · Shared five-word phrases: ${m.common||0}</p>
+   ${s.doi?`<p class="meta">DOI: <a target="_blank" rel="noopener noreferrer" href="https://doi.org/${encodeURIComponent(s.doi)}">${escapeHTML(s.doi)}</a></p>`:""}
+   ${s.url?`<p class="meta"><a target="_blank" rel="noopener noreferrer" href="${escapeHTML(s.url)}">Open source record ↗</a></p>`:""}
+   ${m.phrase?`<p><strong>Longest shared phrase found</strong></p><div class="snippet">${markPhrase(m.phrase,m.phrase)}</div>`:""}
+   <details><summary>View compared passage and retrieved text</summary>
+    <p class="small"><strong>Manuscript passage</strong></p><div class="snippet">${markPhrase(p,m.phrase)}</div>
+    <p class="small"><strong>Retrieved title and abstract</strong></p><div class="snippet">${markPhrase([s.title,s.abstract].filter(Boolean).join("\n\n")||"No abstract available.",m.phrase)}</div>
+    <p class="small">This is a metadata comparison, not a full-text check. Review context and citations manually.</p>
+   </details>
+  </article>`;
+ }).join("");
 }
-function sourceCSVRows() {
-  return state.sources.map(s=>({
-    title:s.title,authors:s.authors,year:s.year,journal:s.journal,doi:s.doi,url:s.url,
-    provider:s.provider,passage_id:s.matchedPassage?.id || "",
-    passage_coverage_percent:s.metrics?.passageCoverage ?? "",
-    shared_five_word_shingles:s.metrics?.commonShingles ?? "",
-    longest_shared_phrase:s.metrics?.longestPhrase || "",
-    priority:matchPriority(s.metrics || {}),
-    limitation:"Metadata-based heuristic; human review required"
-  }));
-}
-
-$("screenBtn").addEventListener("click", async () => {
-  updateWordCount();
-  const text = state.manuscript.trim();
-  if (wordCount(text)<40) {
-    setStatus("Please provide a manuscript with at least 40 words before screening.");
-    return;
-  }
-  $("screenBtn").disabled = true;
-  $("auditBtn").disabled = true;
-  setProgress(2);
-  state.errors = [];
-  state.passages = buildPassages(text,Number($("excerptCount").value));
-  state.sources = [];
-  state.matches = [];
-  state.lastScreened = null;
-  renderSimilarity();
-  setStatus("Preparing passages and searching scholarly metadata services. This may take a little while…");
-  try {
-    const result = await retrieveSources(state.passages,Number($("resultLimit").value));
-    state.sources = result.sources;
-    state.errors = result.errors;
-    const threshold = Number($("matchThreshold").value);
-    state.matches = state.sources.filter(s =>
-      s.metrics.passageCoverage>=threshold || !!s.metrics.longestPhrase
-    ).map(s=>({...s,priority:matchPriority(s.metrics)}));
-    state.lastScreened = new Date().toISOString();
-    setProgress(100);
-    renderSimilarity();
-    renderSummary();
-    const errMsg = result.errors.length ? ` Some searches failed (${result.errors.length}); coverage may be incomplete.` : "";
-    setStatus(`Screening finished. Retrieved ${state.sources.length} unique source records and flagged ${state.matches.length} possible overlaps.${errMsg}`);
-  } catch(e) {
-    setStatus("Screening could not be completed: "+e.message+". Check your internet connection and try again.");
-    state.errors.push(e.message);
-  } finally {
-    $("screenBtn").disabled = false;
-    $("auditBtn").disabled = false;
-  }
+$("screenBtn").addEventListener("click",async()=>{
+ updateText();
+ if(countWords(state.manuscript)<40){setStatus("Enter at least 40 words before screening.");return;}
+ $("screenBtn").disabled=true;$("auditBtn").disabled=true;
+ state.passages=buildPassages(state.manuscript,Number($("excerptCount").value));
+ state.sources=[];state.matches=[];state.errors=[];state.lastScreened=null;state.screeningComplete=false;
+ renderSimilarity();progress(2);setStatus("Searching OpenAlex and Crossref. Failed requests will be reported.");
+ try {
+  const result=await searchScholarly(state.passages,Number($("resultLimit").value));
+  state.sources=result.sources;state.errors=result.errors;
+  const t=Number($("threshold").value);
+  state.matches=state.sources.filter(s=>s.metrics.coverage>=t||!!s.metrics.phrase);
+  state.lastScreened=new Date().toISOString();state.screeningComplete=true;
+  progress(100);renderSimilarity();renderSummary();
+  setStatus("Screening finished. "+state.sources.length+" unique source records retrieved; "+state.matches.length+" possible overlaps flagged."+
+   (state.errors.length?"\n"+state.errors.length+" external request(s) failed. Coverage may be incomplete.":""));
+ } catch(e){setStatus("Screening failed: "+e.message);}
+ finally{$("screenBtn").disabled=false;$("auditBtn").disabled=false;}
 });
 
 function extractReferences(text) {
-  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-  const headingIndex = lines.findIndex(line =>
-    /^(references|bibliography|works cited|literature cited)\s*:?$/i.test(line)
-  );
-  let block = "";
-  if (headingIndex>=0) {
-    block = lines.slice(headingIndex+1).join("\n");
-  } else {
-    // Fallback: identify DOI-bearing or reference-like lines near the end.
-    const start = Math.floor(lines.length*.55);
-    const candidate = lines.slice(start).filter(line =>
-      /\b(19|20)\d{2}\b/.test(line) || /\bdoi\b|10\.\d{4,9}\//i.test(line)
-    );
-    block = candidate.join("\n");
+ const lines=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ const start=lines.findIndex(x=>/^(references|bibliography|works cited|literature cited)\s*:?\s*$/i.test(x));
+ let block="";
+ if(start>=0)block=lines.slice(start+1).join("\n");
+ else {
+  const tail=lines.slice(Math.floor(lines.length*.55));
+  block=tail.filter(x=>/\b(?:19|20)\d{2}\b/.test(x)||/10\.\d{4,9}\//i.test(x)).join("\n");
+ }
+ if(!block.trim())return [];
+ let refs=block.split(/\n+/).map(x=>x.trim()).filter(x=>countWords(x)>=5);
+ const result=[];
+ for(const line of refs) {
+  const split=line.split(/(?=(?:\[\d{1,3}\]|\d{1,3}[.)])\s+)/).filter(Boolean);
+  for(const item of split) {
+   if(!result.length||/^(?:\[\d{1,3}\]|\d{1,3}[.)])\s+/.test(item))result.push(item.trim());
+   else if(/\b(?:19|20)\d{2}\b/.test(item)||/10\.\d{4,9}\//i.test(item))result.push(item.trim());
+   else result[result.length-1]+=" "+item.trim();
   }
-  if (!block.trim()) return [];
-  // First split on newlines; then split where a new numbered reference begins.
-  let parts = block.split(/\n+/).map(s=>s.trim()).filter(s=>s.length>25);
-  const expanded = [];
-  for (const part of parts) {
-    const split = part.split(/(?=(?:^|\s)(?:\[\d{1,3}\]|\d{1,3}[.)]\s+))/g).map(s=>s.trim()).filter(Boolean);
-    expanded.push(...split);
-  }
-  // Join wrapped lines cautiously when no clear numbering exists.
-  const merged = [];
-  for (const part of expanded) {
-    const numbered = /^(?:\[\d{1,3}\]|\d{1,3}[.)])\s*/.test(part);
-    if (numbered || merged.length===0) merged.push(part);
-    else if (/\b(19|20)\d{2}\b/.test(part) || /10\.\d{4,9}\//i.test(part)) merged.push(part);
-    else merged[merged.length-1] += " " + part;
-  }
-  return merged.filter(s=>wordCount(s)>=5);
+ }
+ return result.filter(x=>countWords(x)>=5);
 }
 function detectCitations(text) {
-  const withoutRefs = text.replace(/(?:^|\n)\s*(?:references|bibliography|works cited|literature cited)\s*:?\s*\n[\s\S]*$/i,"");
-  const numeric = new Set();
-  const numericPattern = /\[(\d{1,3}(?:\s*[-–,;]\s*\d{1,3})*)\]|\((\d{1,3}(?:\s*[-–,;]\s*\d{1,3})*)\)/g;
-  let match;
-  while ((match=numericPattern.exec(withoutRefs))!==null) {
-    const group = match[1] || match[2];
-    if (!group) continue;
-    const parts = group.split(/[,;]\s*/);
-    for (const part of parts) {
-      const range = part.match(/(\d{1,3})\s*[-–]\s*(\d{1,3})/);
-      if (range) {
-        const a=Number(range[1]),b=Number(range[2]);
-        if (b>=a && b-a<=30) for (let n=a;n<=b;n++) numeric.add(n);
-      } else if (/^\d{1,3}$/.test(part.trim())) numeric.add(Number(part.trim()));
-    }
+ const body=text.replace(/(?:^|\n)\s*(?:references|bibliography|works cited|literature cited)\s*:?\s*\n[\s\S]*$/i,"");
+ const numeric=new Set(),authorYear=new Set();
+ const re=/\[(\d{1,3}(?:\s*[-–,;]\s*\d{1,3})*)\]|\((\d{1,3}(?:\s*[-–,;]\s*\d{1,3})*)\)/g;
+ let m;
+ while((m=re.exec(body))) {
+  for(const part of (m[1]||m[2]).split(/[,;]\s*/)) {
+   const range=part.match(/(\d{1,3})\s*[-–]\s*(\d{1,3})/);
+   if(range) {
+    const a=+range[1],b=+range[2];
+    if(b>=a&&b-a<=30)for(let n=a;n<=b;n++)numeric.add(n);
+   } else if(/^\d{1,3}$/.test(part.trim()))numeric.add(+part.trim());
   }
-  const authorYear = new Set();
-  const authorYearPattern = /\b([A-Z][A-Za-z'’-]+(?:\s+et\s+al\.?|\s+and\s+[A-Z][A-Za-z'’-]+|\s*&\s*[A-Z][A-Za-z'’-]+)?)\s*[, (]\s*((?:19|20)\d{2})[a-z]?\s*\)?/g;
-  while ((match=authorYearPattern.exec(withoutRefs))!==null) {
-    authorYear.add((match[1]+" "+match[2]).replace(/\s+/g," ").trim());
-  }
-  return {numeric:[...numeric].sort((a,b)=>a-b),authorYear:[...authorYear]};
+ }
+ const ar=/\b([A-Z][A-Za-z'’-]+(?:\s+et\s+al\.?|\s+and\s+[A-Z][A-Za-z'’-]+|\s*&\s*[A-Z][A-Za-z'’-]+)?)\s*[, (]\s*((?:19|20)\d{2})[a-z]?\s*\)?/g;
+ while((m=ar.exec(body)))authorYear.add((m[1]+" "+m[2]).replace(/\s+/g," ").trim());
+ return {numeric:[...numeric].sort((a,b)=>a-b),authorYear:[...authorYear]};
 }
-function getReferenceDOI(ref) {
-  const match = ref.match(/\b(?:https?:\/\/(?:dx\.)?doi\.org\/)?(10\.\d{4,9}\/[^\s<>"{}|\\^`]+)\b/i);
-  return match ? match[1].replace(/[.,;)\]]+$/,"") : "";
-}
-function getReferenceYear(ref) {
-  const match = ref.match(/\b((?:19|20)\d{2})[a-z]?\b/);
-  return match ? match[1] : "";
-}
-function getReferenceLead(ref) {
-  return (ref.split(/[.;]/)[0] || ref).trim();
-}
-async function crossrefDOI(doi) {
-  const url = "https://api.crossref.org/works/"+encodeURIComponent(doi);
-  return fetchJSON(url);
-}
-function normalizeRefKey(ref) {
-  return normalize(ref)
-    .replace(/\b(19|20)\d{2}\b/g," YEAR ")
-    .replace(/\bdoi\b/g,"")
-    .slice(0,260);
-}
-function findDuplicateGroups(refs) {
-  const groups = [];
-  const used = new Set();
-  for (let i=0;i<refs.length;i++) {
-    if (used.has(i)) continue;
-    const group=[i];
-    const keyI=normalizeRefKey(refs[i]);
-    const doiI=getReferenceDOI(refs[i]).toLowerCase();
-    for (let j=i+1;j<refs.length;j++) {
-      if (used.has(j)) continue;
-      const doiJ=getReferenceDOI(refs[j]).toLowerCase();
-      const keyJ=normalizeRefKey(refs[j]);
-      const sameDOI=doiI && doiJ && doiI===doiJ;
-      const sim=stringSimilarity(keyI,keyJ);
-      if (sameDOI || sim>=0.88) group.push(j);
-    }
-    if (group.length>1) {
-      group.forEach(i=>used.add(i));
-      groups.push(group.map(i=>({index:i+1,text:refs[i]})));
-    }
-  }
-  return groups;
+function referenceDOI(ref) {
+ const m=ref.match(/\b(10\.\d{4,9}\/[^\s<>"{}|\\^`]+)/i);
+ return m?m[1].replace(/[.,;)\]]+$/,""):"";
 }
 function stringSimilarity(a,b) {
-  if (!a || !b) return 0;
-  if (a===b) return 1;
-  // Dice similarity on character bigrams, suitable as a duplicate-review hint only.
-  const grams = s => {
-    const out=new Map();
-    const t=" "+s+" ";
-    for(let i=0;i<t.length-1;i++){
-      const g=t.slice(i,i+2);
-      out.set(g,(out.get(g)||0)+1);
-    }
-    return out;
-  };
-  const A=grams(a),B=grams(b);
-  let intersection=0,totalA=0,totalB=0;
-  A.forEach(v=>totalA+=v); B.forEach(v=>totalB+=v);
-  A.forEach((v,k)=>intersection+=Math.min(v,B.get(k)||0));
-  return totalA+totalB ? 2*intersection/(totalA+totalB) : 0;
+ if(!a||!b)return 0;if(a===b)return 1;
+ const grams=s=>{const out=new Map(),t=" "+s+" ";for(let i=0;i<t.length-1;i++){const g=t.slice(i,i+2);out.set(g,(out.get(g)||0)+1);}return out;};
+ const A=grams(a),B=grams(b);let inter=0,na=0,nb=0;
+ A.forEach(v=>na+=v);B.forEach(v=>nb+=v);A.forEach((v,k)=>inter+=Math.min(v,B.get(k)||0));
+ return na+nb?2*inter/(na+nb):0;
+}
+function duplicateGroups(refs) {
+ const groups=[],used=new Set();
+ for(let i=0;i<refs.length;i++) {
+  if(used.has(i))continue;
+  const group=[i],doiA=referenceDOI(refs[i]).toLowerCase();
+  const keyA=normalize(refs[i]).replace(/\b(?:19|20)\d{2}\b/g,"YEAR").slice(0,300);
+  for(let j=i+1;j<refs.length;j++) {
+   if(used.has(j))continue;
+   const doiB=referenceDOI(refs[j]).toLowerCase();
+   const keyB=normalize(refs[j]).replace(/\b(?:19|20)\d{2}\b/g,"YEAR").slice(0,300);
+   if((doiA&&doiB&&doiA===doiB)||stringSimilarity(keyA,keyB)>=.88)group.push(j);
+  }
+  if(group.length>1){group.forEach(i=>used.add(i));groups.push(group.map(i=>i+1));}
+ }
+ return groups;
 }
 async function runAudit() {
-  updateWordCount();
-  const text=state.manuscript.trim();
-  if (wordCount(text)<40) {
-    setStatus("Please provide a manuscript with at least 40 words before auditing references.");
-    return;
+ updateText();
+ if(countWords(state.manuscript)<40){setStatus("Enter at least 40 words before auditing.");return;}
+ $("screenBtn").disabled=true;$("auditBtn").disabled=true;progress(5);
+ state.audit=[];state.errors=[];state.lastAudited=null;
+ setStatus("Extracting references, checking duplicates, and verifying DOIs…");
+ try {
+  const refs=extractReferences(state.manuscript),citations=detectCitations(state.manuscript);
+  const duplicates=duplicateGroups(refs),dois=refs.map((ref,i)=>({ref,index:i+1,doi:referenceDOI(ref)})).filter(x=>x.doi);
+  const audit=[];
+  if(!refs.length)audit.push({type:"Reference extraction",item:"No reference list confidently detected",status:"Review",details:"Use a clear References or Bibliography heading and check the manuscript formatting."});
+  for(const n of citations.numeric)if(n>refs.length)audit.push({type:"Numeric citation",item:"Citation number "+n,status:"Review",details:"This citation number exceeds the number of extracted references. Check numbering and extraction."});
+  for(const group of duplicates)audit.push({type:"Possible duplicate references",item:"Entries "+group.join(", "),status:"Review",details:"These entries appear similar. Compare their titles, authors, years and DOIs manually."});
+  for(let i=0;i<dois.length;i++) {
+   const d=dois[i];
+   try {
+    const data=await fetchJSON("https://api.crossref.org/works/"+encodeURIComponent(d.doi),{attempts:2,timeout:10000});
+    const item=data.message||{},title=item.title?.[0]||"Title unavailable";
+    const year=item.published?.["date-parts"]?.[0]?.[0]||"";
+    const refTitle=normalize(d.ref),normalizedTitle=normalize(title);
+    const likely=normalizedTitle.length>15&&refTitle.includes(normalizedTitle.slice(0,Math.min(35,normalizedTitle.length)));
+    audit.push({type:"DOI verification",reference:d.index,item:d.doi,status:"Found in Crossref",
+     metadata_title:title,metadata_year:year,details:likely?"Metadata retrieved; title appears consistent. Verify the full reference manually.":"Metadata retrieved. Compare the metadata title and year with the reference.",url:"https://doi.org/"+d.doi});
+   } catch(e) {
+    audit.push({type:"DOI verification",reference:d.index,item:d.doi,status:"Not verified",
+     details:"Crossref did not verify this DOI during this check. It may be invalid, unregistered there, or temporarily unavailable.",url:"https://doi.org/"+d.doi});
+    state.errors.push("DOI "+d.doi+": "+e.message);
+   }
+   progress(10+Math.round((i+1)/Math.max(1,dois.length)*75));
   }
-  $("screenBtn").disabled=true;
-  $("auditBtn").disabled=true;
-  setProgress(5);
-  setStatus("Extracting references and checking citation patterns…");
-  state.audit=[];
-  state.errors=[];
-  try {
-    const refs=extractReferences(text);
-    const citations=detectCitations(text);
-    const duplicates=findDuplicateGroups(refs);
-    const doiRefs=refs.map((ref,i)=>({ref,index:i+1,doi:getReferenceDOI(ref)})).filter(x=>x.doi);
-    const refNumbers=new Set(refs.map((_,i)=>i+1));
-    const warnings=[];
-    if (!refs.length) warnings.push({
-      type:"Reference extraction",
-      item:"No reference list could be confidently extracted",
-      details:"Add a clearly labelled References or Bibliography heading and review the manuscript formatting."
-    });
-    if (citations.numeric.length) {
-      const max=Math.max(...citations.numeric);
-      for (const n of citations.numeric) {
-        if (!refNumbers.has(n)) warnings.push({
-          type:"Numeric citation",
-          item:"Citation ["+n+"]",
-          details:"Could not map this citation number to a detected reference entry. Reference numbering may not match the parser."
-        });
-      }
-      if (max>refs.length) warnings.push({
-        type:"Numeric citation",
-        item:"Highest citation number: "+max,
-        details:"The highest numeric citation exceeds the number of detected references. Check numbering and extraction."
-      });
-    }
-    for (const group of duplicates) warnings.push({
-      type:"Possible duplicate reference",
-      item:"Entries "+group.map(g=>g.index).join(", "),
-      details:"These entries appear similar. Compare author, title, year and DOI manually."
-    });
-    for (const entry of doiRefs) {
-      warnings.push({
-        type:"DOI detected",
-        item:"Reference "+entry.index,
-        details:"DOI "+entry.doi+" is queued for metadata verification."
-      });
-    }
-    const doiResults=[];
-    for (let i=0;i<doiRefs.length;i++) {
-      const entry=doiRefs[i];
-      try {
-        const data=await crossrefDOI(entry.doi);
-        const item=data.message || {};
-        const title=titleFromCrossref(item);
-        const year=item.published?.["date-parts"]?.[0]?.[0] || "";
-        const doiStatus="Found in Crossref";
-        const titleInRef=normalize(entry.ref).includes(normalize(title).slice(0,Math.min(35,normalize(title).length)));
-        doiResults.push({
-          type:"DOI verification",
-          reference:entry.index,
-          item:entry.doi,
-          status:doiStatus,
-          metadata_title:title,
-          metadata_year:year,
-          details:titleInRef ? "DOI metadata retrieved; title appears consistent." : "DOI metadata retrieved. Compare the returned title and year with the reference manually.",
-          url:"https://doi.org/"+entry.doi
-        });
-      } catch(e) {
-        doiResults.push({
-          type:"DOI verification",
-          reference:entry.index,
-          item:entry.doi,
-          status:"Not verified",
-          metadata_title:"",
-          metadata_year:"",
-          details:"Crossref could not verify this DOI during the current check. It may be invalid, unregistered there, or temporarily unavailable.",
-          url:"https://doi.org/"+entry.doi
-        });
-      }
-      setProgress(10+Math.round((i+1)/Math.max(1,doiRefs.length)*75));
-    }
-    state.audit.push(...warnings.map(w=>({
-      type:w.type,reference:"",item:w.item,status:"Review",metadata_title:"",metadata_year:"",details:w.details,url:""
-    })));
-    state.audit.push(...doiResults);
-    state.auditStats={
-      references:refs.length,
-      dois:doiRefs.length,
-      duplicates:duplicates.length,
-      warnings:state.audit.filter(a=>a.status==="Review" || a.status==="Not verified").length
-    };
-    // Include a compact reference inventory for the audit display and export.
-    refs.forEach((ref,i)=>state.audit.push({
-      type:"Reference inventory",
-      reference:i+1,
-      item:ref.slice(0,240),
-      status:"Extracted",
-      metadata_title:"",
-      metadata_year:getReferenceYear(ref),
-      details:getReferenceDOI(ref) ? "DOI: "+getReferenceDOI(ref) : "No DOI detected; this is not necessarily an error.",
-      url:getReferenceDOI(ref) ? "https://doi.org/"+getReferenceDOI(ref) : ""
-    }));
-    state.lastAudited=new Date().toISOString();
-    setProgress(100);
-    renderAudit();
-    renderSummary();
-    setStatus("Reference audit finished. Review the flagged items and DOI checks; automated parsing may miss or misclassify entries.");
-  } catch(e) {
-    setStatus("Reference audit failed: "+e.message);
-  } finally {
-    $("screenBtn").disabled=false;
-    $("auditBtn").disabled=false;
-  }
+  refs.forEach((ref,i)=>audit.push({
+   type:"Reference inventory",reference:i+1,item:ref.slice(0,250),status:"Extracted",
+   metadata_year:(ref.match(/\b(?:19|20)\d{2}\b/)||[])[0]||"",
+   details:referenceDOI(ref)?"DOI: "+referenceDOI(ref):"No DOI detected; this is not necessarily an error.",
+   url:referenceDOI(ref)?"https://doi.org/"+referenceDOI(ref):""
+  }));
+  state.audit=audit;
+  state.auditStats={
+   references:refs.length,dois:dois.length,duplicates:duplicates.length,
+   warnings:audit.filter(x=>x.status==="Review"||x.status==="Not verified").length
+  };
+  state.lastAudited=new Date().toISOString();progress(100);renderAudit();renderSummary();
+  setStatus("Audit finished. "+refs.length+" references detected; "+dois.length+" DOI(s) checked. Review all warnings manually.");
+ } catch(e){setStatus("Reference audit failed: "+e.message);}
+ finally{$("screenBtn").disabled=false;$("auditBtn").disabled=false;}
 }
 $("auditBtn").addEventListener("click",runAudit);
 
 function renderAudit() {
-  const s=state.auditStats;
-  $("refCount").textContent=s.references;
-  $("doiCount").textContent=s.dois;
-  $("duplicateCount").textContent=s.duplicates;
-  $("citationWarnings").textContent=s.warnings;
-  const root=$("referenceResults");
-  if (!state.lastAudited) {
-    root.innerHTML='<div class="empty">Run the reference audit to see results.</div>';
-    return;
-  }
-  if (!state.audit.length) {
-    root.innerHTML='<div class="empty">No audit findings were generated.</div>';
-    return;
-  }
-  root.innerHTML=state.audit.map(a=>{
-    const statusClass=(a.status==="Not verified" || a.status==="Review")?"high":
-      (a.status==="Extracted" || a.status==="Found in Crossref")?"low":"medium";
-    return `<article class="source">
-      <div class="source-head">
-        <div class="source-title">${escapeHTML(a.type)}${a.reference ? " · Reference "+escapeHTML(a.reference):""}</div>
-        <span class="pill ${statusClass}">${escapeHTML(a.status || "Review")}</span>
-      </div>
-      <div class="meta">${escapeHTML(a.item || "")}</div>
-      ${a.metadata_title ? `<p><strong>Crossref title:</strong> ${escapeHTML(a.metadata_title)}</p>`:""}
-      ${a.metadata_year ? `<p class="small">Metadata year: ${escapeHTML(a.metadata_year)}</p>`:""}
-      <p class="snippet">${escapeHTML(a.details || "")}</p>
-      ${a.url ? `<a href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer">Open DOI ↗</a>`:""}
-    </article>`;
-  }).join("");
+ $("refCount").textContent=state.auditStats.references;
+ $("doiCount").textContent=state.auditStats.dois;
+ $("duplicateCount").textContent=state.auditStats.duplicates;
+ $("warningCount").textContent=state.auditStats.warnings;
+ const root=$("referenceResults");
+ if(!state.lastAudited){root.innerHTML='<div class="empty">Run the reference audit to see results.</div>';return;}
+ if(!state.audit.length){root.innerHTML='<div class="empty">No audit findings generated.</div>';return;}
+ root.innerHTML=state.audit.map(a=>{
+  const level=a.status==="Review"||a.status==="Not verified"?"high":a.status==="Extracted"||a.status==="Found in Crossref"?"low":"medium";
+  return `<article class="source">
+   <div class="source-title">${escapeHTML(a.type)}${a.reference?" · Reference "+escapeHTML(a.reference):""}</div>
+   <p><span class="pill ${level}">${escapeHTML(a.status||"Review")}</span></p>
+   <div class="meta">${escapeHTML(a.item||"")}</div>
+   ${a.metadata_title?`<p><strong>Crossref title:</strong> ${escapeHTML(a.metadata_title)}</p>`:""}
+   ${a.metadata_year?`<p class="small">Metadata year: ${escapeHTML(a.metadata_year)}</p>`:""}
+   <div class="snippet">${escapeHTML(a.details||"")}</div>
+   ${a.url?`<p><a href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer">Open DOI ↗</a></p>`:""}
+  </article>`;
+ }).join("");
 }
-
 function renderSummary() {
-  const parts=[];
-  parts.push("<p><strong>Manuscript length:</strong> "+wordCount($("manuscriptText").value).toLocaleString()+" words.</p>");
-  parts.push("<p><strong>Similarity screening:</strong> "+(state.lastScreened
-    ? "Completed "+escapeHTML(new Date(state.lastScreened).toLocaleString())+". "+state.sources.length+" unique source records; "+state.matches.length+" possible overlaps flagged."
-    : "Not run yet.")+"</p>");
-  parts.push("<p><strong>Reference audit:</strong> "+(state.lastAudited
-    ? "Completed "+escapeHTML(new Date(state.lastAudited).toLocaleString())+". "+state.auditStats.references+" references detected; "+state.auditStats.dois+" DOI(s) checked; "+state.auditStats.warnings+" item(s) requiring review."
-    : "Not run yet.")+"</p>");
-  parts.push("<p><strong>Coverage warning:</strong> Searches use available scholarly metadata. Not all full texts or databases are searched, and missing results do not prove originality.</p>");
-  if (state.errors.length) parts.push("<p><strong>Search limitations:</strong> "+state.errors.length+" request(s) failed or were unavailable during this session.</p>");
-  $("summaryText").innerHTML=parts.join("");
+ const out=[];
+ out.push("<p><strong>Manuscript length:</strong> "+countWords($("manuscriptText").value).toLocaleString()+" words.</p>");
+ out.push("<p><strong>Similarity screening:</strong> "+(state.lastScreened?"Completed "+escapeHTML(new Date(state.lastScreened).toLocaleString())+". "+state.sources.length+" unique sources; "+state.matches.length+" potential overlaps flagged.":"Not run yet.")+"</p>");
+ out.push("<p><strong>Reference audit:</strong> "+(state.lastAudited?"Completed "+escapeHTML(new Date(state.lastAudited).toLocaleString())+". "+state.auditStats.references+" references; "+state.auditStats.dois+" DOI(s); "+state.auditStats.warnings+" item(s) requiring review.":"Not run yet.")+"</p>");
+ out.push("<p><strong>Coverage:</strong> Search results may be incomplete. No-match results do not prove originality. Citation and reference parsing supports common patterns only.</p>");
+ if(state.errors.length)out.push("<p><strong>Request errors:</strong> "+state.errors.length+" external request(s) failed or could not be verified.</p>");
+ $("summaryText").innerHTML=out.join("");
 }
 
-document.querySelectorAll(".tab").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===button));
-    document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+button.dataset.tab));
-  });
-});
+document.querySelectorAll(".tab").forEach(button=>button.addEventListener("click",()=>{
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===button));
+ document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+button.dataset.tab));
+}));
 
+function similarityRows() {
+ return state.sources.map(s=>({
+  title:s.title,authors:s.authors,year:s.year,journal:s.journal,doi:s.doi,url:s.url,provider:s.provider,
+  passage_id:s.matchedPassage?.id||"",heuristic_passage_coverage_percent:s.metrics?.coverage??"",
+  shared_five_word_shingles:s.metrics?.common??"",longest_shared_phrase:s.metrics?.phrase||"",
+  priority:priority(s.metrics||{}),limitation:"Metadata-based heuristic; human review required"
+ }));
+}
 $("downloadSimilarity").addEventListener("click",()=>{
-  const rows=sourceCSVRows();
-  if (!rows.length) {
-    $("exportStatus").textContent="Run similarity screening before exporting the similarity CSV.";
-    return;
-  }
-  downloadCSV(rows,"manuscript-similarity-screening.csv");
-  $("exportStatus").textContent="Similarity CSV export requested.";
+ if(!state.lastScreened){$("exportStatus").textContent="Run similarity screening first.";return;}
+ downloadCSV(similarityRows(),"manuscript-similarity-screening.csv");
 });
 $("downloadAudit").addEventListener("click",()=>{
-  if (!state.audit.length) {
-    $("exportStatus").textContent="Run the reference audit before exporting the audit CSV.";
-    return;
-  }
-  downloadCSV(state.audit,"manuscript-reference-audit.csv");
-  $("exportStatus").textContent="Reference audit CSV export requested.";
+ if(!state.lastAudited){$("exportStatus").textContent="Run the reference audit first.";return;}
+ downloadCSV(state.audit,"manuscript-reference-audit.csv");
 });
 $("downloadWord").addEventListener("click",async()=>{
-  if (!state.lastScreened && !state.lastAudited) {
-    $("exportStatus").textContent="Run at least one analysis before generating the Word report.";
-    return;
+ if(!state.lastScreened&&!state.lastAudited){$("exportStatus").textContent="Run at least one analysis first.";return;}
+ if(!window.docx){$("exportStatus").textContent="Word report library failed to load. Refresh and try again.";return;}
+ $("downloadWord").disabled=true;$("exportStatus").textContent="Preparing Word report…";
+ try {
+  const {Document,Packer,Paragraph,TextRun,HeadingLevel}=window.docx;
+  const children=[];
+  const p=t=>new Paragraph({children:[new TextRun(String(t??""))]});
+  children.push(new Paragraph({text:"Manuscript Integrity Screening Report",heading:HeadingLevel.TITLE}));
+  children.push(p("The Manuscript Studio"));
+  children.push(p("Generated: "+new Date().toLocaleString()));
+  children.push(p("Manuscript length: "+countWords($("manuscriptText").value)+" words"));
+  children.push(new Paragraph({text:"Important limitations",heading:HeadingLevel.HEADING_1}));
+  children.push(p("This tool searches available scholarly metadata and uses heuristic text comparison. It is not a validated plagiarism detector and cannot establish plagiarism or originality. Human review is required."));
+  children.push(new Paragraph({text:"Similarity screening",heading:HeadingLevel.HEADING_1}));
+  children.push(p(state.lastScreened?"Completed: "+new Date(state.lastScreened).toLocaleString():"Not performed."));
+  children.push(p("Sources retrieved: "+state.sources.length+"; potential overlaps: "+state.matches.length+"; passages searched: "+state.passages.length));
+  for(let i=0;i<state.sources.length;i++) {
+   const s=state.sources[i],m=s.metrics||{};
+   children.push(new Paragraph({text:(i+1)+". "+s.title,heading:HeadingLevel.HEADING_2}));
+   children.push(p("Authors: "+(s.authors||"Unavailable")+" | Year: "+(s.year||"Unavailable")+" | Provider: "+(s.provider||"Unavailable")));
+   children.push(p("DOI: "+(s.doi||"Unavailable")+" | URL: "+(s.url||"Unavailable")));
+   children.push(p("Heuristic passage coverage: "+(m.coverage||0)+"%; shared five-word shingles: "+(m.common||0)));
+   children.push(p("Longest shared phrase: "+(m.phrase||"None identified")));
+   children.push(p("Manuscript passage: "+(s.matchedPassage?.text||"Unavailable")));
+   children.push(p("Retrieved title/abstract: "+[s.title,s.abstract].filter(Boolean).join(" ").slice(0,1800)));
   }
-  if (!window.docx) {
-    $("exportStatus").textContent="Word report library failed to load. Refresh the page and try again.";
-    return;
+  children.push(new Paragraph({text:"Reference audit",heading:HeadingLevel.HEADING_1}));
+  children.push(p(state.lastAudited?"Completed: "+new Date(state.lastAudited).toLocaleString():"Not performed."));
+  children.push(p("References detected: "+state.auditStats.references+"; DOI entries: "+state.auditStats.dois+"; possible duplicate groups: "+state.auditStats.duplicates+"; items requiring review: "+state.auditStats.warnings));
+  for(const a of state.audit) {
+   children.push(new Paragraph({text:a.type+(a.reference?" — Reference "+a.reference:""),heading:HeadingLevel.HEADING_2}));
+   children.push(p("Item: "+(a.item||"")+" | Status: "+(a.status||"")));
+   if(a.metadata_title)children.push(p("Crossref title: "+a.metadata_title));
+   if(a.metadata_year)children.push(p("Metadata year: "+a.metadata_year));
+   children.push(p("Details: "+(a.details||"")));
+   if(a.url)children.push(p("URL: "+a.url));
   }
-  $("downloadWord").disabled=true;
-  $("exportStatus").textContent="Preparing Word report…";
-  try {
-    const {Document,Packer,Paragraph,TextRun,HeadingLevel,HyperlinkRef} = window.docx;
-    const children=[];
-    const para=(text,opts={})=>new Paragraph({children:[new TextRun({text:String(text),...opts})]});
-    children.push(new Paragraph({text:"Manuscript Integrity Screening Report",heading:HeadingLevel.TITLE}));
-    children.push(para("The Manuscript Studio"));
-    children.push(para("Generated: "+new Date().toLocaleString()));
-    children.push(para("Manuscript word count: "+wordCount($("manuscriptText").value)));
-    children.push(new Paragraph({text:"Important limitation",heading:HeadingLevel.HEADING_1}));
-    children.push(para("This report is based on available scholarly metadata and heuristic text comparison. It is not a validated plagiarism score and does not establish plagiarism or originality. Human review is required."));
-    children.push(new Paragraph({text:"Similarity screening",heading:HeadingLevel.HEADING_1}));
-    children.push(para(state.lastScreened ? "Completed: "+new Date(state.lastScreened).toLocaleString() : "Not performed."));
-    children.push(para("Unique source records: "+state.sources.length+"; potential overlaps flagged: "+state.matches.length+"; passages searched: "+state.passages.length+"."));
-    if (state.sources.length) {
-      state.sources.forEach((s,i)=>{
-        children.push(new Paragraph({text:(i+1)+". "+s.title,heading:HeadingLevel.HEADING_2}));
-        children.push(para("Authors: "+(s.authors||"Not available")+" | Year: "+(s.year||"Not available")+" | Provider: "+(s.provider||"Not available")));
-        children.push(para("DOI: "+(s.doi||"Not available")+" | Source: "+(s.url||"Not available")));
-        children.push(para("Heuristic passage coverage: "+(s.metrics?.passageCoverage ?? 0)+"%; shared 5-word phrases: "+(s.metrics?.commonShingles ?? 0)));
-        children.push(para("Longest shared phrase: "+(s.metrics?.longestPhrase||"None identified")));
-        children.push(para("Compared manuscript passage: "+(s.matchedPassage?.text||"Not available")));
-        children.push(para("Retrieved source text: "+([s.title,s.abstract].filter(Boolean).join(" ")||"No abstract available").slice(0,1800)));
-      });
-    } else {
-      children.push(para("No source records retrieved."));
-    }
-    children.push(new Paragraph({text:"Reference audit",heading:HeadingLevel.HEADING_1}));
-    children.push(para(state.lastAudited ? "Completed: "+new Date(state.lastAudited).toLocaleString() : "Not performed."));
-    children.push(para("References detected: "+state.auditStats.references+"; DOI entries: "+state.auditStats.dois+"; duplicate groups: "+state.auditStats.duplicates+"; items requiring review: "+state.auditStats.warnings+"."));
-    state.audit.forEach(a=>{
-      children.push(new Paragraph({text:a.type+(a.reference ? " — Reference "+a.reference : ""),heading:HeadingLevel.HEADING_2}));
-      children.push(para("Item: "+(a.item||"")));
-      children.push(para("Status: "+(a.status||"")));
-      if (a.metadata_title) children.push(para("Crossref title: "+a.metadata_title));
-      if (a.metadata_year) children.push(para("Metadata year: "+a.metadata_year));
-      children.push(para("Details: "+(a.details||"")));
-      if (a.url) children.push(para("URL: "+a.url));
-    });
-    children.push(new Paragraph({text:"Limitations and interpretation",heading:HeadingLevel.HEADING_1}));
-    children.push(para("OpenAlex and Crossref results may be incomplete or unavailable. Text comparison is limited to manuscript excerpts and available titles/abstracts; full-text matching is not guaranteed. The heuristic overlap estimates should not be interpreted as an overall similarity index. Citation and reference parsing supports common formats only. Verify every flagged item manually."));
-    const doc=new Document({sections:[{properties:{},children}]});
-    const blob=await Packer.toBlob(doc);
-    downloadBlob(blob,"manuscript-integrity-screening-report.docx");
-    $("exportStatus").textContent="Word report generated.";
-  } catch(e) {
-    $("exportStatus").textContent="Word report failed: "+e.message;
-  } finally {
-    $("downloadWord").disabled=false;
-  }
+  children.push(new Paragraph({text:"Interpretation and limitations",heading:HeadingLevel.HEADING_1}));
+  children.push(p("OpenAlex and Crossref may not include all relevant sources. This application compares selected manuscript passages with available titles and abstracts; full-text matching is not guaranteed. Similarity estimates are not a validated overall similarity index. Citation parsing supports common patterns only. Verify each finding manually."));
+  const doc=new Document({sections:[{properties:{},children}]});
+  const blob=await Packer.toBlob(doc);
+  downloadBlob(blob,"manuscript-integrity-screening-report.docx");
+  $("exportStatus").textContent="Word report generated.";
+ } catch(e){$("exportStatus").textContent="Word export failed: "+e.message;}
+ finally{$("downloadWord").disabled=false;}
 });
 
-renderSimilarity();
-renderAudit();
-renderSummary();
-updateWordCount();
+/* Built-in local regression tests */
+function runSelfTests() {
+ const tests=[];
+ const test=(name,fn)=>{
+  try {const result=fn();if(result!==true)throw Error(typeof result==="string"?result:"Assertion returned false");tests.push({name,ok:true});}
+  catch(e){tests.push({name,ok:false,error:e.message});}
+ };
+ test("Text normalization ignores case and punctuation",()=>normalize("A Healthy, Study!")===normalize("a healthy study"));
+ test("Word counter counts a basic sentence",()=>countWords("Dental research improves patient care.")===6);
+ test("Five-word shingles detect identical passages",()=>shingles("one two three four five six").has("one two three four five"));
+ test("Overlap finds shared passage shingles",()=>overlap("one two three four five six","one two three four five six").coverage===100);
+ test("Longest phrase identifies five shared words",()=>longestSharedPhrase("alpha beta gamma delta epsilon zeta".split(" "),"zero alpha beta gamma delta epsilon".split(" "))==="alpha beta gamma delta epsilon");
+ test("DOI parser extracts DOI from a URL",()=>referenceDOI("https://doi.org/10.1234/example.2020") === "10.1234/example.2020");
+ test("Duplicate matcher groups identical references",()=>duplicateGroups(["Smith J. Example article. 2020.","Smith J. Example article. 2020."]).length===1);
+ test("Numeric citation parser finds bracketed citations",()=>detectCitations("The findings support this [1, 2].").numeric.join(",")==="1,2");
+ test("Reference extraction detects a labelled reference list",()=>extractReferences("Article text.\nReferences\nSmith J. A useful article. Journal. 2020.").length===1);
+ test("CSV escaping handles commas and quotes",()=>csvCell('A, "title"')==='"A, ""title"""');
+ test("Source deduplication collapses matching DOI records",()=>dedupe([{title:"A",doi:"10.1234/a"},{title:"B",doi:"10.1234/a"}]).length===1);
+ test("Passage builder returns requested bounded count",()=>buildPassages(("This is a sufficiently detailed research sentence about dental methods and patient outcomes. ").repeat(20),3).length<=3);
+ const passed=tests.filter(t=>t.ok).length,failed=tests.length-passed;
+ $("testSummary").textContent=passed+" of "+tests.length+" tests passed; "+failed+" failed.";
+ $("testResults").innerHTML=tests.map(t=>`<div class="test-row"><span class="test-icon ${t.ok?"pass":"fail"}">${t.ok?"PASS":"FAIL"}</span><div><strong>${escapeHTML(t.name)}</strong>${t.error?`<div class="small">${escapeHTML(t.error)}</div>`:""}</div></div>`).join("");
+ return {passed,failed,total:tests.length};
+}
+$("runTests").addEventListener("click",()=>{
+ const result=runSelfTests();
+ $("testSummary").textContent=result.passed+" of "+result.total+" tests passed; "+result.failed+" failed.";
+});
+$("checkServices").addEventListener("click",async()=>{
+ $("checkServices").disabled=true;
+ $("serviceResults").textContent="Checking OpenAlex and Crossref…";
+ const checks=[
+  {name:"OpenAlex",url:"https://api.openalex.org/works?search=periodontology&per-page=1"},
+  {name:"Crossref",url:"https://api.crossref.org/works?query=periodontology&rows=1"}
+ ];
+ const results=[];
+ for(const c of checks) {
+  try {await fetchJSON(c.url,{attempts:2,timeout:10000});results.push({name:c.name,ok:true,message:"Request succeeded"});}
+  catch(e){results.push({name:c.name,ok:false,message:e.message});}
+ }
+ $("serviceResults").innerHTML=results.map(r=>`<div class="test-row"><span class="test-icon ${r.ok?"pass":"fail"}">${r.ok?"PASS":"FAIL"}</span><div><strong>${escapeHTML(r.name)}</strong><div class="small">${escapeHTML(r.message)}</div></div></div>`).join("");
+ $("checkServices").disabled=false;
+});
+
+renderSimilarity();renderAudit();renderSummary();updateText();
 })();
 </script>
 </body>
