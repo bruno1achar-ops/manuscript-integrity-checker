@@ -5,144 +5,123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Manuscript Integrity Checker | The Manuscript Studio</title>
-<meta name="description" content="Academic text similarity checking and scholarly source discovery.">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 
 <style>
-:root{--forest:#173f35;--light:#285b4b;--ivory:#f8f6ef;--paper:#fffefa;--gold:#b49a5a;--ink:#26342e;--muted:#727b73;--border:#e4e1d6;--red:#a8463b}
+:root{--forest:#173f35;--ivory:#f8f6ef;--paper:#fffefa;--gold:#b49a5a;--ink:#26342e;--muted:#727b73;--border:#e4e1d6}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ivory);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-header{background:var(--forest);color:white;padding:20px max(5%,calc((100% - 1150px)/2));display:flex;justify-content:space-between;align-items:center;gap:15px}
-.brand{font-size:19px;font-weight:750}.brand small{display:block;font-size:10px;letter-spacing:2px;color:#d7c99e}
-.tag{border:1px solid #789185;border-radius:30px;padding:5px 12px;font-size:12px}
-main{max-width:1150px;margin:auto;padding:34px 18px 60px}
-h1{font-size:clamp(29px,4vw,42px);line-height:1.15;color:var(--forest);margin:8px 0 12px}
+header{background:var(--forest);color:white;padding:22px max(5%,calc((100% - 950px)/2))}
+.brand{font-size:20px;font-weight:750}
+.brand small{display:block;font-size:10px;letter-spacing:2px;color:#d7c99e}
+main{max-width:950px;margin:auto;padding:35px 18px 60px}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.15;color:var(--forest);margin:8px 0}
 h2{font-size:20px;color:var(--forest);margin:0 0 10px}
-h3{font-size:16px;margin:0 0 8px;color:var(--forest)}
-p{margin:5px 0 12px}.muted,.help{color:var(--muted)}.help{font-size:12px}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#8a7542}
-.hero{max-width:800px;margin-bottom:27px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.panel{background:var(--paper);border:1px solid var(--border);border-radius:15px;padding:22px;min-width:0;box-shadow:0 5px 18px #1c2f2408}
-.head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.num{width:34px;height:34px;border-radius:9px;background:#e9eee8;color:var(--forest);display:grid;place-items:center;font-weight:800}
-label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}
-textarea,input[type=text]{width:100%;padding:12px;border:1px solid #d8dcd4;border-radius:9px;font:inherit;font-size:13px;background:white;color:var(--ink)}
-textarea{min-height:220px;resize:vertical}textarea:focus,input:focus{outline:2px solid #285b4b33;border-color:var(--light)}
-input[type=file]{max-width:100%;font-size:12px}
-.filebox{background:#f5f5ee;padding:12px;border:1px dashed #c7c9bb;border-radius:9px}
-.filelist{font-size:12px;color:var(--forest);overflow-wrap:anywhere;margin-top:6px}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
-button{border:0;border-radius:9px;padding:11px 15px;font-weight:700;font-size:13px;cursor:pointer}
+h3{font-size:16px;color:var(--forest);margin:0 0 8px}
+p{margin:7px 0 13px}
+.muted,.help{color:var(--muted)}.help{font-size:12px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:#8a7542}
+.panel{background:var(--paper);border:1px solid var(--border);border-radius:15px;padding:23px;margin-top:18px;box-shadow:0 5px 18px #1c2f2408}
+label{display:block;font-size:13px;font-weight:700;margin:15px 0 6px}
+textarea,input[type=text],input[type=password]{width:100%;padding:12px;border:1px solid #d8dcd4;border-radius:9px;font:inherit;font-size:13px;background:white;color:var(--ink)}
+textarea{min-height:200px;resize:vertical}
+input[type=file]{width:100%;font-size:13px}
+.filebox{background:#f5f5ee;padding:17px;border:1px dashed #c7c9bb;border-radius:10px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+button{border:0;border-radius:9px;padding:12px 17px;font-weight:700;font-size:13px;cursor:pointer}
 button:disabled{opacity:.55;cursor:wait}
-.primary{background:var(--forest);color:white}.primary:hover{background:var(--light)}
-.secondary{background:#e8ece6;color:var(--forest)}.goldbtn{background:#efe6ce;color:#5d4a20}
-.status{margin:13px 0;font-size:13px;color:var(--muted)}.error{color:var(--red)}
-.notice{margin-top:18px;padding:14px;background:#f4efdf;border:1px solid #e7dcc0;border-radius:9px;font-size:12px}
-.results{display:none;margin-top:24px}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:17px 0}
-.metric{padding:15px;border:1px solid var(--border);border-radius:11px;background:white}
-.metric strong{display:block;font-size:25px;color:var(--forest)}
+.primary{background:var(--forest);color:white}.secondary{background:#e8ece6;color:var(--forest)}
+.status{margin:15px 0;font-size:13px;color:var(--muted)}.error{color:#a8463b}
+.notice{padding:14px;background:#f4efdf;border:1px solid #e7dcc0;border-radius:9px;font-size:12px;margin-top:18px}
+.progress{height:6px;background:#e6e6dc;border-radius:8px;overflow:hidden;margin-top:12px}
+.progress div{height:100%;width:0;background:var(--forest);transition:width .2s}
+.results{display:none}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:17px 0}
+.metric{padding:15px;border:1px solid var(--border);border-radius:10px;background:white}
+.metric strong{display:block;font-size:26px;color:var(--forest)}
 .metric span{font-size:12px;color:var(--muted)}
-.section{margin-top:23px}
-.card{background:white;border:1px solid var(--border);border-radius:10px;padding:14px;margin:10px 0;overflow-wrap:anywhere}
-.cardhead{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:7px}
-.pill{display:inline-block;background:#f1e6c8;color:#725a20;border-radius:20px;padding:3px 8px;font-size:11px}
-.source-title{font-weight:750;color:var(--forest)}
-a{color:#285b4b;overflow-wrap:anywhere}
-mark{background:#f1dfa0;color:#473d22}
-.source-meta{font-size:12px;color:var(--muted)}
-footer{text-align:center;border-top:1px solid var(--border);padding:25px 12px;color:var(--muted);font-size:12px}
-@media(max-width:750px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}header{padding:16px}main{padding:25px 13px 45px}.panel{padding:16px}}
+.card{border:1px solid var(--border);border-radius:10px;padding:15px;background:white;margin:10px 0;overflow-wrap:anywhere}
+.cardhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pill{font-size:11px;border-radius:20px;background:#f1e6c8;color:#725a20;padding:3px 9px}
+.source{font-weight:750;color:var(--forest)}
+mark{background:#f1dfa0}
+a{color:#285b4b}
+footer{text-align:center;border-top:1px solid var(--border);padding:24px;color:var(--muted);font-size:12px}
+@media(max-width:600px){main{padding:25px 12px 40px}.panel{padding:16px}.metrics{grid-template-columns:1fr}}
 </style>
 </head>
+
 <body>
 <header>
-  <div class="brand">The Manuscript Studio<small>RESEARCH · INTEGRITY · CLARITY</small></div>
-  <div class="tag">Academic Tools</div>
+  <div class="brand">The Manuscript Studio
+    <small>RESEARCH · INTEGRITY · CLARITY</small>
+  </div>
 </header>
 
 <main>
-<section class="hero">
-  <div class="eyebrow">Research integrity toolkit</div>
+  <div class="eyebrow">Academic research tool</div>
   <h1>Manuscript Integrity Checker</h1>
-  <p class="muted">Compare manuscript text with supplied documents and discover potentially relevant scholarly publications through OpenAlex.</p>
-</section>
+  <p class="muted">Upload one manuscript. Search scholarly sources automatically, review possible text matches, and download your report in Word format.</p>
 
-<div class="grid">
-<section class="panel">
-  <div class="head"><div class="num">01</div><div><h2>Your manuscript</h2><div class="help">Paste text or upload one or more files.</div></div></div>
-  <label for="manuscript">Manuscript text</label>
-  <textarea id="manuscript" placeholder="Paste your abstract, introduction, discussion or manuscript here..."></textarea>
-  <label for="manuscriptFile">Upload manuscript files</label>
-  <div class="filebox">
-    <input type="file" id="manuscriptFile" accept=".txt,.pdf,.docx" multiple>
-    <div class="help">TXT, text-based PDF and DOCX. Maximum 10 MB per file.</div>
-    <div id="manuscriptFiles" class="filelist"></div>
-  </div>
-</section>
+  <section class="panel">
+    <h2>1. Upload your manuscript</h2>
+    <p class="help">No comparison documents are required.</p>
+    <div class="filebox">
+      <input id="file" type="file" accept=".pdf,.docx,.txt">
+      <p class="help">Supported: text-based PDF, DOCX and TXT. Maximum file size: 10 MB.</p>
+      <div id="fileInfo" class="help"></div>
+    </div>
 
-<section class="panel">
-  <div class="head"><div class="num">02</div><div><h2>Comparison documents</h2><div class="help">Supply texts to compare against your manuscript.</div></div></div>
-  <label for="reference">Paste comparison-source text</label>
-  <textarea id="reference" style="min-height:150px" placeholder="Paste text from articles, documents or other manuscripts..."></textarea>
-  <label for="referenceFile">Upload comparison files</label>
-  <div class="filebox">
-    <input type="file" id="referenceFile" accept=".txt,.pdf,.docx" multiple>
-    <div class="help">Each file will be analyzed as a separate source.</div>
-    <div id="referenceFiles" class="filelist"></div>
-  </div>
-</section>
-</div>
+    <label for="pasted">Or paste manuscript text</label>
+    <textarea id="pasted" placeholder="Paste your manuscript here instead of uploading a file..."></textarea>
 
-<div class="actions">
-  <button class="primary" id="analyze">Analyze + search scholarly sources</button>
-  <button class="secondary" id="clear">Clear all</button>
-</div>
-<div id="status" class="status" role="status" aria-live="polite">Ready to analyze.</div>
+    <label for="apiKey">OpenAlex API key</label>
+    <input id="apiKey" type="password" autocomplete="off" placeholder="Enter your free OpenAlex API key">
+    <p class="help">Get a key from <a href="https://openalex.org/settings/api" target="_blank" rel="noopener noreferrer">OpenAlex API settings</a>. It is used for this browser session and is not saved by this page.</p>
 
-<div class="notice">
-  <strong>Important:</strong> Scholarly discovery uses OpenAlex metadata and abstracts where available. It does not search every website, journal full text, subscription database or thesis repository. An abstract match is not a match against the complete paper. This tool provides preliminary screening, not a certified plagiarism score. Manuscripts are processed locally, but search queries derived from the manuscript are sent to OpenAlex.
-</div>
+    <div class="actions">
+      <button id="run" class="primary">Check manuscript</button>
+      <button id="clear" class="secondary">Clear</button>
+    </div>
+    <div id="status" class="status" role="status" aria-live="polite">Ready.</div>
+    <div class="progress"><div id="progress"></div></div>
+  </section>
 
-<section id="results" class="panel results">
-  <div class="eyebrow">Analysis results</div>
-  <h2 style="margin-top:8px">Similarity report</h2>
-  <div id="reportMeta" class="help"></div>
-
-  <div class="metrics">
-    <div class="metric"><strong id="score">0%</strong><span>Matched 5-word sequence coverage</span></div>
-    <div class="metric"><strong id="matchCount">0</strong><span>Matched passages</span></div>
-    <div class="metric"><strong id="sourceCount">0</strong><span>Supplied documents</span></div>
-    <div class="metric"><strong id="academicCount">0</strong><span>Scholarly records retrieved</span></div>
+  <div class="notice">
+    <strong>Important limitation:</strong> This free version searches scholarly records available through OpenAlex and compares text against retrieved abstracts. It does not guarantee access to full-text papers, every journal, subscription databases, or the whole internet. It cannot produce a certified plagiarism score. Results are preliminary evidence for human review.
   </div>
 
-  <p class="help">Coverage is calculated against supplied documents and retrieved abstracts with usable text. It is not a universal plagiarism percentage.</p>
+  <section id="results" class="panel results">
+    <div class="eyebrow">Your results</div>
+    <h2>Manuscript similarity report</h2>
+    <p id="meta" class="help"></p>
 
-  <div class="section">
+    <div class="metrics">
+      <div class="metric"><strong id="coverage">—</strong><span>Estimated matched sequence coverage</span></div>
+      <div class="metric"><strong id="passages">0</strong><span>Potentially matched passages</span></div>
+      <div class="metric"><strong id="records">0</strong><span>Scholarly records found</span></div>
+    </div>
+
+    <p class="help">Coverage is the proportion of unique five-word sequences in the manuscript also found in the retrieved source texts. It is not a universal plagiarism percentage.</p>
+
     <h3>Potentially matched passages</h3>
     <div id="matches"></div>
-  </div>
-  <div class="section">
-    <h3>Unmatched passages</h3>
-    <div id="unmatched"></div>
-  </div>
-  <div class="section">
-    <h3>Scholarly works discovered</h3>
-    <p class="help">Records are discovery leads. A record without an abstract cannot be text-matched.</p>
-    <div id="academicResults"></div>
-  </div>
-  <div class="actions">
-    <button class="primary" id="downloadWord">Download Word report (.docx)</button>
-    <button class="secondary" id="downloadHtml">Download HTML report</button>
-    <button class="secondary" id="downloadCsv">Download CSV report</button>
-  </div>
-</section>
+
+    <h3 style="margin-top:24px">Scholarly sources discovered</h3>
+    <div id="sources"></div>
+
+    <div class="actions">
+      <button id="word" class="primary">Download Word report (.docx)</button>
+      <button id="html" class="secondary">Download HTML report</button>
+      <button id="csv" class="secondary">Download CSV report</button>
+    </div>
+  </section>
 </main>
-<footer>The Manuscript Studio · Academic writing support</footer>
+
+<footer>The Manuscript Studio · Preliminary similarity screening</footer>
 
 <script>
 "use strict";
@@ -153,417 +132,373 @@ if (window.pdfjsLib) {
 }
 
 const $ = id => document.getElementById(id);
-let latestReport = null;
+let report = null;
 
-function norm(s) {
+function normalize(s) {
   return String(s || "").normalize("NFKC").toLowerCase()
     .replace(/[’‘]/g, "'")
     .replace(/[^\p{L}\p{N}'-]+/gu, " ")
     .replace(/\s+/g, " ").trim();
 }
 function words(s) {
-  const n = norm(s);
+  const n = normalize(s);
   return n ? n.split(" ") : [];
 }
-function splitSentences(s) {
+function sentences(s) {
   return (s.match(/[^.!?\n]+(?:[.!?]+|$)/g) || [])
     .map(x => x.trim()).filter(Boolean);
 }
-function shingles(s, size=5) {
-  const w = words(s), out = new Set();
-  for (let i=0; i<=w.length-size; i++) out.add(w.slice(i,i+size).join(" "));
-  return out;
+function shingles(s, n=5) {
+  const w = words(s), set = new Set();
+  for (let i=0; i<=w.length-n; i++) set.add(w.slice(i,i+n).join(" "));
+  return set;
 }
-function escapeHtml(s) {
+function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   })[c]);
 }
-function highlightSentence(sentence, sourceText) {
-  const source = new Set(words(sourceText));
-  const tokens = sentence.match(/[\p{L}\p{N}'-]+|[^\p{L}\p{N}'-]+/gu) || [];
-  return tokens.map(token =>
-    /^[\p{L}\p{N}'-]+$/u.test(token) && source.has(norm(token))
-      ? "<mark>"+escapeHtml(token)+"</mark>"
-      : escapeHtml(token)
-  ).join("");
+function setStatus(s, progress) {
+  $("status").textContent = s;
+  if (progress !== undefined) $("progress").style.width = progress + "%";
 }
 
-async function extractFile(file) {
-  if (file.size > 10*1024*1024) throw new Error(file.name+" exceeds 10 MB.");
-  const name = file.name.toLowerCase();
-  if (name.endsWith(".txt")) return await file.text();
+$("file").addEventListener("change", () => {
+  const f = $("file").files[0];
+  $("fileInfo").textContent = f ? f.name + " · " + (f.size/1024).toFixed(0) + " KB" : "";
+});
+
+async function extractFile(f) {
+  if (f.size > 10*1024*1024) throw Error("The file exceeds the 10 MB limit.");
+  const name = f.name.toLowerCase();
+  if (name.endsWith(".txt")) return await f.text();
 
   if (name.endsWith(".docx")) {
-    if (!window.mammoth) throw new Error("DOCX extraction library did not load.");
-    const result = await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
-    return result.value;
+    if (!window.mammoth) throw Error("DOCX reader failed to load.");
+    const r = await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});
+    return r.value;
   }
 
   if (name.endsWith(".pdf")) {
-    if (!window.pdfjsLib) throw new Error("PDF extraction library did not load.");
-    const pdf = await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
-    let result = "";
+    if (!window.pdfjsLib) throw Error("PDF reader failed to load.");
+    const pdf = await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+    let out = "";
     for (let p=1; p<=pdf.numPages; p++) {
       const page = await pdf.getPage(p);
       const content = await page.getTextContent();
-      result += content.items.map(i=>i.str).join(" ") + "\n";
+      out += content.items.map(x=>x.str).join(" ") + "\n";
     }
-    if (!result.trim()) throw new Error(file.name+" has no extractable text; scanned PDFs need OCR.");
-    return result;
+    if (!out.trim()) throw Error("No extractable PDF text found. Scanned PDFs require OCR.");
+    return out;
   }
-  throw new Error("Unsupported file: "+file.name);
+  throw Error("Unsupported file type. Use PDF, DOCX or TXT.");
 }
 
-async function readInput(textId,fileId,label) {
-  const items = [];
-  const pasted = $(textId).value.trim();
-  if (pasted) items.push({name:label+" (pasted text)",text:pasted});
-  for (const file of Array.from($(fileId).files)) {
-    $("status").textContent = "Reading "+file.name+"...";
-    const text = await extractFile(file);
-    if (text.trim()) items.push({name:file.name,text});
-  }
-  return items;
-}
-
-// Reconstruct an abstract from OpenAlex's inverted-index representation.
-function reconstructAbstract(index) {
+// OpenAlex stores many abstracts as a word-position index.
+function decodeAbstract(index) {
   if (!index || typeof index !== "object") return "";
-  const tokens = [];
+  const arr = [];
   for (const [word, positions] of Object.entries(index)) {
     if (!Array.isArray(positions)) continue;
-    for (const pos of positions) {
-      if (Number.isInteger(pos) && pos >= 0 && pos < 100000) {
-        tokens.push([pos,word]);
-      }
+    for (const p of positions) {
+      if (Number.isInteger(p) && p >= 0 && p < 100000) arr.push([p, word]);
     }
   }
-  tokens.sort((a,b)=>a[0]-b[0]);
-  return tokens.map(x=>x[1]).join(" ");
+  arr.sort((a,b)=>a[0]-b[0]);
+  return arr.map(x=>x[1]).join(" ");
 }
 
-function makeSearchQueries(manuscript) {
-  const sentences = splitSentences(manuscript)
-    .filter(s=>words(s).length>=7)
+function searchQueries(text) {
+  const list = sentences(text).filter(s=>words(s).length>=8)
     .sort((a,b)=>words(b).length-words(a).length);
-  const selected = [];
-  for (const s of sentences) {
-    const q = words(s).slice(0,18).join(" ");
-    if (q && !selected.includes(q)) selected.push(q);
-    if (selected.length===3) break;
+  const queries = [];
+  for (const s of list) {
+    // Short excerpts work better for discovery than entire manuscripts.
+    const q = words(s).slice(0,12).join(" ");
+    if (q && !queries.includes(q)) queries.push(q);
+    if (queries.length >= 5) break;
   }
-  if (!selected.length) {
-    const q = words(manuscript).slice(0,18).join(" ");
-    if (q) selected.push(q);
+  if (!queries.length) {
+    const q = words(text).slice(0,12).join(" ");
+    if (q) queries.push(q);
   }
-  return selected;
+  return queries;
 }
 
-async function searchOpenAlex(manuscript) {
-  const queries = makeSearchQueries(manuscript);
-  const works = new Map();
+async function searchScholarlyWorks(text, key) {
+  const queries = searchQueries(text);
+  const found = new Map();
   const errors = [];
 
-  for (const query of queries) {
-    $("status").textContent = "Searching OpenAlex scholarly records...";
+  for (let i=0; i<queries.length; i++) {
+    setStatus("Searching scholarly sources ("+(i+1)+"/"+queries.length+")...", 25+i*10);
+
     const url = new URL("https://api.openalex.org/works");
-    url.searchParams.set("search",query);
-    url.searchParams.set("per-page","5");
+    url.searchParams.set("search", queries[i]);
+    url.searchParams.set("per-page", "10");
+    url.searchParams.set("api_key", key);
     url.searchParams.set("select",
-      "id,doi,title,publication_year,authorships,primary_location,open_access,abstract_inverted_index,type");
+      "id,doi,title,publication_year,authorships,abstract_inverted_index,open_access");
 
     try {
-      const response = await fetch(url.toString());
-      if (!response.ok) throw new Error("OpenAlex returned HTTP "+response.status);
-      const data = await response.json();
-      for (const work of (data.results || [])) {
-        if (!work.id) continue;
-        const abstract = reconstructAbstract(work.abstract_inverted_index);
-        const authorNames = (work.authorships || [])
-          .slice(0,5).map(a=>a.author?.display_name).filter(Boolean);
-        const item = {
-          id:work.id,
-          title:work.title || "Untitled scholarly work",
-          year:work.publication_year || "",
-          doi:work.doi || "",
-          url:work.doi || work.id,
-          authors:authorNames.join(", "),
-          abstract,
-          openAccess:work.open_access?.is_oa === true,
-          landingUrl:work.primary_location?.landing_page_url || "",
-          isOpenAlex:true
-        };
-        if (!works.has(item.id) ||
-            words(item.abstract).length > words(works.get(item.id).abstract).length) {
-          works.set(item.id,item);
-        }
+      const res = await fetch(url.toString());
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403)
+          throw Error("OpenAlex rejected the API key. Check your key and try again.");
+        if (res.status === 429)
+          throw Error("OpenAlex rate limit reached. Wait and retry.");
+        throw Error("OpenAlex request failed (HTTP "+res.status+").");
+      }
+      const data = await res.json();
+
+      for (const w of (data.results || [])) {
+        if (!w.id) continue;
+        const abstract = decodeAbstract(w.abstract_inverted_index);
+        const authors = (w.authorships || []).slice(0,5)
+          .map(a=>a.author && a.author.display_name).filter(Boolean).join(", ");
+        found.set(w.id, {
+          id:w.id, title:w.title || "Untitled work",
+          year:w.publication_year || "",
+          doi:w.doi || "", url:w.doi || w.id,
+          authors, abstract,
+          openAccess:!!(w.open_access && w.open_access.is_oa)
+        });
       }
     } catch (e) {
       errors.push(e.message);
+      if (e.message.includes("API key") || e.message.includes("rate limit")) throw e;
     }
   }
-
-  return {works:[...works.values()],queries,errors};
+  return {works:[...found.values()], queries, errors};
 }
 
-function compareSources(manuscript, sources) {
-  const validSources = sources.map(s=>({
-    ...s, normalized:norm(s.text), shingles:shingles(s.text)
-  })).filter(s=>s.normalized);
+function compare(text, works) {
+  const sourceList = works.filter(w=>w.abstract && words(w.abstract).length>=5)
+    .map(w=>({...w, normalized:normalize(w.abstract), sh:shingles(w.abstract)}));
 
-  const ms = shingles(manuscript);
+  const ms = shingles(text);
   let hit = 0;
-  for (const shingle of ms) {
-    if (validSources.some(s=>s.shingles.has(shingle))) hit++;
-  }
+  for (const sh of ms) if (sourceList.some(s=>s.sh.has(sh))) hit++;
 
-  const sentences = splitSentences(manuscript);
-  const matches = [], unmatched = [];
-
-  for (const sentence of sentences) {
-    const nw = words(sentence);
-    if (nw.length < 3) { unmatched.push(sentence); continue; }
-    const normalized = norm(sentence);
+  const matches = [];
+  for (const sentence of sentences(text)) {
+    if (words(sentence).length < 5) continue;
+    const norm = normalize(sentence);
+    const sentenceShingles = shingles(sentence);
     let best = null;
 
-    for (const source of validSources) {
-      const exact = source.normalized.includes(normalized);
-      const ss = shingles(sentence);
-      let overlap = 0;
-      for (const sh of ss) if (source.shingles.has(sh)) overlap++;
-      const ratio = ss.size ? overlap/ss.size : 0;
-      const candidate = {source,exact,ratio,overlap};
+    for (const src of sourceList) {
+      let common = 0;
+      for (const sh of sentenceShingles) if (src.sh.has(sh)) common++;
+      const ratio = sentenceShingles.size ? common/sentenceShingles.size : 0;
+      const exact = src.normalized.includes(norm);
       if (!best || (exact && !best.exact) ||
-          (exact===best.exact && ratio>best.ratio)) best = candidate;
+          (exact === best.exact && ratio > best.ratio)) {
+        best = {src, ratio, exact};
+      }
     }
 
     if (best && (best.exact || best.ratio >= 0.3)) {
       matches.push({
-        sentence,source:best.source.name,sourceText:best.source.text,
-        exact:best.exact,ratio:best.ratio,kind:best.source.kind || "Provided document",
-        url:best.source.url || ""
+        sentence, title:best.src.title, year:best.src.year,
+        authors:best.src.authors, doi:best.src.doi,
+        url:best.src.url, abstract:best.src.abstract,
+        ratio:best.ratio, exact:best.exact
       });
-    } else unmatched.push(sentence);
+    }
   }
 
   return {
-    matches,unmatched,coverage:ms.size ? hit/ms.size*100 : 0,
-    uniqueShingles:ms.size,matchedShingles:hit
+    coverage:ms.size ? hit/ms.size*100 : 0,
+    unique:ms.size, hit, matches, searchableSources:sourceList.length
   };
 }
 
-function escapeCsv(v) { return '"'+String(v??"").replace(/"/g,'""')+'"'; }
-function download(name,content,type) {
+function downloadFile(name, content, type) {
   const blob = content instanceof Blob ? content : new Blob([content],{type});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  setTimeout(()=>URL.revokeObjectURL(url),1200);
 }
 
-function showReport(r) {
-  latestReport=r;
+function showResults(r) {
+  report=r;
   $("results").style.display="block";
-  $("score").textContent=r.coverage.toFixed(1)+"%";
-  $("matchCount").textContent=r.matches.length;
-  $("sourceCount").textContent=r.localSources.length;
-  $("academicCount").textContent=r.academicWorks.length;
-  $("reportMeta").textContent="Generated "+new Date(r.date).toLocaleString()+
-    " · "+words(r.manuscript).length+" manuscript words";
+  $("coverage").textContent=r.coverage.toFixed(1)+"%";
+  $("passages").textContent=r.matches.length;
+  $("records").textContent=r.works.length;
+  $("meta").textContent="Generated "+new Date(r.date).toLocaleString()+
+    " · "+words(r.manuscript).length+" manuscript words · "+
+    r.searchableSources+" records with usable abstracts";
 
   const matches=$("matches");
   matches.replaceChildren();
   if (!r.matches.length) {
-    matches.innerHTML='<p class="muted">No matching passages detected in the available comparison text.</p>';
-  } else r.matches.forEach(m=>{
-    const card=document.createElement("article");
-    card.className="card";
-    const head=document.createElement("div");head.className="cardhead";
-    const title=document.createElement("span");title.className="source-title";
-    title.textContent=m.source;
+    matches.innerHTML="<p class='muted'>No potential matches were identified in the retrieved abstracts. This does not establish that the manuscript is plagiarism-free.</p>";
+  }
+
+  r.matches.forEach((m,i)=>{
+    const card=document.createElement("article");card.className="card";
+    const title=document.createElement("div");title.className="source";title.textContent=(i+1)+". "+m.title;
     const badge=document.createElement("span");badge.className="pill";
     badge.textContent=m.exact?"Exact normalized sentence":"Sequence overlap "+(m.ratio*100).toFixed(0)+"%";
-    head.append(title,badge);
-    const body=document.createElement("div");body.innerHTML=highlightSentence(m.sentence,m.sourceText);
-    card.append(head,body);
-    if(m.url){const p=document.createElement("p");p.className="source-meta";p.textContent="Source: "+m.url;card.append(p);}
+    const top=document.createElement("div");top.className="cardhead";top.append(title,badge);
+    const passage=document.createElement("p");passage.textContent=m.sentence;
+    const details=document.createElement("p");details.className="help";
+    details.textContent=[m.authors,m.year,m.doi].filter(Boolean).join(" · ");
+    const link=document.createElement("a");link.href=m.url;link.target="_blank";
+    link.rel="noopener noreferrer";link.textContent="Open source record";
+    card.append(top,passage,details,link);
     matches.append(card);
   });
 
-  const unmatched=$("unmatched");unmatched.replaceChildren();
-  if(!r.unmatched.length) unmatched.textContent="No unmatched passages.";
-  else r.unmatched.forEach(s=>{const p=document.createElement("p");p.textContent=s;unmatched.append(p);});
-
-  const academics=$("academicResults");academics.replaceChildren();
-  if(!r.academicWorks.length) {
-    academics.innerHTML='<p class="muted">No scholarly records were returned. Check your connection or try a longer manuscript excerpt.</p>';
-  } else r.academicWorks.forEach(w=>{
+  const sources=$("sources");sources.replaceChildren();
+  r.works.forEach((w,i)=>{
     const card=document.createElement("article");card.className="card";
-    const title=document.createElement("div");title.className="source-title";title.textContent=w.title;
-    const meta=document.createElement("div");meta.className="source-meta";
-    meta.textContent=[w.authors,w.year,w.doi?"DOI: "+w.doi:"",w.openAccess?"Open-access status reported by OpenAlex":""].filter(Boolean).join(" · ");
-    const link=document.createElement("a");link.href=w.url;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Open publication record";
-    const p=document.createElement("p");p.className="help";
-    p.textContent=w.abstract ? "Abstract available for preliminary text comparison." : "No abstract text available; record is discovery-only.";
-    card.append(title,meta,p,link);
-    if(w.abstract){
-      const ab=document.createElement("p");ab.className="source-meta";
-      ab.textContent=w.abstract.slice(0,500)+(w.abstract.length>500?"…":"");
-      card.append(ab);
-    }
-    academics.append(card);
+    const title=document.createElement("div");title.className="source";
+    title.textContent=(i+1)+". "+w.title;
+    const meta=document.createElement("p");meta.className="help";
+    meta.textContent=[w.authors,w.year,w.doi,w.openAccess?"Open access reported":"Access status not confirmed"].filter(Boolean).join(" · ");
+    const link=document.createElement("a");link.href=w.url;link.target="_blank";
+    link.rel="noopener noreferrer";link.textContent="View publication";
+    const abstract=document.createElement("p");abstract.className="help";
+    abstract.textContent=w.abstract ? "Abstract available for preliminary comparison." : "No abstract available; not included in passage comparison.";
+    card.append(title,meta,abstract,link);sources.append(card);
   });
 
   $("results").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-$("manuscriptFile").addEventListener("change",e=>{
-  $("manuscriptFiles").textContent=Array.from(e.target.files).map(f=>f.name).join(", ");
-});
-$("referenceFile").addEventListener("change",e=>{
-  $("referenceFiles").textContent=Array.from(e.target.files).map(f=>f.name).join(", ");
-});
-
-$("analyze").addEventListener("click",async()=>{
-  const button=$("analyze");button.disabled=true;
-  $("status").classList.remove("error");
+$("run").addEventListener("click", async()=>{
+  const btn=$("run");btn.disabled=true;
   try {
-    const manuscriptItems=await readInput("manuscript","manuscriptFile","Manuscript");
-    const localSources=await readInput("reference","referenceFile","Provided source");
-    const manuscript=manuscriptItems.map(x=>x.text).join("\n\n").trim();
+    $("status").classList.remove("error");
+    const key=$("apiKey").value.trim();
+    if (!key) throw Error("Enter your OpenAlex API key to search scholarly sources.");
 
-    if(words(manuscript).length<5) throw new Error("Please paste or upload a manuscript with at least five words.");
+    let text=$("pasted").value.trim();
+    const file=$("file").files[0];
 
-    $("status").textContent="Searching academic records and analyzing comparison text...";
-    const search=await searchOpenAlex(manuscript);
-    const academicWorks=search.works;
-    const abstractSources=academicWorks.filter(w=>w.abstract.trim()).map(w=>({
-      name:w.title,text:w.abstract,kind:"OpenAlex abstract",url:w.url
-    }));
+    if (file) {
+      setStatus("Extracting manuscript text...",10);
+      text=await extractFile(file);
+    }
+    if (words(text).length<10) throw Error("Upload a manuscript or paste at least 10 words.");
 
-    const sources=[
-      ...localSources.map(s=>({...s,kind:"Provided document"})),
-      ...abstractSources
-    ];
-    const comparison=compareSources(manuscript,sources);
+    setStatus("Preparing scholarly searches...",20);
+    const search=await searchScholarlyWorks(text,key);
+    setStatus("Comparing available abstracts...",85);
+    const result=compare(text,search.works);
 
-    latestReport={
-      manuscript,localSources,academicWorks,abstractSources,
-      sources,matches:comparison.matches,unmatched:comparison.unmatched,
-      coverage:comparison.coverage,uniqueShingles:comparison.uniqueShingles,
-      matchedShingles:comparison.matchedShingles,
-      queries:search.queries,searchErrors:search.errors,date:new Date().toISOString()
-    };
+    showResults({
+      manuscript:text,
+      works:search.works,
+      matches:result.matches,
+      coverage:result.coverage,
+      unique:result.unique,
+      hit:result.hit,
+      searchableSources:result.searchableSources,
+      queries:search.queries,
+      errors:search.errors,
+      date:new Date().toISOString()
+    });
 
-    showReport(latestReport);
-    let message="Analysis complete. "+academicWorks.length+" scholarly records retrieved.";
-    if(search.errors.length) message+=" Some academic searches failed; check your connection.";
-    if(!localSources.length) message+=" No user-supplied comparison documents were added.";
-    $("status").textContent=message;
+    setStatus("Screening complete. Review source matches manually.",100);
   } catch(e) {
-    $("status").textContent=e.message || "Analysis failed.";
+    $("status").textContent=e.message || "Unable to complete the analysis.";
     $("status").classList.add("error");
-  } finally {button.disabled=false;}
+  } finally {
+    btn.disabled=false;
+  }
 });
 
-function csvReport(r) {
-  const rows=[["Type","Source","Passage","Sequence overlap","Exact normalized sentence","Source URL"]];
-  r.matches.forEach(m=>rows.push(["Matched",m.source,m.sentence,(m.ratio*100).toFixed(1)+"%",m.exact?"Yes":"No",m.url]));
-  r.unmatched.forEach(s=>rows.push(["No match detected","",""+s,"","",""]));
-  r.academicWorks.forEach(w=>rows.push(["Scholarly discovery",w.title,w.abstract,w.abstract?"Abstract available":"No abstract", "",w.url]));
-  return "\uFEFF"+rows.map(row=>row.map(escapeCsv).join(",")).join("\r\n");
+function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"';}
+function csvContent(r){
+  const rows=[["Result type","Source title","Year","DOI or URL","Passage","Overlap","Exact normalized sentence"]];
+  r.matches.forEach(m=>rows.push(["Potential match",m.title,m.year,m.doi||m.url,m.sentence,(m.ratio*100).toFixed(1)+"%",m.exact?"Yes":"No"]));
+  r.works.forEach(w=>rows.push(["Scholarly record",w.title,w.year,w.doi||w.url,w.abstract?"Abstract available":"No abstract","",""]));
+  return "\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
+}
+function htmlContent(r){
+  const matched=r.matches.map(m=>"<article><h3>"+esc(m.title)+"</h3><p>"+esc(m.sentence)+"</p><p>Overlap: "+(m.ratio*100).toFixed(1)+"% · "+esc(m.doi||m.url)+"</p></article>").join("");
+  const works=r.works.map(w=>"<article><h3>"+esc(w.title)+"</h3><p>"+esc(w.authors)+" · "+esc(w.year)+"</p><p>"+esc(w.doi||w.url)+"</p><p>"+esc(w.abstract||"No abstract available")+"</p></article>").join("");
+  return "<!doctype html><html><meta charset='utf-8'><title>Similarity Report</title><body style='font:15px/1.6 Arial;max-width:900px;margin:30px auto;padding:20px'><h1>Manuscript Integrity Report</h1><p>The Manuscript Studio</p><p>Generated: "+esc(new Date(r.date).toLocaleString())+"</p><h2>Estimated matched sequence coverage: "+r.coverage.toFixed(1)+"%</h2><p>Potentially matched passages: "+r.matches.length+" · Records discovered: "+r.works.length+"</p><p>This is preliminary screening, not a certified plagiarism score.</p><h2>Potential matches</h2>"+(matched||"<p>No potential matches identified.</p>")+"<h2>Scholarly records</h2>"+works+"<h2>Limitations</h2><p>Only retrieved scholarly abstracts with usable text were compared. Full-text and subscription sources may not be covered. Human review is essential.</p></body></html>";
 }
 
-function htmlReport(r) {
-  const matches=r.matches.map(m=>`<article><h3>${escapeHtml(m.source)}</h3><p>${escapeHtml(m.sentence)}</p><p>Sequence overlap: ${(m.ratio*100).toFixed(1)}%; exact normalized sentence: ${m.exact?"Yes":"No"}</p><p>${escapeHtml(m.url)}</p></article>`).join("");
-  const works=r.academicWorks.map(w=>`<article><h3>${escapeHtml(w.title)}</h3><p>${escapeHtml(w.authors)} ${escapeHtml(w.year)}</p><p>${escapeHtml(w.abstract || "No abstract available")}</p><p>${escapeHtml(w.url)}</p></article>`).join("");
-  return `<!doctype html><html><head><meta charset="utf-8"><title>Similarity Report</title><style>body{font:15px/1.6 Arial;max-width:900px;margin:30px auto;padding:20px;color:#26342e}h1,h2{color:#173f35}article{border:1px solid #ddd;padding:14px;margin:12px 0}</style></head><body><h1>Manuscript Integrity Checker</h1><p>The Manuscript Studio · ${escapeHtml(new Date(r.date).toLocaleString())}</p><h2>Estimated matched 5-word sequence coverage: ${r.coverage.toFixed(1)}%</h2><p>Matched passages: ${r.matches.length} · Provided documents: ${r.localSources.length} · Scholarly records: ${r.academicWorks.length}</p><p>This is not a certified plagiarism score. Academic matches may be against abstracts only.</p><h2>Matched passages</h2>${matches||"<p>No matches detected.</p>"}<h2>Unmatched passages</h2>${r.unmatched.map(s=>"<p>"+escapeHtml(s)+"</p>").join("")}<h2>Scholarly records</h2>${works}<h2>Limitations</h2><p>OpenAlex discovery covers scholarly metadata and abstracts where available, not all full texts or all online content. Absence of a match does not establish originality. Review results manually.</p></body></html>`;
-}
-
-$("downloadHtml").addEventListener("click",()=>{
-  if(latestReport)download("Manuscript_Similarity_Report.html",htmlReport(latestReport),"text/html;charset=utf-8");
-});
-$("downloadCsv").addEventListener("click",()=>{
-  if(latestReport)download("Manuscript_Similarity_Report.csv",csvReport(latestReport),"text/csv;charset=utf-8");
-});
-
-$("downloadWord").addEventListener("click",async()=>{
-  if(!latestReport)return;
-  if(!window.docx){$("status").textContent="Word library failed to load. Check internet access.";return;}
-  const btn=$("downloadWord");btn.disabled=true;btn.textContent="Preparing Word report...";
+$("word").addEventListener("click",async()=>{
+  if(!report)return;
+  if(!window.docx){setStatus("Word export library failed to load. Check your connection.");return;}
+  const btn=$("word");btn.disabled=true;
   try{
     const {Document,Packer,Paragraph,TextRun,HeadingLevel}=window.docx;
-    const r=latestReport,children=[];
-    function para(text,opts={}){children.push(new Paragraph({children:[new TextRun({text:String(text??""),...opts})],spacing:{after:100}}));}
-    function head(text,heading=HeadingLevel.HEADING_1){children.push(new Paragraph({text,heading,spacing:{before:220,after:100}}));}
+    const r=report,children=[];
+    function p(t,opts={}){children.push(new Paragraph({children:[new TextRun({text:String(t??""),...opts})],spacing:{after:110}}));}
+    function h(t,l=HeadingLevel.HEADING_1){children.push(new Paragraph({text:t,heading:l,spacing:{before:220,after:100}}));}
 
-    head("MANUSCRIPT INTEGRITY REPORT",HeadingLevel.TITLE);
-    para("The Manuscript Studio",{bold:true,color:"173F35"});
-    para("Generated: "+new Date(r.date).toLocaleString());
-    head("1. Summary");
-    para("Estimated matched 5-word sequence coverage: "+r.coverage.toFixed(1)+"%");
-    para("Matched passages: "+r.matches.length);
-    para("Provided comparison documents: "+r.localSources.length);
-    para("Scholarly records discovered: "+r.academicWorks.length);
-    para("Manuscript word count: "+words(r.manuscript).length);
-    para("Unique 5-word sequences: "+r.uniqueShingles);
-    para("Matched 5-word sequences: "+r.matchedShingles);
+    h("MANUSCRIPT INTEGRITY REPORT",HeadingLevel.TITLE);
+    p("The Manuscript Studio",{bold:true,color:"173F35"});
+    p("Generated: "+new Date(r.date).toLocaleString());
+    h("1. Summary");
+    p("Estimated matched five-word sequence coverage: "+r.coverage.toFixed(1)+"%");
+    p("Potentially matched passages: "+r.matches.length);
+    p("Scholarly records discovered: "+r.works.length);
+    p("Records with usable abstracts: "+r.searchableSources);
+    p("Manuscript word count: "+words(r.manuscript).length);
+    p("Unique five-word sequences: "+r.unique);
+    p("Sequences found in retrieved abstracts: "+r.hit);
 
-    head("2. Matched Passages");
-    if(!r.matches.length)para("No matches detected in the available comparison text.");
+    h("2. Potentially Matched Passages");
+    if(!r.matches.length)p("No potential matches were identified in the retrieved abstracts. This does not prove originality.");
     r.matches.forEach((m,i)=>{
-      head("Passage "+(i+1),HeadingLevel.HEADING_2);
-      para("Source: "+m.source,{bold:true});
-      para("Source type: "+m.kind);
-      para("Overlap: "+(m.ratio*100).toFixed(1)+"%");
-      para("Exact normalized sentence: "+(m.exact?"Yes":"No"));
-      para("Source URL: "+(m.url||"Not available"));
-      children.push(new Paragraph({children:[new TextRun({text:m.sentence,highlight:"yellow"})],indent:{left:360},spacing:{after:180}}));
+      h("Passage "+(i+1),HeadingLevel.HEADING_2);
+      p("Source: "+m.title,{bold:true});
+      p("Authors: "+(m.authors||"Not available"));
+      p("Year: "+(m.year||"Not available"));
+      p("DOI or source URL: "+(m.doi||m.url));
+      p("Match type: "+(m.exact?"Exact normalized sentence":"Partial word-sequence overlap"));
+      p("Sequence overlap: "+(m.ratio*100).toFixed(1)+"%");
+      children.push(new Paragraph({children:[new TextRun({text:m.sentence,highlight:"yellow"})],indent:{left:360},spacing:{after:160}}));
+      p("Abstract excerpt used for comparison:");
+      p(m.abstract||"No abstract available");
     });
 
-    head("3. Unmatched Passages");
-    if(!r.unmatched.length)para("No unmatched passages to list.");
-    r.unmatched.forEach((s,i)=>para((i+1)+". "+s));
-
-    head("4. Scholarly Records Discovered");
-    r.academicWorks.forEach((w,i)=>{
-      head((i+1)+". "+w.title,HeadingLevel.HEADING_2);
-      para("Authors: "+(w.authors||"Not available"));
-      para("Year: "+(w.year||"Not available"));
-      para("DOI: "+(w.doi||"Not available"));
-      para("Record URL: "+w.url);
-      para(w.abstract?"Abstract used for preliminary comparison:":"No abstract available; discovery record only.");
-      if(w.abstract)para(w.abstract);
+    h("3. Scholarly Records Discovered");
+    r.works.forEach((w,i)=>{
+      h((i+1)+". "+w.title,HeadingLevel.HEADING_2);
+      p("Authors: "+(w.authors||"Not available"));
+      p("Year: "+(w.year||"Not available"));
+      p("DOI or record URL: "+(w.doi||w.url));
+      p(w.openAccess?"Open-access status reported by OpenAlex.":"Open-access status not confirmed.");
+      p(w.abstract||"No abstract available; not compared for passage similarity.");
     });
 
-    head("5. Method and Limitations");
-    para("The tool compares supplied text with supplied documents and retrieved OpenAlex abstracts where available. It does not search every website, subscription database, thesis repository, or full text.");
-    para("Coverage is an estimated overlap of unique 5-word sequences. It is not a universally standardized similarity percentage and is not proof of plagiarism.");
-    para("Common terminology, references, quotations and methods sections may produce legitimate matches. Unmatched text may still exist elsewhere. Manual assessment is required.");
-    para("Search queries derived from the manuscript are sent to OpenAlex. This website code does not upload the complete manuscript to its own server.");
-    para("Prepared by The Manuscript Studio",{bold:true,color:"173F35"});
+    h("4. Methodology and Limitations");
+    p("The manuscript was searched using selected text excerpts. The retrieved scholarly records were deduplicated, and available abstracts were compared using normalized word sequences.");
+    p("The estimated coverage is calculated from unique five-word sequences present in the manuscript and at least one retrieved abstract. It is not a universally standardized similarity score.");
+    p("This tool does not guarantee a search of all websites, full-text articles, subscription databases, books, theses or unpublished documents. Papers without abstracts cannot be checked at passage level.");
+    p("Legitimate quotations, standard terminology and common academic wording may overlap. A lack of detected matches does not establish that a manuscript is plagiarism-free. Every potential match requires human assessment.");
+    p("Privacy: the manuscript is processed in the browser. Selected excerpts are sent to OpenAlex as search queries. The complete manuscript is not uploaded to this website's own server.");
+    p("Prepared by The Manuscript Studio",{bold:true,color:"173F35"});
 
-    const doc=new Document({creator:"The Manuscript Studio",title:"Manuscript Similarity Report",sections:[{children}]});
+    const doc=new Document({creator:"The Manuscript Studio",title:"Manuscript Integrity Report",sections:[{children}]});
     const blob=await Packer.toBlob(doc);
-    download("Manuscript_Similarity_Report.docx",blob,"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    $("status").textContent="Word report generated.";
-    $("status").classList.remove("error");
-  }catch(e){
-    console.error(e);
-    $("status").textContent="Word report failed: "+e.message;
-    $("status").classList.add("error");
-  }finally{btn.disabled=false;btn.textContent="Download Word report (.docx)";}
+    downloadFile("Manuscript_Integrity_Report.docx",blob,"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    setStatus("Word report downloaded.",100);
+  }catch(e){setStatus("Word export failed: "+e.message); }
+  finally{btn.disabled=false;}
 });
 
+$("html").addEventListener("click",()=>{
+  if(report)downloadFile("Manuscript_Integrity_Report.html",htmlContent(report),"text/html;charset=utf-8");
+});
+$("csv").addEventListener("click",()=>{
+  if(report)downloadFile("Manuscript_Integrity_Report.csv",csvContent(report),"text/csv;charset=utf-8");
+});
 $("clear").addEventListener("click",()=>{
-  ["manuscript","reference","manuscriptFile","referenceFile"].forEach(id=>$(id).value="");
-  $("manuscriptFiles").textContent="";
-  $("referenceFiles").textContent="";
-  $("status").textContent="Ready to analyze.";
-  $("status").classList.remove("error");
-  $("results").style.display="none";
-  latestReport=null;
+  $("file").value="";$("pasted").value="";$("apiKey").value="";
+  $("fileInfo").textContent="";$("results").style.display="none";
+  $("status").classList.remove("error");setStatus("Ready.",0);report=null;
 });
 </script>
 </body>
