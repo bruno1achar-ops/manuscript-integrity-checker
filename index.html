@@ -1,1 +1,692 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A privacy-conscious academic text similarity checker by The Manuscript Studio.">
+<title>Manuscript Integrity Checker | The Manuscript Studio</title>
+
+<!-- PDF and DOCX text extraction libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+
+<style>
+:root {
+  --forest: #173f35;
+  --forest-light: #285b4b;
+  --ivory: #f8f6ef;
+  --paper: #fffefa;
+  --gold: #b49a5a;
+  --ink: #26342e;
+  --muted: #727b73;
+  --border: #e4e1d6;
+  --red: #a8463b;
+  --green: #377553;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Arial, sans-serif;
+  line-height: 1.6;
+}
+header {
+  background: var(--forest);
+  color: white;
+  padding: 22px max(5%, calc((100% - 1180px)/2));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.brand { font-size: 19px; font-weight: 750; }
+.brand small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #d7c99e;
+  font-weight: 500;
+}
+.header-tag {
+  border: 1px solid #668579;
+  border-radius: 30px;
+  padding: 5px 12px;
+  font-size: 12px;
+}
+main { max-width: 1180px; margin: 0 auto; padding: 38px 20px 65px; }
+.hero { max-width: 760px; margin-bottom: 30px; }
+.eyebrow {
+  color: #8a7542;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  font-weight: 800;
+}
+h1 { color: var(--forest); font-size: clamp(30px, 4vw, 43px); line-height: 1.15; margin: 10px 0 14px; }
+h2 { font-size: 19px; color: var(--forest); margin: 0 0 7px; }
+h3 { font-size: 15px; margin: 0 0 8px; }
+p { margin-top: 5px; }
+.sub { color: var(--muted); }
+.layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 23px;
+  min-width: 0;
+  box-shadow: 0 5px 18px rgba(28, 47, 36, .035);
+}
+.panel-head { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; }
+.number {
+  width: 34px; height: 34px; display: grid; place-items: center;
+  background: #e9eee8; color: var(--forest); border-radius: 9px;
+  font-weight: 800;
+}
+label { display: block; font-size: 13px; font-weight: 700; margin: 14px 0 7px; }
+textarea, input[type="text"] {
+  width: 100%; border: 1px solid #d8dcd4; border-radius: 9px;
+  padding: 12px; font: inherit; font-size: 13px; color: var(--ink);
+  background: white; outline: none;
+}
+textarea { resize: vertical; min-height: 230px; }
+textarea:focus, input:focus { border-color: var(--forest-light); box-shadow: 0 0 0 3px #285b4b15; }
+input[type="file"] { width: 100%; font-size: 12px; }
+.help { font-size: 12px; color: var(--muted); margin: 6px 0; }
+.filebox {
+  background: #f5f5ee; padding: 12px; border-radius: 9px;
+  border: 1px dashed #c7c9bb;
+}
+.file-list { font-size: 12px; margin-top: 7px; color: var(--forest); overflow-wrap: anywhere; }
+button {
+  cursor: pointer; border: 0; border-radius: 9px; padding: 12px 17px;
+  font-weight: 700; font-size: 13px; transition: .15s;
+}
+button:disabled { opacity: .55; cursor: wait; }
+.primary { background: var(--forest); color: white; }
+.primary:hover { background: var(--forest-light); }
+.secondary { background: #e8ece6; color: var(--forest); }
+.gold { background: #efe6ce; color: #5d4a20; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.full { width: 100%; }
+.status { margin-top: 13px; font-size: 13px; color: var(--muted); }
+.notice {
+  padding: 13px 15px; border-radius: 9px; font-size: 12px;
+  background: #f4efdf; border: 1px solid #e7dcc0; margin-top: 18px;
+}
+.error { color: var(--red); }
+.results { margin-top: 25px; display: none; }
+.result-top {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin: 18px 0;
+}
+.metric { padding: 17px; border: 1px solid var(--border); border-radius: 12px; background: white; }
+.metric strong { display: block; color: var(--forest); font-size: 28px; }
+.metric span { color: var(--muted); font-size: 12px; }
+.result-section { margin-top: 18px; }
+.match-card { border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin: 10px 0; background: white; }
+.match-head { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; margin-bottom: 8px; }
+.pill { background: #f1e6c8; color: #725a20; border-radius: 20px; padding: 3px 8px; font-size: 11px; }
+.match-text { font-size: 13px; }
+mark { background: #f1dfa0; color: #473d22; border-radius: 2px; padding: 1px 0; }
+.source-name { font-size: 12px; color: var(--forest-light); font-weight: 700; }
+.empty { color: var(--muted); font-size: 13px; padding: 14px 0; }
+footer {
+  text-align: center; border-top: 1px solid var(--border);
+  padding: 25px 15px; color: var(--muted); font-size: 12px;
+}
+@media(max-width:760px) {
+  .layout { grid-template-columns: 1fr; }
+  .result-top { grid-template-columns: 1fr; }
+  header { padding: 18px; }
+  main { padding: 28px 14px 45px; }
+  .panel { padding: 17px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    The Manuscript Studio
+    <small>RESEARCH • INTEGRITY • CLARITY</small>
+  </div>
+  <div class="header-tag">Academic Tools</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">Academic writing toolkit</div>
+    <h1>Manuscript Integrity Checker</h1>
+    <p class="sub">
+      Examine text overlap, identify repeated passages and compare your
+      manuscript with reference documents. Generate a report for further review.
+    </p>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head">
+        <div class="number">01</div>
+        <div>
+          <h2>Your manuscript</h2>
+          <div class="help">The document you want to examine.</div>
+        </div>
+      </div>
+
+      <label for="manuscript">Paste manuscript text</label>
+      <textarea id="manuscript" placeholder="Paste your abstract, introduction, discussion, or manuscript here..."></textarea>
+
+      <label for="manuscriptFile">Or upload manuscript files</label>
+      <div class="filebox">
+        <input type="file" id="manuscriptFile" accept=".txt,.pdf,.docx" multiple>
+        <div class="help">Supported: TXT, text-based PDF and DOCX. Maximum 10 MB per file.</div>
+        <div id="manuscriptFiles" class="file-list"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div class="number">02</div>
+        <div>
+          <h2>Comparison sources</h2>
+          <div class="help">Provide material against which to compare.</div>
+        </div>
+      </div>
+
+      <label for="reference">Paste source text</label>
+      <textarea id="reference" placeholder="Paste text from an article, reference document, or another manuscript..." style="min-height:150px"></textarea>
+
+      <label for="referenceFile">Or upload source files</label>
+      <div class="filebox">
+        <input type="file" id="referenceFile" accept=".txt,.pdf,.docx" multiple>
+        <div class="help">You can select multiple comparison documents.</div>
+        <div id="referenceFiles" class="file-list"></div>
+      </div>
+      <p class="help">Each uploaded file is treated as a separate source.</p>
+    </section>
+  </div>
+
+  <div class="actions">
+    <button id="checkButton" class="primary">Analyze text similarity</button>
+    <button id="clearButton" class="secondary">Clear all</button>
+  </div>
+  <div id="status" class="status" role="status" aria-live="polite"></div>
+
+  <div class="notice">
+    <strong>Scope and privacy:</strong> This first version compares only the
+    text you supply. It does not search the internet or academic databases.
+    Files are processed in your browser and are not sent to a server by this
+    code. Avoid third-party scripts you do not trust. Similarity is not proof
+    of plagiarism.
+  </div>
+
+  <section id="results" class="results panel">
+    <div class="eyebrow">Analysis results</div>
+    <h2 style="margin-top:8px">Similarity report</h2>
+    <p class="help" id="reportMeta"></p>
+
+    <div class="result-top">
+      <div class="metric">
+        <strong id="score">0%</strong>
+        <span>Estimated matched word coverage</span>
+      </div>
+      <div class="metric">
+        <strong id="matchCount">0</strong>
+        <span>Matched manuscript sentences</span>
+      </div>
+      <div class="metric">
+        <strong id="sourceCount">0</strong>
+        <span>Comparison sources</span>
+      </div>
+    </div>
+
+    <p class="help">
+      Coverage estimates the share of manuscript word sequences found in the
+      supplied sources. It is not a plagiarism verdict or a universal standard.
+    </p>
+
+    <div class="result-section">
+      <h3>Matched passages</h3>
+      <div id="matches"></div>
+    </div>
+
+    <div class="result-section">
+      <h3>Unmatched passages</h3>
+      <div id="unmatched"></div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="downloadHtml">Download HTML report</button>
+      <button class="secondary" id="downloadCsv">Download CSV report</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  The Manuscript Studio · Academic writing support
+  <br>Use similarity results as a review aid, not as a final judgment.
+</footer>
+
+<script>
+"use strict";
+
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+}
+
+const $ = id => document.getElementById(id);
+let latestReport = null;
+
+function normalize(text) {
+  return text
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/[^\p{L}\p{N}'-]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function words(text) {
+  const normalized = normalize(text);
+  return normalized ? normalized.split(" ") : [];
+}
+
+function splitSentences(text) {
+  return text.match(/[^.!?\n]+(?:[.!?]+|$)/g)
+    ?.map(s => s.trim())
+    .filter(Boolean) || [];
+}
+
+function shingles(text, size = 5) {
+  const w = words(text);
+  const result = new Set();
+  for (let i = 0; i <= w.length - size; i++) {
+    result.add(w.slice(i, i + size).join(" "));
+  }
+  return result;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+function renderHighlighted(sentence, sourceText) {
+  const targetWords = words(sentence);
+  const sourceWords = new Set(words(sourceText));
+  const tokens = sentence.match(/[\p{L}\p{N}'-]+|[^\p{L}\p{N}'-]+/gu) || [];
+  let output = "";
+  let run = "";
+
+  for (const token of tokens) {
+    if (/^[\p{L}\p{N}'-]+$/u.test(token) &&
+        sourceWords.has(normalize(token))) {
+      run += token;
+    } else {
+      if (run) {
+        output += "<mark>" + escapeHtml(run) + "</mark>";
+        run = "";
+      }
+      output += escapeHtml(token);
+    }
+  }
+  if (run) output += "<mark>" + escapeHtml(run) + "</mark>";
+  return output;
+}
+
+async function extractFile(file) {
+  if (file.size > 10 * 1024 * 1024) {
+    throw new Error(file.name + " exceeds the 10 MB file limit.");
+  }
+
+  const name = file.name.toLowerCase();
+
+  if (name.endsWith(".txt")) return await file.text();
+
+  if (name.endsWith(".docx")) {
+    if (!window.mammoth) throw new Error("DOCX library did not load.");
+    const buffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+    return result.value;
+  }
+
+  if (name.endsWith(".pdf")) {
+    if (!window.pdfjsLib) throw new Error("PDF library did not load.");
+    const buffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+    let result = "";
+
+    for (let pageNo = 1; pageNo <= pdf.numPages; pageNo++) {
+      const page = await pdf.getPage(pageNo);
+      const content = await page.getTextContent();
+      result += content.items.map(item => item.str).join(" ") + "\n";
+    }
+
+    if (!result.trim()) {
+      throw new Error(file.name + " contains no extractable text. It may be scanned.");
+    }
+    return result;
+  }
+
+  throw new Error("Unsupported file type: " + file.name);
+}
+
+async function readInput(textId, fileId, label) {
+  const content = [];
+  const pasted = $(textId).value.trim();
+
+  if (pasted) {
+    content.push({ name: label + " (pasted text)", text: pasted });
+  }
+
+  const files = Array.from($(fileId).files);
+
+  for (const file of files) {
+    $("status").textContent = "Reading " + file.name + "...";
+    const text = await extractFile(file);
+    if (text.trim()) content.push({ name: file.name, text });
+  }
+
+  return content;
+}
+
+function analyze(manuscript, sources) {
+  const sourceIndexes = sources.map(source => ({
+    name: source.name,
+    text: source.text,
+    shingles: shingles(source.text)
+  }));
+
+  const manuscriptShingles = shingles(manuscript);
+  let matchedShingles = 0;
+
+  for (const shingle of manuscriptShingles) {
+    if (sourceIndexes.some(source => source.shingles.has(shingle))) {
+      matchedShingles++;
+    }
+  }
+
+  const coverage = manuscriptShingles.size
+    ? matchedShingles / manuscriptShingles.size * 100
+    : 0;
+
+  const sentences = splitSentences(manuscript);
+  const matches = [];
+  const unmatched = [];
+
+  for (const sentence of sentences) {
+    const normalized = normalize(sentence);
+    const sentenceWords = words(sentence);
+    if (!normalized || sentenceWords.length < 3) {
+      unmatched.push(sentence);
+      continue;
+    }
+
+    let best = null;
+
+    for (const source of sourceIndexes) {
+      const sourceNormalized = normalize(source.text);
+      const exact = sourceNormalized.includes(normalized);
+      const s = shingles(sentence);
+      let overlap = 0;
+
+      for (const shingle of s) {
+        if (source.shingles.has(shingle)) overlap++;
+      }
+
+      const ratio = s.size ? overlap / s.size : 0;
+
+      if (!best || ratio > best.ratio || (exact && !best.exact)) {
+        best = { source, ratio, exact, overlap };
+      }
+    }
+
+    const isMatch = best && (best.exact || best.ratio >= 0.3);
+
+    if (isMatch) {
+      matches.push({
+        sentence,
+        source: best.source.name,
+        ratio: best.ratio,
+        exact: best.exact,
+        overlap: best.overlap,
+        sourceText: best.source.text
+      });
+    } else {
+      unmatched.push(sentence);
+    }
+  }
+
+  return {
+    manuscript,
+    sources,
+    sourceIndexes,
+    coverage,
+    uniqueShingles: manuscriptShingles.size,
+    matchedShingles,
+    matches,
+    unmatched,
+    date: new Date().toISOString()
+  };
+}
+
+function showReport(report) {
+  latestReport = report;
+  $("results").style.display = "block";
+  $("score").textContent = report.coverage.toFixed(1) + "%";
+  $("matchCount").textContent = report.matches.length;
+  $("sourceCount").textContent = report.sources.length;
+  $("reportMeta").textContent =
+    "Generated " + new Date(report.date).toLocaleString() +
+    " · " + words(report.manuscript).length + " manuscript words";
+
+  const matches = $("matches");
+  matches.replaceChildren();
+
+  if (!report.matches.length) {
+    matches.innerHTML =
+      '<div class="empty">No matching passages were detected against the supplied sources.</div>';
+  } else {
+    report.matches.forEach((match, i) => {
+      const card = document.createElement("article");
+      card.className = "match-card";
+
+      const head = document.createElement("div");
+      head.className = "match-head";
+
+      const source = document.createElement("span");
+      source.className = "source-name";
+      source.textContent = match.source;
+
+      const badge = document.createElement("span");
+      badge.className = "pill";
+      badge.textContent = match.exact
+        ? "Exact normalized sentence"
+        : "Sequence overlap " + (match.ratio * 100).toFixed(0) + "%";
+
+      head.append(source, badge);
+
+      const body = document.createElement("div");
+      body.className = "match-text";
+      body.innerHTML = renderHighlighted(match.sentence, match.sourceText);
+
+      card.append(head, body);
+      matches.append(card);
+    });
+  }
+
+  const unmatched = $("unmatched");
+  unmatched.replaceChildren();
+
+  if (!report.unmatched.length) {
+    unmatched.innerHTML = '<div class="empty">No unmatched sentences to display.</div>';
+  } else {
+    report.unmatched.forEach(sentence => {
+      const p = document.createElement("p");
+      p.className = "match-text";
+      p.textContent = sentence;
+      unmatched.append(p);
+    });
+  }
+
+  $("results").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function download(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function htmlReport(r) {
+  const matchHtml = r.matches.map(m =>
+    "<article><h3>" + escapeHtml(m.source) + "</h3><p>" +
+    escapeHtml(m.sentence) + "</p><p>Overlap: " +
+    (m.ratio * 100).toFixed(1) + "%; exact sentence: " +
+    (m.exact ? "Yes" : "No") + "</p></article>"
+  ).join("\n");
+
+  const unmatchedHtml = r.unmatched.map(s =>
+    "<p>" + escapeHtml(s) + "</p>"
+  ).join("\n");
+
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Text Similarity Report</title>
+<style>
+body{font:16px/1.65 Arial,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;color:#26342e}
+h1,h2{color:#173f35}article{border:1px solid #ddd;padding:16px;margin:12px 0;border-radius:8px}
+small{color:#666}footer{margin-top:35px;border-top:1px solid #ddd;padding-top:15px}
+</style></head><body>
+<h1>Manuscript Integrity Checker</h1>
+<p>Text similarity report · ${escapeHtml(new Date(r.date).toLocaleString())}</p>
+<h2>Estimated matched word-sequence coverage: ${r.coverage.toFixed(1)}%</h2>
+<p>Matched sentences: ${r.matches.length} · Comparison sources: ${r.sources.length}</p>
+<p>This score is limited to the supplied sources and is not a plagiarism verdict.</p>
+<h2>Matched passages</h2>${matchHtml || "<p>No matches detected.</p>"}
+<h2>Unmatched passages</h2>${unmatchedHtml || "<p>None.</p>"}
+<footer>The Manuscript Studio · Results require human interpretation.</footer>
+</body></html>`;
+}
+
+function csvCell(value) {
+  return '"' + String(value).replace(/"/g, '""') + '"';
+}
+
+function csvReport(r) {
+  const rows = [
+    ["Type", "Source", "Passage", "Sequence overlap", "Exact sentence"]
+  ];
+
+  r.matches.forEach(m => rows.push([
+    "Matched", m.source, m.sentence,
+    (m.ratio * 100).toFixed(1) + "%",
+    m.exact ? "Yes" : "No"
+  ]));
+
+  r.unmatched.forEach(s => rows.push([
+    "No match detected", "", s, "", ""
+  ]));
+
+  return "\uFEFF" + rows.map(row => row.map(csvCell).join(",")).join("\r\n");
+}
+
+$("manuscriptFile").addEventListener("change", e => {
+  $("manuscriptFiles").textContent =
+    Array.from(e.target.files).map(f => f.name).join(", ");
+});
+
+$("referenceFile").addEventListener("change", e => {
+  $("referenceFiles").textContent =
+    Array.from(e.target.files).map(f => f.name).join(", ");
+});
+
+$("checkButton").addEventListener("click", async () => {
+  const button = $("checkButton");
+  button.disabled = true;
+
+  try {
+    $("status").textContent = "Preparing manuscript and comparison sources...";
+
+    const manuscriptItems = await readInput(
+      "manuscript", "manuscriptFile", "Manuscript"
+    );
+    const sourceItems = await readInput(
+      "reference", "referenceFile", "Comparison source"
+    );
+
+    const manuscript = manuscriptItems.map(x => x.text).join("\n\n").trim();
+
+    if (!manuscript) {
+      throw new Error("Paste manuscript text or upload a supported manuscript file.");
+    }
+
+    if (words(manuscript).length < 5) {
+      throw new Error("Please provide at least five words for analysis.");
+    }
+
+    if (!sourceItems.length) {
+      throw new Error("Add at least one comparison source. This tool does not search the web.");
+    }
+
+    if (!sourceItems.some(x => words(x.text).length >= 5)) {
+      throw new Error("At least one comparison source must contain five or more words.");
+    }
+
+    $("status").textContent = "Analyzing text sequences...";
+
+    const report = analyze(manuscript, sourceItems);
+    showReport(report);
+    $("status").textContent = "Analysis complete. Review matches before drawing conclusions.";
+  } catch (error) {
+    $("status").textContent = error.message || "Unable to analyze the documents.";
+    $("status").classList.add("error");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("downloadHtml").addEventListener("click", () => {
+  if (latestReport) {
+    download("manuscript-similarity-report.html",
+      htmlReport(latestReport), "text/html;charset=utf-8");
+  }
+});
+
+$("downloadCsv").addEventListener("click", () => {
+  if (latestReport) {
+    download("manuscript-similarity-report.csv",
+      csvReport(latestReport), "text/csv;charset=utf-8");
+  }
+});
+
+$("clearButton").addEventListener("click", () => {
+  $("manuscript").value = "";
+  $("reference").value = "";
+  $("manuscriptFile").value = "";
+  $("referenceFile").value = "";
+  $("manuscriptFiles").textContent = "";
+  $("referenceFiles").textContent = "";
+  $("status").textContent = "";
+  $("status").classList.remove("error");
+  $("results").style.display = "none";
+  latestReport = null;
+});
+</script>
+</body>
+</html>
+
