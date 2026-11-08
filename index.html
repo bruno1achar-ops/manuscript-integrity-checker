@@ -3,78 +3,108 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manuscript Similarity Checker | The Manuscript Studio</title>
-<meta name="description" content="Screen academic manuscripts for potential textual overlap with discoverable scholarly sources.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Academic manuscript similarity screening and citation auditing by The Manuscript Studio.">
+<title>Manuscript Integrity Suite | The Manuscript Studio</title>
+
 <style>
 :root{
-  --ivory:#f8f6ef;--green:#234b3b;--green2:#173629;
-  --gold:#b99b58;--ink:#24332c;--muted:#6c766f;
-  --line:#e4e1d7;--white:#fffefa;--red:#9b453d;
+  --ivory:#f8f6ef;
+  --green:#234b3b;
+  --dark:#173629;
+  --gold:#b99b58;
+  --ink:#28362e;
+  --muted:#6d776f;
+  --line:#e5e1d7;
+  --white:#fffefa;
+  --red:#9b453d;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--ivory);color:var(--ink);
-font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
-header{background:var(--green);color:white;padding:30px 20px}
-.header-inner,main,footer{max-width:1080px;margin:auto}
-.brand{font-family:Georgia,serif;font-size:27px;letter-spacing:.2px}
-.tagline{color:#e6dfcb;font-size:13px;margin-top:3px}
-main{padding:28px 18px 60px}
-h1,h2,h3{line-height:1.25}
-h1{font-family:Georgia,serif;font-size:34px;font-weight:500;margin:0 0 12px}
-h2{font-family:Georgia,serif;font-size:24px;font-weight:500}
-h3{font-size:16px}
+body{
+  margin:0;background:var(--ivory);color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.6
+}
+header{background:var(--green);color:white;padding:26px 20px}
+.header-inner,main,footer{max-width:1120px;margin:auto}
+.brand{font-family:Georgia,serif;font-size:27px}
+.tagline{font-size:12px;color:#e4ddca}
+main{padding:28px 18px 55px}
+h1,h2{font-family:Georgia,serif;font-weight:500;line-height:1.25}
+h1{font-size:35px;margin:5px 0 12px}
+h2{font-size:25px;margin:0 0 10px}
+h3{font-size:17px;line-height:1.35}
 p{margin:8px 0}
 .muted{color:var(--muted);font-size:14px}
-.card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:23px;margin-top:19px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-label{font-weight:650;font-size:14px;display:block;margin-bottom:7px}
-input[type=file],input[type=password],input[type=text],select,textarea{
-width:100%;padding:12px;border:1px solid #d6d7cd;border-radius:9px;
-background:white;color:var(--ink);font:inherit}
-textarea{min-height:170px;resize:vertical}
+.small{font-size:12px;color:var(--muted)}
+.card{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:15px;padding:23px;margin-top:19px
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{font-size:14px;font-weight:650;display:block;margin-bottom:7px}
+input[type=file],input[type=password],select,textarea{
+  display:block;width:100%;padding:12px;border:1px solid #d6d7cd;
+  border-radius:9px;background:white;color:var(--ink);font:inherit
+}
+textarea{min-height:180px;resize:vertical}
 input[type=file]{font-size:13px}
-button{border:0;border-radius:9px;padding:12px 17px;background:var(--green);
-color:white;font:inherit;font-weight:650;cursor:pointer}
-button:hover{background:var(--green2)}
+button{
+  background:var(--green);color:white;border:0;border-radius:9px;
+  padding:12px 16px;font:inherit;font-weight:650;cursor:pointer
+}
+button:hover{background:var(--dark)}
 button:disabled{opacity:.5;cursor:not-allowed}
 button.secondary{background:white;color:var(--green);border:1px solid var(--green)}
-button.gold{background:var(--gold);color:#1f3027}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.status{padding:12px 14px;border-radius:9px;background:#eef2eb;margin-top:15px;font-size:14px}
-.status.error{background:#faeeeb;color:#7c2f29}
+button.gold{background:var(--gold);color:#1c3025}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.tab{
+  padding:10px 14px;border-radius:9px;background:transparent;
+  color:var(--green);border:1px solid var(--green)
+}
+.tab.active{background:var(--green);color:white}
+.panel{display:none}
+.panel.active{display:block}
+.status{
+  padding:12px 14px;border-radius:9px;background:#eef2eb;
+  margin-top:14px;font-size:14px;overflow-wrap:anywhere
+}
 .status:empty{display:none}
-.small-note{font-size:12px;color:var(--muted)}
-.checkbox-line{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin-top:12px}
-.checkbox-line input{margin-top:5px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
-.stat{border:1px solid var(--line);background:white;border-radius:12px;padding:15px}
-.stat .number{font-size:27px;font-weight:750;color:var(--green)}
-.stat .label{font-size:12px;color:var(--muted)}
+.status.error{background:#faeeeb;color:#7c2f29}
+.consent{display:flex;align-items:flex-start;gap:9px;margin-top:14px;font-size:13px}
+.consent input{margin-top:5px}
 .progress{height:7px;background:#e8e6de;border-radius:8px;overflow:hidden;margin-top:12px}
 .progress-bar{height:100%;width:0;background:var(--gold);transition:width .2s}
-.match{border:1px solid var(--line);border-radius:12px;padding:17px;margin-top:13px;background:white}
-.match-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.pill{display:inline-block;padding:4px 8px;border-radius:6px;font-size:11px;
-font-weight:750;background:#e9eee7;color:var(--green)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:17px}
+.stat{border:1px solid var(--line);background:white;border-radius:11px;padding:14px;min-width:0}
+.number{font-size:26px;font-weight:750;color:var(--green);overflow-wrap:anywhere}
+.stat-label{font-size:12px;color:var(--muted)}
+.match{border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:13px;background:white;overflow-wrap:anywhere}
+.match-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.pill{display:inline-block;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:750;background:#e9eee7;color:var(--green)}
 .pill.exact{background:#f5e8d2;color:#75551e}
 .pill.possible{background:#e9eaf4;color:#494c7a}
-.pill.limited{background:#f1e7e5;color:#85463f}
-.passage{padding:12px;border-radius:8px;background:#f7f5ef;font-size:14px;margin-top:10px;overflow-wrap:anywhere}
-.passage strong{color:var(--green)}
+.pill.warn{background:#f1e7e5;color:#85463f}
+.passage{padding:12px;border-radius:8px;background:#f7f5ef;font-size:14px;margin-top:10px}
 .source-title{font-weight:750;color:var(--green)}
 .source-meta{font-size:12px;color:var(--muted);margin-top:5px}
-.source-link{color:var(--green);font-size:13px;font-weight:650;overflow-wrap:anywhere}
-.empty{padding:25px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px;margin-top:15px}
+a{color:var(--green);overflow-wrap:anywhere}
+.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px;margin-top:14px}
 .hidden{display:none!important}
-footer{padding:20px;color:var(--muted);font-size:12px;text-align:center}
-hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+details{margin-top:10px}
+summary{cursor:pointer}
+footer{text-align:center;padding:22px 15px;color:var(--muted);font-size:12px}
 @media(max-width:680px){
- .grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}
- h1{font-size:28px}.card{padding:17px}.match-head{display:block}
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  h1{font-size:29px}
+  .card{padding:17px}
+  .match-head{display:block}
 }
 </style>
 </head>
+
 <body>
 <header>
   <div class="header-inner">
@@ -84,103 +114,128 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 </header>
 
 <main>
-  <section style="padding:12px 0 5px">
-    <p class="muted" style="letter-spacing:2px;text-transform:uppercase;font-size:11px">
-      Academic writing support
-    </p>
-    <h1>Manuscript Similarity Checker</h1>
-    <p>Screen a manuscript for potential textual overlap with discoverable scholarly literature. Review the evidence before deciding whether a passage needs revision or citation.</p>
+  <section>
+    <p class="small" style="letter-spacing:2px;text-transform:uppercase">Academic research tools</p>
+    <h1>Manuscript Integrity Suite</h1>
+    <p>Screen your manuscript for potential textual overlap with discoverable scholarly sources, then review citation and reference-list consistency.</p>
+    <p class="muted">One manuscript. Two complementary audits. Downloadable reports.</p>
   </section>
 
   <section class="card">
-    <h2>01. Add your manuscript</h2>
-    <p class="muted">Upload one manuscript or paste its text. No comparison document is required.</p>
+    <h2>01. Your manuscript</h2>
+    <p class="muted">Upload one file or paste the text below. You do not need to provide comparison documents.</p>
 
-    <div class="grid" style="margin-top:17px">
+    <div class="grid" style="margin-top:18px">
       <div>
-        <label for="manuscript">Upload manuscript</label>
-        <input id="manuscript" type="file" accept=".docx,.pdf,.txt">
-        <p class="small-note">Supported formats: DOCX, text-based PDF and TXT.</p>
+        <label for="manuscriptFile">Upload manuscript</label>
+        <input id="manuscriptFile" type="file" accept=".docx,.pdf,.txt">
+        <p class="small">Supported: DOCX, text-based PDF, TXT. Scanned PDFs need OCR.</p>
       </div>
       <div>
-        <label for="limit">Maximum scholarly records per search</label>
-        <select id="limit">
+        <label for="recordLimit">Maximum source records</label>
+        <select id="recordLimit">
           <option value="20">20 records</option>
           <option value="40" selected>40 records</option>
           <option value="60">60 records</option>
         </select>
-        <label for="openalexKey" style="margin-top:12px">OpenAlex API key (if required)</label>
-        <input id="openalexKey" type="password" autocomplete="off" placeholder="Enter API key">
-        <p class="small-note">The key is used for this session and is not saved by this page.</p>
+        <label for="openAlexKey" style="margin-top:12px">OpenAlex API key (optional if required)</label>
+        <input id="openAlexKey" type="password" autocomplete="off" placeholder="Enter API key">
+        <p class="small">Used for this session; this page does not save the key.</p>
       </div>
     </div>
 
-    <div style="margin-top:18px">
-      <label for="manuscriptText">Or paste manuscript text</label>
-      <textarea id="manuscriptText" placeholder="Paste the manuscript text here..."></textarea>
-      <p id="textInfo" class="small-note">No manuscript text loaded yet.</p>
+    <div style="margin-top:17px">
+      <label for="manuscriptText">Manuscript text</label>
+      <textarea id="manuscriptText" placeholder="Upload a manuscript above or paste your manuscript text here..."></textarea>
+      <p id="textInfo" class="small">No manuscript text loaded.</p>
     </div>
 
-    <label class="checkbox-line">
-      <input id="consent" type="checkbox">
-      <span>I understand that selected manuscript excerpts will be sent as search queries to external scholarly APIs. I will not submit confidential or unpublished text unless I am permitted to do so.</span>
+    <label class="consent">
+      <input type="checkbox" id="consent">
+      <span>I understand that selected manuscript excerpts may be sent as search queries to external scholarly APIs. I will not submit confidential or unpublished text unless I am permitted to do so.</span>
     </label>
 
     <div class="actions">
-      <button id="analyzeBtn" onclick="startAnalysis()">Search scholarly sources</button>
-      <button class="secondary" onclick="clearAll()">Clear manuscript</button>
+      <button id="loadButton" class="secondary" onclick="loadManuscript()">Load uploaded file</button>
+      <button onclick="clearManuscript()">Clear manuscript</button>
     </div>
-    <div id="status" class="status" role="status" aria-live="polite"></div>
-    <div id="progressWrap" class="hidden">
-      <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
-      <p id="progressText" class="small-note"></p>
+
+    <div id="globalStatus" class="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="similarityPanel" onclick="switchTab('similarityPanel',this)">Similarity screening</button>
+    <button class="tab" data-tab="citationPanel" onclick="switchTab('citationPanel',this)">Citation audit</button>
+  </div>
+
+  <section id="similarityPanel" class="panel active">
+    <div class="card">
+      <h2>02. Scholarly similarity screening</h2>
+      <p class="muted">Searches selected manuscript excerpts against OpenAlex and Crossref records. Matching is limited by available metadata and abstracts.</p>
+
+      <div class="actions">
+        <button id="searchButton" onclick="runSimilarity()">Search scholarly sources</button>
+        <button class="secondary" onclick="downloadSimilarityCSV()">Download similarity CSV</button>
+        <button class="gold" id="similarityWordButton" onclick="downloadSimilarityWord()">Download Word report</button>
+      </div>
+
+      <div id="similarityStatus" class="status" role="status" aria-live="polite"></div>
+      <div id="similarityProgress" class="hidden">
+        <div class="progress"><div id="similarityBar" class="progress-bar"></div></div>
+        <p id="similarityProgressText" class="small"></p>
+      </div>
+
+      <div id="similarityResults" class="hidden">
+        <div class="stats">
+          <div class="stat"><div class="number" id="wordCountStat">0</div><div class="stat-label">Manuscript words</div></div>
+          <div class="stat"><div class="number" id="sourceCountStat">0</div><div class="stat-label">Sources retrieved</div></div>
+          <div class="stat"><div class="number" id="matchCountStat">0</div><div class="stat-label">Potential matches</div></div>
+          <div class="stat"><div class="number" id="flaggedStat">—</div><div class="stat-label">Flagged-word estimate</div></div>
+        </div>
+        <p id="estimateNote" class="small"></p>
+
+        <h3 style="margin-top:25px">Potential matching passages</h3>
+        <div id="matchList"></div>
+
+        <h3 style="margin-top:25px">Retrieved scholarly records</h3>
+        <div id="sourceList"></div>
+
+        <div class="passage" style="margin-top:20px">
+          <strong>Interpretation</strong>
+          <p class="muted">Exact overlap and possible wording overlap are screening signals, not proof of plagiarism. The flagged-word estimate is not a validated similarity score. The tool cannot search every subscription database, thesis, book, website or student paper.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="results" class="hidden">
+  <section id="citationPanel" class="panel">
     <div class="card">
-      <h2>02. Screening overview</h2>
-      <p class="muted">These figures describe potential overlap with the records retrieved by this screening run, not a definitive plagiarism determination.</p>
-      <div class="stats">
-        <div class="stat"><div class="number" id="statWords">0</div><div class="label">Manuscript words</div></div>
-        <div class="stat"><div class="number" id="statSources">0</div><div class="label">Sources retrieved</div></div>
-        <div class="stat"><div class="number" id="statMatches">0</div><div class="label">Potential matches</div></div>
-        <div class="stat"><div class="number" id="statOverlap">—</div><div class="label">Flagged-word estimate</div></div>
-      </div>
-      <p class="small-note" id="estimateNote"></p>
+      <h2>03. Citation &amp; reference audit</h2>
+      <p class="muted">Checks selected numeric and author-year citation patterns, reference-list consistency, basic reference completeness, and DOI metadata where available.</p>
+
       <div class="actions">
-        <button onclick="downloadCSV()">Download CSV</button>
-        <button class="gold" id="wordBtn" onclick="downloadWord()">Download Word report</button>
+        <button id="citationButton" onclick="runCitationAudit()">Run citation audit</button>
+        <button class="secondary" onclick="downloadCitationCSV()">Download audit CSV</button>
+        <button class="gold" id="citationWordButton" onclick="downloadCitationWord()">Download audit Word report</button>
       </div>
-    </div>
 
-    <div class="card">
-      <h2>03. Potential matching passages</h2>
-      <p class="muted">Each result shows the manuscript passage, the retrieved source evidence, and the matching method. Similarity scores are screening heuristics, not proof of copying.</p>
-      <div id="matchList"></div>
-    </div>
-
-    <div class="card">
-      <h2>04. Retrieved scholarly sources</h2>
-      <p class="muted">Sources may be discovered through OpenAlex or Crossref. Abstract availability and coverage vary.</p>
-      <div id="sourceList"></div>
-    </div>
-
-    <div class="card">
-      <h2>Interpretation and limitations</h2>
-      <ul class="muted">
-        <li>This tool searches scholarly metadata and available abstracts; it does not compare against every journal article, thesis, book, website, subscription database or student paper.</li>
-        <li>A match may reflect standard terminology, a properly cited quotation, methods language or common academic phrasing.</li>
-        <li>Paraphrased text may not be detected. A missing match does not establish originality.</li>
-        <li>The flagged-word estimate is an internal screening indicator. It is not equivalent to a Turnitin or iThenticate similarity score.</li>
-        <li>Always inspect the original source and citation context before making editorial or academic-integrity decisions.</li>
-      </ul>
+      <div id="citationStatus" class="status" role="status" aria-live="polite"></div>
+      <div id="citationResults" class="hidden">
+        <div id="citationStats" class="stats"></div>
+        <div id="citationFindings"></div>
+        <h3 style="margin-top:25px">DOI metadata checks</h3>
+        <div id="doiResults"></div>
+        <div class="passage" style="margin-top:20px">
+          <strong>Interpretation</strong>
+          <p class="muted">Citation styles differ. A detected mismatch may be caused by formatting, extraction or an unsupported citation pattern. A valid DOI does not prove that a reference supports a claim. Manually verify important findings.</p>
+        </div>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
-  The Manuscript Studio · Scholarly screening assistance · Not a substitute for professional similarity-checking databases.
+  The Manuscript Studio · Academic screening assistance · Not a substitute for professional similarity-checking databases.
 </footer>
 
 <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
@@ -190,14 +245,28 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 <script>
 "use strict";
 
+/* ------------------ Shared state and utilities ------------------ */
+
 const $ = id => document.getElementById(id);
-let reportData = {
-  manuscriptText: "",
-  wordCount: 0,
-  sources: [],
-  matches: [],
-  searchQueries: [],
-  completedAt: ""
+
+let similarityData = {
+  manuscriptText:"",
+  wordCount:0,
+  sources:[],
+  matches:[],
+  queries:[],
+  completedAt:"",
+  providers:{},
+  errors:[]
+};
+
+let citationData = {
+  citations:[],
+  references:[],
+  findings:[],
+  doiChecks:[],
+  completedAt:"",
+  style:""
 };
 
 if (window.pdfjsLib) {
@@ -205,697 +274,991 @@ if (window.pdfjsLib) {
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 
-$("manuscript").addEventListener("change", async function () {
-  const file = this.files && this.files[0];
-  if (!file) return;
-
-  try {
-    setStatus("Reading manuscript...");
-    let text = "";
-    const name = file.name.toLowerCase();
-
-    if (name.endsWith(".txt")) {
-      text = await file.text();
-    } else if (name.endsWith(".docx")) {
-      if (!window.mammoth) throw new Error("The DOCX reader did not load. Refresh and try again.");
-      const buffer = await file.arrayBuffer();
-      const result = await mammoth.extractRawText({arrayBuffer: buffer});
-      text = result.value || "";
-    } else if (name.endsWith(".pdf")) {
-      if (!window.pdfjsLib) throw new Error("The PDF reader did not load. Refresh and try again.");
-      const buffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({data: new Uint8Array(buffer)}).promise;
-      const pages = [];
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const content = await page.getTextContent();
-        pages.push(content.items.map(item => item.str).join(" "));
-      }
-      text = pages.join("\n\n");
-      if (!text.trim()) {
-        throw new Error("No selectable text was found. This may be a scanned PDF; use OCR first or paste the text.");
-      }
-    } else {
-      throw new Error("Unsupported format. Upload a DOCX, text-based PDF or TXT file.");
-    }
-
-    $("manuscriptText").value = text.trim();
-    updateTextInfo();
-    setStatus("Manuscript loaded. Review the extracted text, then start the search.");
-  } catch (error) {
-    setStatus(error.message || "Could not read the manuscript.", true);
-  }
-});
-
-$("manuscriptText").addEventListener("input", updateTextInfo);
-
-function updateTextInfo() {
-  const text = $("manuscriptText").value.trim();
-  const words = tokenize(text).length;
-  $("textInfo").textContent = text
-    ? `${words.toLocaleString()} words loaded.`
-    : "No manuscript text loaded yet.";
-}
-
-function tokenize(text) {
-  return (String(text || "").toLowerCase().match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) || []);
+function tokens(text) {
+  return String(text || "").toLowerCase()
+    .match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) || [];
 }
 
 function normalize(text) {
-  return tokenize(text).join(" ");
+  return tokens(text).join(" ");
 }
 
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  })[c]);
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[ch]);
 }
 
-function setStatus(message, isError = false) {
-  $("status").textContent = message;
-  $("status").classList.toggle("error", isError);
+function setStatus(id, message, error=false) {
+  const el = $(id);
+  el.textContent = message;
+  el.classList.toggle("error",error);
 }
 
-function setProgress(percent, message) {
-  $("progressWrap").classList.remove("hidden");
-  $("progressBar").style.width = `${Math.max(0, Math.min(100, percent))}%`;
-  $("progressText").textContent = message;
+function progress(percent,message) {
+  $("similarityProgress").classList.remove("hidden");
+  $("similarityBar").style.width = Math.max(0,Math.min(100,percent)) + "%";
+  $("similarityProgressText").textContent = message;
 }
 
-function clearAll() {
-  $("manuscript").value = "";
-  $("manuscriptText").value = "";
-  $("consent").checked = false;
-  $("results").classList.add("hidden");
-  $("progressWrap").classList.add("hidden");
-  $("status").textContent = "";
-  reportData = {
-    manuscriptText:"", wordCount:0, sources:[], matches:[], searchQueries:[], completedAt:""
-  };
+function switchTab(id,button) {
+  document.querySelectorAll(".panel").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(el=>el.classList.remove("active"));
+  $(id).classList.add("active");
+  button.classList.add("active");
+}
+
+function updateTextInfo() {
+  const text=$("manuscriptText").value.trim();
+  $("textInfo").textContent=text
+    ? tokens(text).length.toLocaleString()+" words loaded."
+    : "No manuscript text loaded.";
+}
+
+$("manuscriptText").addEventListener("input",updateTextInfo);
+
+async function loadManuscript() {
+  const file=$("manuscriptFile").files[0];
+  if (!file) {
+    setStatus("globalStatus","Choose a manuscript file first.",true);
+    return;
+  }
+
+  $("loadButton").disabled=true;
+  setStatus("globalStatus","Reading manuscript...");
+
+  try {
+    const name=file.name.toLowerCase();
+    let text="";
+
+    if (name.endsWith(".txt")) {
+      text=await file.text();
+    } else if (name.endsWith(".docx")) {
+      if (!window.mammoth) throw new Error("DOCX reader did not load. Refresh and try again.");
+      const result=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
+      text=result.value || "";
+    } else if (name.endsWith(".pdf")) {
+      if (!window.pdfjsLib) throw new Error("PDF reader did not load. Refresh and try again.");
+      const pdf=await pdfjsLib.getDocument({
+        data:new Uint8Array(await file.arrayBuffer())
+      }).promise;
+      const pages=[];
+      for (let i=1;i<=pdf.numPages;i++) {
+        const page=await pdf.getPage(i);
+        const content=await page.getTextContent();
+        pages.push(content.items.map(item=>item.str).join(" "));
+      }
+      text=pages.join("\n\n");
+      if (!text.trim()) throw new Error("No selectable text found. This PDF may need OCR.");
+    } else {
+      throw new Error("Unsupported file type. Use DOCX, text-based PDF or TXT.");
+    }
+
+    if (!text.trim()) throw new Error("No text could be extracted from this file.");
+
+    $("manuscriptText").value=text.trim();
+    updateTextInfo();
+    setStatus("globalStatus","Manuscript loaded. You can run either audit.");
+  } catch(error) {
+    setStatus("globalStatus",error.message || "Could not read manuscript.",true);
+  } finally {
+    $("loadButton").disabled=false;
+  }
+}
+
+function clearManuscript() {
+  $("manuscriptFile").value="";
+  $("manuscriptText").value="";
+  $("consent").checked=false;
+  $("similarityResults").classList.add("hidden");
+  $("citationResults").classList.add("hidden");
+  $("similarityProgress").classList.add("hidden");
+  ["globalStatus","similarityStatus","citationStatus"].forEach(id=>setStatus(id,""));
+  similarityData={manuscriptText:"",wordCount:0,sources:[],matches:[],queries:[],completedAt:"",providers:{},errors:[]};
+  citationData={citations:[],references:[],findings:[],doiChecks:[],completedAt:"",style:""};
   updateTextInfo();
 }
 
-function splitSentences(text) {
-  return String(text || "")
-    .replace(/\r/g, "\n")
-    .split(/(?<=[.!?])\s+|\n{1,}/)
-    .map(s => s.trim())
-    .filter(s => tokenize(s).length >= 8);
-}
-
-function makeSearchQueries(text) {
-  const sentences = splitSentences(text);
-  const stop = new Set([
-    "the","and","for","that","with","this","from","were","was","are","has",
-    "have","had","into","than","then","their","there","these","those","using",
-    "used","also","such","which","when","where","while","within","between",
-    "among","after","before","based","been","being","can","could","may","might"
-  ]);
-
-  const scored = sentences.map((sentence, index) => {
-    const words = tokenize(sentence);
-    const informative = words.filter(w => !stop.has(w) && w.length > 2);
-    return {sentence, index, score: informative.length + Math.min(words.length, 30) / 10};
-  }).filter(x => tokenize(x.sentence).length >= 10);
-
-  // Prefer distinct sentences from across the manuscript, rather than repeatedly
-  // searching the opening paragraph.
-  const chosen = [];
-  const seen = new Set();
-  const max = 6;
-  if (!scored.length) return [];
-
-  for (let i = 0; i < max; i++) {
-    const target = Math.floor((i + 0.5) * scored.length / max);
-    let candidate = scored[Math.min(target, scored.length - 1)];
-    if (!candidate) continue;
-
-    if (seen.has(normalize(candidate.sentence))) {
-      candidate = scored.find(s => !seen.has(normalize(s.sentence)));
-    }
-    if (!candidate) continue;
-
-    seen.add(normalize(candidate.sentence));
-    const words = candidate.sentence.split(/\s+/);
-    chosen.push(words.slice(0, 28).join(" "));
-  }
-  return chosen;
-}
-
-function reconstructAbstract(invertedIndex) {
-  if (!invertedIndex || typeof invertedIndex !== "object") return "";
-  const words = [];
-  for (const [word, positions] of Object.entries(invertedIndex)) {
-    if (!Array.isArray(positions)) continue;
-    for (const position of positions) {
-      if (Number.isInteger(position) && position >= 0) words[position] = word;
-    }
-  }
-  return words.filter(Boolean).join(" ");
-}
-
-function stripHTML(html) {
-  const div = document.createElement("div");
-  div.innerHTML = String(html || "");
-  return (div.textContent || div.innerText || "").replace(/\s+/g, " ").trim();
-}
-
-function cleanDOI(doi) {
-  return String(doi || "").replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
-}
-
-function normalizeSource(source) {
-  return {
-    id: source.id || "",
-    title: source.title || "Untitled scholarly record",
-    authors: source.authors || "",
-    year: source.year || "",
-    journal: source.journal || "",
-    doi: cleanDOI(source.doi || ""),
-    url: source.url || (source.doi ? "https://doi.org/" + cleanDOI(source.doi) : ""),
-    abstract: source.abstract || "",
-    provider: source.provider || "Scholarly index"
-  };
-}
-
-async function fetchJSON(url, options = {}) {
-  const response = await fetch(url, options);
+async function fetchJSON(url) {
+  const response=await fetch(url);
   if (!response.ok) {
-    const error = new Error(`Request failed (${response.status})`);
-    error.status = response.status;
+    const error=new Error("Request failed ("+response.status+")");
+    error.status=response.status;
     throw error;
   }
   return response.json();
 }
 
-async function searchOpenAlex(query, limit, apiKey) {
-  const params = new URLSearchParams({
-    search: query,
-    "per-page": String(Math.min(limit, 25)),
-    select: "id,doi,title,publication_year,authorships,primary_location,abstract_inverted_index,ids"
+function downloadBlob(blob,filename) {
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+function csvCell(value) {
+  return '"'+String(value ?? "").replace(/"/g,'""')+'"';
+}
+
+function csvDownload(rows,filename) {
+  const csv="\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
+  downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8;"}),filename);
+}
+
+/* ------------------ Scholarly similarity search ------------------ */
+
+function splitSentences(text) {
+  return String(text || "").replace(/\r/g,"\n")
+    .split(/(?<=[.!?])\s+|\n{1,}/)
+    .map(s=>s.trim()).filter(s=>tokens(s).length>=8);
+}
+
+function selectQueries(text) {
+  const sentences=splitSentences(text).filter(s=>tokens(s).length>=10);
+  if (!sentences.length) return [];
+  const chosen=[],seen=new Set();
+  const count=Math.min(6,sentences.length);
+
+  for (let i=0;i<count;i++) {
+    const index=Math.min(sentences.length-1,Math.floor((i+.5)*sentences.length/count));
+    let sentence=sentences[index];
+    if (seen.has(normalize(sentence))) {
+      sentence=sentences.find(s=>!seen.has(normalize(s)));
+    }
+    if (!sentence) continue;
+    seen.add(normalize(sentence));
+    chosen.push(sentence.split(/\s+/).slice(0,28).join(" "));
+  }
+  return chosen;
+}
+
+function reconstructAbstract(index) {
+  if (!index || typeof index!=="object") return "";
+  const words=[];
+  Object.entries(index).forEach(([word,positions])=>{
+    if (Array.isArray(positions)) positions.forEach(pos=>{
+      if (Number.isInteger(pos) && pos>=0) words[pos]=word;
+    });
   });
-  if (apiKey) params.set("api_key", apiKey);
+  return words.map(w=>w||"").join(" ").trim();
+}
 
-  const data = await fetchJSON("https://api.openalex.org/works?" + params.toString());
-  return (data.results || []).map(item => {
-    const authors = (item.authorships || [])
-      .slice(0, 4)
-      .map(a => a.author && a.author.display_name)
-      .filter(Boolean).join(", ");
+function cleanDOI(doi) {
+  return String(doi||"").replace(/^https?:\/\/(?:dx\.)?doi\.org\//i,"");
+}
 
-    const location = item.primary_location && item.primary_location.source;
+function stripHTML(html) {
+  const div=document.createElement("div");
+  div.innerHTML=String(html||"");
+  return (div.textContent||"").replace(/\s+/g," ").trim();
+}
+
+function normalizeSource(s) {
+  return {
+    id:s.id||"",
+    title:s.title||"Untitled scholarly record",
+    authors:s.authors||"",
+    year:s.year||"",
+    journal:s.journal||"",
+    doi:cleanDOI(s.doi||""),
+    url:s.url||"",
+    abstract:s.abstract||"",
+    provider:s.provider||"Scholarly index"
+  };
+}
+
+async function searchOpenAlex(query,limit,key) {
+  const params=new URLSearchParams({
+    search:query,
+    "per-page":String(Math.min(25,limit)),
+    select:"id,doi,title,publication_year,authorships,primary_location,abstract_inverted_index"
+  });
+  if (key) params.set("api_key",key);
+
+  const data=await fetchJSON("https://api.openalex.org/works?"+params.toString());
+
+  return (data.results||[]).map(item=>{
+    const authors=(item.authorships||[]).slice(0,4)
+      .map(a=>a.author?.display_name).filter(Boolean).join(", ");
+    const journal=item.primary_location?.source?.display_name||"";
     return normalizeSource({
-      id: item.id,
-      title: item.title,
-      authors,
-      year: item.publication_year,
-      journal: location && location.display_name || "",
-      doi: item.doi || "",
-      url: item.doi || item.id || "",
-      abstract: reconstructAbstract(item.abstract_inverted_index),
-      provider: "OpenAlex"
+      id:item.id,title:item.title,authors,year:item.publication_year,
+      journal,doi:item.doi,url:item.doi||item.id,
+      abstract:reconstructAbstract(item.abstract_inverted_index),
+      provider:"OpenAlex"
     });
   });
 }
 
-async function searchCrossref(query, limit) {
-  const params = new URLSearchParams({
-    "query.bibliographic": query,
-    rows: String(Math.min(limit, 25)),
-    select: "DOI,title,author,published,issued,container-title,URL,abstract,type"
+async function searchCrossref(query,limit) {
+  const params=new URLSearchParams({
+    "query.bibliographic":query,
+    rows:String(Math.min(25,limit)),
+    select:"DOI,title,author,published,issued,container-title,URL,abstract"
   });
+  const data=await fetchJSON("https://api.crossref.org/works?"+params.toString());
 
-  const data = await fetchJSON("https://api.crossref.org/works?" + params.toString());
-  return (data.message && data.message.items || []).map(item => {
-    const date = item.published && item.published["date-parts"] ||
-                 item.issued && item.issued["date-parts"];
-    const authors = (item.author || []).slice(0, 4)
-      .map(a => [a.given, a.family].filter(Boolean).join(" "))
-      .filter(Boolean).join(", ");
-
+  return (data.message?.items||[]).map(item=>{
+    const date=item.published?.["date-parts"]||item.issued?.["date-parts"];
+    const authors=(item.author||[]).slice(0,4)
+      .map(a=>[a.given,a.family].filter(Boolean).join(" ")).filter(Boolean).join(", ");
     return normalizeSource({
-      id: item.DOI ? "https://doi.org/" + item.DOI : item.URL || "",
-      title: Array.isArray(item.title) ? item.title[0] : item.title,
-      authors,
-      year: date && date[0] && date[0][0] || "",
-      journal: Array.isArray(item["container-title"]) ? item["container-title"][0] : "",
-      doi: item.DOI || "",
-      url: item.URL || (item.DOI ? "https://doi.org/" + item.DOI : ""),
-      abstract: stripHTML(item.abstract || ""),
-      provider: "Crossref"
+      id:item.DOI||item.URL,
+      title:Array.isArray(item.title)?item.title[0]:item.title,
+      authors,year:date?.[0]?.[0]||"",
+      journal:Array.isArray(item["container-title"])?item["container-title"][0]:"",
+      doi:item.DOI,url:item.URL||(item.DOI?"https://doi.org/"+item.DOI:""),
+      abstract:stripHTML(item.abstract||""),provider:"Crossref"
     });
   });
 }
 
-function sourceKey(source) {
-  return (source.doi ? "doi:" + cleanDOI(source.doi) :
-    source.id ? source.id : normalize(source.title)).toLowerCase();
+function sourceKey(s) {
+  return (s.doi?"doi:"+cleanDOI(s.doi):s.id||normalize(s.title)).toLowerCase();
 }
 
 function mergeSources(list) {
-  const map = new Map();
-  for (const raw of list) {
-    const source = normalizeSource(raw);
-    if (!source.title || source.title === "Untitled scholarly record") continue;
-    const key = sourceKey(source);
+  const map=new Map();
+
+  list.forEach(raw=>{
+    const s=normalizeSource(raw);
+    if (!s.title || s.title==="Untitled scholarly record") return;
+    const key=sourceKey(s);
     if (!map.has(key)) {
-      map.set(key, source);
+      map.set(key,s);
     } else {
-      const old = map.get(key);
-      if (!old.abstract && source.abstract) old.abstract = source.abstract;
-      if (!old.authors && source.authors) old.authors = source.authors;
-      if (!old.year && source.year) old.year = source.year;
-      if (!old.journal && source.journal) old.journal = source.journal;
-      if (!old.url && source.url) old.url = source.url;
-      if (!old.doi && source.doi) old.doi = source.doi;
-      old.provider = old.provider === source.provider ? old.provider :
-        "OpenAlex + Crossref";
+      const old=map.get(key);
+      ["abstract","authors","year","journal","url","doi"].forEach(field=>{
+        if (!old[field] && s[field]) old[field]=s[field];
+      });
+      if (old.provider!==s.provider) old.provider="OpenAlex + Crossref";
     }
-  }
+  });
+
   return [...map.values()];
 }
 
-function shingles(words, size = 5) {
-  const set = new Set();
-  if (words.length < size) {
+function shingles(words,size=5) {
+  const set=new Set();
+  if (words.length<size) {
     if (words.length) set.add(words.join(" "));
     return set;
   }
-  for (let i = 0; i <= words.length - size; i++) {
-    set.add(words.slice(i, i + size).join(" "));
-  }
+  for (let i=0;i<=words.length-size;i++) set.add(words.slice(i,i+size).join(" "));
   return set;
 }
 
-function similarity(a, b) {
-  const A = shingles(tokenize(a), 5);
-  const B = shingles(tokenize(b), 5);
-  if (!A.size || !B.size) return {jaccard:0, containment:0, common:0};
-
-  let common = 0;
-  for (const item of A) if (B.has(item)) common++;
+function similarity(a,b) {
+  const A=shingles(tokens(a)),B=shingles(tokens(b));
+  if (!A.size||!B.size) return {jaccard:0,containment:0,common:0};
+  let common=0;
+  A.forEach(item=>{if(B.has(item))common++;});
   return {
-    jaccard: common / (A.size + B.size - common),
-    containment: common / Math.min(A.size, B.size),
+    jaccard:common/(A.size+B.size-common),
+    containment:common/Math.min(A.size,B.size),
     common
   };
 }
 
-function exactPhrase(a, b) {
-  const A = normalize(a);
-  const B = normalize(b);
-  if (!A || !B) return false;
-  // Require a sufficiently long phrase to avoid flagging common short expressions.
-  return A.length >= 55 && (B.includes(A) || A.includes(B));
+function exactPhrase(a,b) {
+  const A=normalize(a),B=normalize(b);
+  return A.length>=55 && (B.includes(A)||A.includes(B));
 }
 
-function compareSentence(sentence, abstract) {
-  const exact = exactPhrase(sentence, abstract);
-  const sim = similarity(sentence, abstract);
-  const words = tokenize(sentence).length;
+function comparePassage(sentence,abstract) {
+  const exact=exactPhrase(sentence,abstract);
+  const sim=similarity(sentence,abstract);
+  const n=tokens(sentence).length;
+  const threshold=n<12?.45:.25;
+  const possible=sim.common>=2&&(sim.containment>=threshold||sim.jaccard>=.13);
 
-  // A short sentence should need stronger evidence than a long one.
-  const threshold = words < 12 ? 0.45 : 0.25;
-  const isPossible = sim.common >= 2 && (
-    sim.containment >= threshold || sim.jaccard >= 0.13
-  );
-
-  if (exact) return {kind:"Exact phrase overlap", score:100, exact:true, ...sim};
-  if (isPossible) {
-    return {
-      kind:"Possible wording overlap",
-      score:Math.round(Math.min(99, Math.max(sim.jaccard * 100, sim.containment * 65))),
-      exact:false,
-      ...sim
-    };
-  }
+  if (exact) return {kind:"Exact phrase overlap",score:100,exact:true,...sim};
+  if (possible) return {
+    kind:"Possible wording overlap",
+    score:Math.round(Math.min(99,Math.max(sim.jaccard*100,sim.containment*65))),
+    exact:false,...sim
+  };
   return null;
 }
 
-function findPassage(abstract, manuscriptSentence) {
-  const parts = splitSentences(abstract);
-  if (!parts.length) return abstract.slice(0, 550);
-  let best = parts[0], bestScore = -1;
-  for (const part of parts) {
-    const result = similarity(manuscriptSentence, part);
-    const score = result.jaccard + result.containment * 0.3;
-    if (score > bestScore) {
-      best = part;
-      bestScore = score;
-    }
-  }
+function bestSourcePassage(abstract,sentence) {
+  const parts=splitSentences(abstract);
+  if (!parts.length) return abstract.slice(0,500);
+  let best=parts[0],bestScore=-1;
+  parts.forEach(part=>{
+    const sim=similarity(sentence,part);
+    const score=sim.jaccard+sim.containment*.3;
+    if(score>bestScore){best=part;bestScore=score;}
+  });
   return best;
 }
 
-function computeMatches(text, sources) {
-  const sentences = splitSentences(text);
-  const matches = [];
+function findMatches(text,sources) {
+  const results=[];
+  const sentences=splitSentences(text);
 
-  for (const sentence of sentences) {
-    for (const source of sources) {
-      if (!source.abstract || tokenize(source.abstract).length < 10) continue;
-      const comparison = compareSentence(sentence, source.abstract);
-      if (!comparison) continue;
+  sentences.forEach(sentence=>{
+    sources.forEach(source=>{
+      if (!source.abstract||tokens(source.abstract).length<10) return;
+      const comparison=comparePassage(sentence,source.abstract);
+      if (!comparison) return;
 
-      const passage = findPassage(source.abstract, sentence);
-      matches.push({
-        manuscriptPassage: sentence,
-        sourcePassage: passage,
-        sourceTitle: source.title,
-        sourceYear: source.year,
-        sourceAuthors: source.authors,
-        sourceJournal: source.journal,
-        sourceDOI: source.doi,
-        sourceURL: source.url,
-        provider: source.provider,
-        kind: comparison.kind,
-        score: comparison.score,
-        exact: comparison.exact,
-        commonShingles: comparison.common,
-        sentenceWords: tokenize(sentence).length,
-        sourceKey: sourceKey(source)
+      results.push({
+        manuscriptPassage:sentence,
+        sourcePassage:bestSourcePassage(source.abstract,sentence),
+        sourceTitle:source.title,sourceAuthors:source.authors,
+        sourceYear:source.year,sourceJournal:source.journal,
+        sourceDOI:source.doi,sourceURL:source.url,
+        provider:source.provider,kind:comparison.kind,
+        score:comparison.score,exact:comparison.exact,
+        sentenceWords:tokens(sentence).length
+      });
+    });
+  });
+
+  // Retain the strongest result per unique manuscript sentence.
+  const best=new Map();
+  results.forEach(m=>{
+    const key=normalize(m.manuscriptPassage);
+    const old=best.get(key);
+    if(!old||m.score>old.score||(m.exact&&!old.exact))best.set(key,m);
+  });
+
+  return [...best.values()].sort((a,b)=>
+    Number(b.exact)-Number(a.exact)||b.score-a.score
+  );
+}
+
+async function runSimilarity() {
+  const text=$("manuscriptText").value.trim();
+
+  if (!text) return setStatus("similarityStatus","Upload or paste a manuscript first.",true);
+  if (!$("consent").checked) return setStatus("similarityStatus","Please confirm the external search-query notice first.",true);
+  if (tokens(text).length<80) return setStatus("similarityStatus","Please provide at least 80 words.",true);
+
+  $("searchButton").disabled=true;
+  $("similarityResults").classList.add("hidden");
+  setStatus("similarityStatus","Preparing search excerpts...");
+
+  const queries=selectQueries(text);
+  const limit=Number($("recordLimit").value);
+  const key=$("openAlexKey").value.trim();
+  const all=[],errors=[];
+  let openAlexOK=false,crossrefOK=false;
+
+  try {
+    for(let i=0;i<queries.length;i++){
+      progress(5+(i/Math.max(1,queries.length))*65,
+        `Searching scholarly indexes: excerpt ${i+1} of ${queries.length}...`);
+
+      const eachLimit=Math.max(5,Math.ceil(limit/queries.length));
+      const responses=await Promise.allSettled([
+        searchOpenAlex(queries[i],eachLimit,key),
+        searchCrossref(queries[i],eachLimit)
+      ]);
+
+      if(responses[0].status==="fulfilled"){
+        openAlexOK=true;all.push(...responses[0].value);
+      }else errors.push("OpenAlex: "+responses[0].reason.message);
+
+      if(responses[1].status==="fulfilled"){
+        crossrefOK=true;all.push(...responses[1].value);
+      }else errors.push("Crossref: "+responses[1].reason.message);
+    }
+
+    const sources=mergeSources(all).slice(0,limit);
+    progress(80,"Comparing available source abstracts...");
+    const matches=findMatches(text,sources);
+
+    similarityData={
+      manuscriptText:text,wordCount:tokens(text).length,
+      sources,matches,queries,completedAt:new Date().toISOString(),
+      providers:{openAlexOK,crossrefOK},errors:[...new Set(errors)]
+    };
+
+    renderSimilarity();
+    $("similarityResults").classList.remove("hidden");
+    progress(100,"Search complete.");
+
+    if (!sources.length) {
+      setStatus("similarityStatus","No records retrieved. Check your connection or try again.",true);
+    } else if (!sources.some(s=>s.abstract)) {
+      setStatus("similarityStatus","Records were found, but no usable abstracts were available for passage comparison.",true);
+    } else {
+      const providers=[openAlexOK?"OpenAlex":"",crossrefOK?"Crossref":""].filter(Boolean).join(" and ");
+      setStatus("similarityStatus","Search complete using "+providers+". Review each source before drawing conclusions.");
+    }
+
+    if(errors.length) console.warn("Some scholarly searches failed:",errors);
+  } catch(error) {
+    setStatus("similarityStatus","Search failed: "+(error.message||"Unknown error"),true);
+  } finally {
+    $("searchButton").disabled=false;
+  }
+}
+
+function renderSimilarity() {
+  const d=similarityData;
+  const flagged=d.matches.reduce((sum,m)=>sum+m.sentenceWords,0);
+  const estimate=d.wordCount?Math.min(100,Math.round(flagged/d.wordCount*100)):0;
+
+  $("wordCountStat").textContent=d.wordCount.toLocaleString();
+  $("sourceCountStat").textContent=d.sources.length;
+  $("matchCountStat").textContent=d.matches.length;
+  $("flaggedStat").textContent=d.matches.length?"~"+estimate+"%":"0%";
+  $("estimateNote").textContent=d.matches.length
+    ?"Approximate proportion of words in flagged sentences. Sentences may overlap; this is not a validated similarity score."
+    :"No potential matches were detected in the retrieved abstracts. This does not prove the manuscript is free of overlap.";
+
+  const matchList=$("matchList");
+  matchList.innerHTML="";
+
+  if(!d.matches.length){
+    matchList.innerHTML='<div class="empty">No potential matches detected in the available abstracts.</div>';
+  } else {
+    d.matches.forEach((m,i)=>{
+      const article=document.createElement("article");
+      article.className="match";
+      article.innerHTML=`
+        <div class="match-head">
+          <div><strong>Match ${i+1}</strong><p><span class="pill ${m.exact?"exact":"possible"}">${escapeHTML(m.kind)}</span></p></div>
+          <span class="small">Heuristic score: ${m.score}%</span>
+        </div>
+        <div class="passage"><strong>Manuscript passage</strong><p>${escapeHTML(m.manuscriptPassage)}</p></div>
+        <div class="passage"><strong>Source abstract passage</strong><p>${escapeHTML(m.sourcePassage)}</p></div>
+        <p class="source-title">${escapeHTML(m.sourceTitle)}</p>
+        <p class="source-meta">${escapeHTML([m.sourceAuthors,m.sourceYear,m.sourceJournal,m.provider].filter(Boolean).join(" · "))}</p>
+        ${m.sourceDOI?`<p class="source-meta">DOI: ${escapeHTML(m.sourceDOI)}</p>`:""}
+        ${m.sourceURL?`<p><a href="${escapeHTML(m.sourceURL)}" target="_blank" rel="noopener noreferrer">Open source ↗</a></p>`:""}
+      `;
+      matchList.appendChild(article);
+    });
+  }
+
+  const sourceList=$("sourceList");
+  sourceList.innerHTML="";
+
+  if(!d.sources.length) sourceList.innerHTML='<div class="empty">No sources retrieved.</div>';
+
+  d.sources.forEach((s,i)=>{
+    const article=document.createElement("article");
+    article.className="match";
+    article.innerHTML=`
+      <div class="source-title">${i+1}. ${escapeHTML(s.title)}</div>
+      <p class="source-meta">${escapeHTML([s.authors,s.year,s.journal,s.provider].filter(Boolean).join(" · "))}</p>
+      ${s.doi?`<p class="source-meta">DOI: ${escapeHTML(s.doi)}</p>`:""}
+      ${s.abstract?`<details><summary class="muted">View abstract</summary><p class="muted">${escapeHTML(s.abstract)}</p></details>`:'<p class="small">No abstract available.</p>'}
+      ${s.url?`<p><a href="${escapeHTML(s.url)}" target="_blank" rel="noopener noreferrer">Open source record ↗</a></p>`:""}
+    `;
+    sourceList.appendChild(article);
+  });
+}
+
+function downloadSimilarityCSV() {
+  if(!similarityData.completedAt) return setStatus("similarityStatus","Run the similarity search first.",true);
+  const rows=[["Record type","Match type","Score","Manuscript passage","Source passage","Source title","Authors","Year","Journal","DOI","URL","Provider"]];
+
+  similarityData.matches.forEach(m=>rows.push([
+    "Potential match",m.kind,m.score,m.manuscriptPassage,m.sourcePassage,
+    m.sourceTitle,m.sourceAuthors,m.sourceYear,m.sourceJournal,m.sourceDOI,m.sourceURL,m.provider
+  ]));
+
+  similarityData.sources.forEach(s=>rows.push([
+    "Source record","","","","",s.title,s.authors,s.year,s.journal,s.doi,s.url,s.provider
+  ]));
+
+  csvDownload(rows,"manuscript-similarity-report.csv");
+}
+
+/* ------------------ Citation and reference audit ------------------ */
+
+function extractReferenceSection(text) {
+  const lines=String(text||"").replace(/\r/g,"\n").split("\n").map(s=>s.trim()).filter(Boolean);
+  const heading=/^(references|bibliography|works cited|literature cited|reference list)\s*:?\s*$/i;
+  const start=lines.findIndex(line=>heading.test(line));
+
+  if(start<0) return {found:false,references:[]};
+
+  const references=[];
+  let current="";
+
+  for(const line of lines.slice(start+1)){
+    if(/^(appendix|supplementary material|acknowledg(e)?ments)\s*:?\s*$/i.test(line)) break;
+
+    const numbered=/^(?:\[\d{1,4}\]|\d{1,4}[.)])\s+/.test(line);
+    const bullet=/^(?:[-•*])\s+/.test(line);
+
+    if(numbered||bullet){
+      if(current) references.push(current.trim());
+      current=line.replace(/^(?:\[\d{1,4}\]|\d{1,4}[.)]|[-•*])\s+/,"");
+    } else if(current) {
+      current+=" "+line;
+    } else {
+      current=line;
+    }
+  }
+
+  if(current) references.push(current.trim());
+  return {found:true,references:references.filter(r=>tokens(r).length>=3)};
+}
+
+function bodyBeforeReferences(text) {
+  const lines=String(text||"").replace(/\r/g,"\n").split("\n");
+  const heading=/^(references|bibliography|works cited|literature cited|reference list)\s*:?\s*$/i;
+  const index=lines.findIndex(line=>heading.test(line.trim()));
+  return (index<0?lines:lines.slice(0,index)).join("\n");
+}
+
+function parseNumericGroup(group,set) {
+  group.split(/\s*[,;]\s*/).forEach(part=>{
+    const range=part.match(/^(\d+)\s*[-–]\s*(\d+)$/);
+    if(range){
+      const a=Number(range[1]),b=Number(range[2]);
+      if(b>=a&&b-a<=100) for(let n=a;n<=b;n++)set.add(n);
+    } else if(/^\d+$/.test(part.trim())) set.add(Number(part.trim()));
+  });
+}
+
+function extractNumericCitations(text) {
+  const set=new Set();
+  const patterns=[
+    /\[(\d+(?:\s*[-–,;]\s*\d+)*)\]/g,
+    /\((\s*\d+\s*(?:[-–,;]\s*\d+\s*)+)\)/g
+  ];
+
+  patterns.forEach(pattern=>{
+    let m;
+    while((m=pattern.exec(text))!==null) parseNumericGroup(m[1],set);
+  });
+
+  return [...set].sort((a,b)=>a-b);
+}
+
+function extractAuthorYearCitations(text) {
+  const patterns=[
+    /\(([A-Z][A-Za-z'’\-]+(?:\s+et\s+al\.?)?(?:\s+and\s+[A-Z][A-Za-z'’\-]+)?),?\s*((?:19|20)\d{2}[a-z]?)\)/g,
+    /\b([A-Z][A-Za-z'’\-]+)\s+et\s+al\.?\s*\(((?:19|20)\d{2}[a-z]?)\)/g,
+    /\b([A-Z][A-Za-z'’\-]+)\s+\(((?:19|20)\d{2}[a-z]?)\)/g
+  ];
+  const found=new Map();
+
+  patterns.forEach(pattern=>{
+    let m;
+    while((m=pattern.exec(text))!==null){
+      const author=m[1].replace(/\s+et\s+al\.?/i,"").trim().toLowerCase();
+      const citation={author,year:m[2].toLowerCase(),raw:m[0]};
+      found.set(author+"|"+citation.year,citation);
+    }
+  });
+
+  return [...found.values()];
+}
+
+function parseReference(reference,index) {
+  const doiMatch=reference.match(
+    /(?:https?:\/\/(?:dx\.)?doi\.org\/|doi\s*:\s*)(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i
+  );
+  const yearMatch=reference.match(/\b((?:19|20)\d{2}[a-z]?)\b/i);
+  const year=yearMatch?yearMatch[1].toLowerCase():"";
+  const beforeYear=yearMatch?reference.slice(0,yearMatch.index):reference;
+  const authorMatch=beforeYear.match(/^\s*(?:[A-Z][A-Za-z'’\-]+|[A-Z]\.\s*[A-Z][A-Za-z'’\-]+)/);
+  const doi=doiMatch?doiMatch[1].replace(/[.,;]+$/,""):"";
+  const flags=[];
+
+  if(!year) flags.push("Year not detected");
+  if(tokens(reference).length<8) flags.push("Reference appears unusually short");
+  if(!/[.!?]/.test(reference)) flags.push("Check punctuation and formatting");
+  if(!authorMatch) flags.push("First author could not be identified automatically");
+
+  return {
+    number:index+1,text:reference,year,
+    author:authorMatch?authorMatch[0].trim().toLowerCase():"",
+    doi,title:reference,detailFlags:flags
+  };
+}
+
+function authorYearMatches(citation,ref) {
+  return Boolean(citation.author&&citation.year&&
+    ref.text.toLowerCase().includes(citation.author.replace(/\.$/,""))&&
+    ref.text.toLowerCase().includes(citation.year));
+}
+
+function buildCitationAudit(text,referenceInfo) {
+  const body=bodyBeforeReferences(text);
+  const numeric=extractNumericCitations(body);
+  const authorYear=extractAuthorYearCitations(body);
+  const refs=referenceInfo.references.map(parseReference);
+  const findings=[];
+
+  const numberedStyle=refs.length>0&&
+    /^(?:\s*\[\d+\]|\s*\d+[.)])\s+/m.test(referenceInfo.references.join("\n"));
+
+  if(!referenceInfo.found){
+    findings.push({
+      type:"Reference list not detected",severity:"Review",
+      item:"References section",
+      detail:"No clearly labelled References or Bibliography heading was detected."
+    });
+  }
+
+  if(numberedStyle){
+    numeric.forEach(n=>{
+      if(n<1||n>refs.length){
+        findings.push({
+          type:"Citation number without a corresponding reference",
+          severity:"Potential mismatch",item:"["+n+"]",
+          detail:"This citation number is outside the extracted reference-list range. Check numbering and extraction."
+        });
+      }
+    });
+
+    refs.forEach((ref,i)=>{
+      const n=i+1;
+      if(!numeric.includes(n)){
+        findings.push({
+          type:"Potentially uncited numbered reference",
+          severity:"Review",item:"["+n+"] "+ref.text,
+          detail:"No matching numeric citation was detected in the manuscript body."
+        });
+      }
+    });
+  } else {
+    authorYear.forEach(c=>{
+      if(!refs.some(r=>authorYearMatches(c,r))){
+        findings.push({
+          type:"Citation not matched to reference list",
+          severity:"Potential mismatch",item:c.raw,
+          detail:"No matching author/year reference was identified. Check spelling, year suffixes and citation formatting."
+        });
+      }
+    });
+
+    refs.forEach(ref=>{
+      if(ref.author&&ref.year&&!authorYear.some(c=>authorYearMatches(c,ref))){
+        findings.push({
+          type:"Potentially uncited reference",
+          severity:"Review",item:ref.text,
+          detail:"No matching author/year citation was detected by the basic parser."
+        });
+      }
+    });
+
+    if(numeric.length){
+      findings.push({
+        type:"Citation style check",severity:"Information",
+        item:"Numbered citations detected",
+        detail:"Numeric citations were detected, but the extracted reference list does not appear consistently numbered."
       });
     }
   }
 
-  // Keep the strongest source match for each manuscript sentence.
-  const bestBySentence = new Map();
-  for (const match of matches) {
-    const key = normalize(match.manuscriptPassage);
-    const old = bestBySentence.get(key);
-    if (!old || match.score > old.score ||
-      (match.exact && !old.exact)) {
-      bestBySentence.set(key, match);
-    }
-  }
-
-  return [...bestBySentence.values()].sort((a,b) =>
-    Number(b.exact) - Number(a.exact) || b.score - a.score
-  );
-}
-
-async function startAnalysis() {
-  const text = $("manuscriptText").value.trim();
-  if (!text) {
-    setStatus("Upload a manuscript or paste its text first.", true);
-    return;
-  }
-  if (!$("consent").checked) {
-    setStatus("Please confirm that you understand how external search queries are used.", true);
-    return;
-  }
-  if (tokenize(text).length < 80) {
-    setStatus("Please provide at least 80 words for a useful screening run.", true);
-    return;
-  }
-
-  $("analyzeBtn").disabled = true;
-  $("results").classList.add("hidden");
-  setStatus("Preparing manuscript excerpts...");
-  setProgress(3, "Selecting search excerpts...");
-  const queries = makeSearchQueries(text);
-  const limit = Number($("limit").value);
-  const key = $("openalexKey").value.trim();
-  const collected = [];
-  let openAlexSuccess = false, crossrefSuccess = false;
-  const errors = [];
-
-  try {
-    for (let i = 0; i < queries.length; i++) {
-      setProgress(5 + (i / Math.max(queries.length,1)) * 65,
-        `Searching scholarly indexes: excerpt ${i+1} of ${queries.length}...`);
-
-      const results = await Promise.allSettled([
-        searchOpenAlex(queries[i], Math.ceil(limit / Math.max(queries.length,1)), key),
-        searchCrossref(queries[i], Math.ceil(limit / Math.max(queries.length,1)))
-      ]);
-
-      if (results[0].status === "fulfilled") {
-        openAlexSuccess = true;
-        collected.push(...results[0].value);
-      } else {
-        errors.push("OpenAlex: " + results[0].reason.message);
-      }
-
-      if (results[1].status === "fulfilled") {
-        crossrefSuccess = true;
-        collected.push(...results[1].value);
-      } else {
-        errors.push("Crossref: " + results[1].reason.message);
-      }
-    }
-
-    const sources = mergeSources(collected).slice(0, limit);
-    setProgress(78, "Comparing manuscript sentences with available source abstracts...");
-
-    const matches = computeMatches(text, sources);
-    reportData = {
-      manuscriptText: text,
-      wordCount: tokenize(text).length,
-      sources,
-      matches,
-      searchQueries: queries,
-      completedAt: new Date().toISOString(),
-      providers: {openAlexSuccess, crossrefSuccess},
-      errors: [...new Set(errors)]
-    };
-
-    renderResults();
-    $("results").classList.remove("hidden");
-    setProgress(100, "Screening complete.");
-
-    if (!sources.length) {
-      setStatus("No scholarly records were retrieved. Check your internet connection and try different manuscript text.", true);
-    } else if (!sources.some(s => s.abstract)) {
-      setStatus("Records were found, but none contained usable abstracts for passage comparison. Review the source list; matching coverage was limited.", true);
-    } else {
-      const providerText = [
-        openAlexSuccess ? "OpenAlex" : "",
-        crossrefSuccess ? "Crossref" : ""
-      ].filter(Boolean).join(" and ");
-      setStatus(`Screening complete using ${providerText}. Review the source evidence before drawing conclusions.`);
-    }
-
-    if (errors.length) {
-      console.warn("Some scholarly searches failed:", [...new Set(errors)]);
-    }
-  } catch (error) {
-    setStatus("The screening could not be completed: " + (error.message || "Unknown error"), true);
-  } finally {
-    $("analyzeBtn").disabled = false;
-  }
-}
-
-function renderResults() {
-  const {wordCount, sources, matches} = reportData;
-  const matchedWords = new Set();
-  matches.forEach(m => {
-    tokenize(m.manuscriptPassage).forEach(w => matchedWords.add(w));
+  refs.forEach(ref=>{
+    ref.detailFlags.forEach(flag=>findings.push({
+      type:"Reference completeness",severity:"Review",
+      item:ref.text,detail:flag
+    }));
   });
 
-  // This is a rough flagged-word indicator, not a true similarity percentage.
-  const flagged = matches.reduce((sum, m) => sum + m.sentenceWords, 0);
-  const estimate = wordCount ? Math.min(100, Math.round(flagged / wordCount * 100)) : 0;
-
-  $("statWords").textContent = wordCount.toLocaleString();
-  $("statSources").textContent = sources.length;
-  $("statMatches").textContent = matches.length;
-  $("statOverlap").textContent = matches.length ? `~${estimate}%` : "0%";
-  $("estimateNote").textContent = matches.length
-    ? "Rough proportion of manuscript words in flagged sentences. Sentences can overlap and this is not a validated similarity score."
-    : "No matching passages were detected in the available abstracts. This does not establish that the manuscript is plagiarism-free.";
-
-  const list = $("matchList");
-  list.innerHTML = "";
-
-  if (!matches.length) {
-    list.innerHTML = '<div class="empty">No potential matching passages were detected in the retrieved abstracts. This does not mean that the manuscript has no overlap with other sources.</div>';
-  } else {
-    matches.forEach((m, index) => {
-      const article = document.createElement("article");
-      article.className = "match";
-      const badge = m.exact
-        ? '<span class="pill exact">Exact phrase overlap</span>'
-        : '<span class="pill possible">Possible wording overlap</span>';
-
-      article.innerHTML = `
-        <div class="match-head">
-          <div><strong>Match ${index+1}</strong><div style="margin-top:6px">${badge}</div></div>
-          <div class="muted">Heuristic score: ${m.score}%</div>
-        </div>
-        <div class="passage"><strong>Manuscript passage</strong><p>${escapeHTML(m.manuscriptPassage)}</p></div>
-        <div class="passage"><strong>Retrieved source passage</strong><p>${escapeHTML(m.sourcePassage || "No abstract passage available")}</p></div>
-        <p class="source-title" style="margin-top:12px">${escapeHTML(m.sourceTitle)}</p>
-        <div class="source-meta">${escapeHTML([m.sourceAuthors,m.sourceYear,m.sourceJournal,m.provider].filter(Boolean).join(" · "))}</div>
-        ${m.sourceDOI ? `<p class="source-meta">DOI: ${escapeHTML(m.sourceDOI)}</p>` : ""}
-        ${m.sourceURL ? `<p><a class="source-link" href="${escapeHTML(m.sourceURL)}" target="_blank" rel="noopener noreferrer">Open source record ↗</a></p>` : ""}
-      `;
-      list.appendChild(article);
-    });
-  }
-
-  const sourceList = $("sourceList");
-  sourceList.innerHTML = "";
-
-  if (!sources.length) {
-    sourceList.innerHTML = '<div class="empty">No source records were retrieved.</div>';
-  } else {
-    sources.forEach((s, i) => {
-      const item = document.createElement("article");
-      item.className = "match";
-      item.innerHTML = `
-        <div class="source-title">${i+1}. ${escapeHTML(s.title)}</div>
-        <div class="source-meta">${escapeHTML([s.authors,s.year,s.journal,s.provider].filter(Boolean).join(" · "))}</div>
-        ${s.doi ? `<div class="source-meta">DOI: ${escapeHTML(s.doi)}</div>` : ""}
-        ${s.abstract ? `<details style="margin-top:8px"><summary class="muted" style="cursor:pointer">View retrieved abstract</summary><p class="muted">${escapeHTML(s.abstract)}</p></details>` : '<p class="small-note">No abstract was available for comparison.</p>'}
-        ${s.url ? `<p><a class="source-link" href="${escapeHTML(s.url)}" target="_blank" rel="noopener noreferrer">Open source record ↗</a></p>` : ""}
-      `;
-      sourceList.appendChild(item);
-    });
-  }
+  return {findings,references:refs,numeric,authorYear,numberedStyle};
 }
 
-function csvCell(value) {
-  return '"' + String(value ?? "").replace(/"/g, '""') + '"';
-}
-
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-}
-
-function downloadCSV() {
-  if (!reportData.sources.length) {
-    setStatus("Run a screening first to create a report.", true);
-    return;
-  }
-  const rows = [
-    ["Record type","Match type","Heuristic score","Manuscript passage","Source passage","Source title","Authors","Year","Journal","DOI","URL","Provider"]
-  ];
-  reportData.matches.forEach(m => rows.push([
-    "Potential match",m.kind,m.score,m.manuscriptPassage,m.sourcePassage,
-    m.sourceTitle,m.sourceAuthors,m.sourceYear,m.sourceJournal,m.sourceDOI,m.sourceURL,m.provider
-  ]));
-  reportData.sources.forEach(s => rows.push([
-    "Source record","","","","",s.title,s.authors,s.year,s.journal,s.doi,s.url,s.provider
-  ]));
-
-  const csv = "\uFEFF" + rows.map(row => row.map(csvCell).join(",")).join("\r\n");
-  downloadBlob(new Blob([csv], {type:"text/csv;charset=utf-8;"}), "manuscript-screening-report.csv");
-}
-
-async function downloadWord() {
-  if (!reportData.sources.length) {
-    setStatus("Run a screening first to create a report.", true);
-    return;
-  }
-  const lib = window.docx;
-  if (!lib || !lib.Document || !lib.Packer) {
-    setStatus("The Word report library did not load. Refresh the page and try again.", true);
-    return;
-  }
-
-  const btn = $("wordBtn");
-  btn.disabled = true;
+async function verifyDOI(doi) {
+  const clean=cleanDOI(doi);
+  const url="https://api.crossref.org/works/"+encodeURIComponent(clean);
 
   try {
-    const {
-      Document, Packer, Paragraph, TextRun, HeadingLevel,
-      AlignmentType, ExternalHyperlink, Table, TableRow, TableCell,
-      WidthType, BorderStyle
-    } = lib;
+    const data=await fetchJSON(url);
+    const item=data.message||{};
+    const title=Array.isArray(item.title)?item.title[0]:item.title;
+    return {
+      doi:clean,status:"DOI metadata found",
+      returnedTitle:title||"",
+      year:item.published?.["date-parts"]?.[0]?.[0]||"",
+      url:item.URL||"https://doi.org/"+clean
+    };
+  } catch(error) {
+    return {
+      doi:clean,
+      status:error.status===404?"DOI not found in Crossref":"Could not verify DOI",
+      returnedTitle:"",year:"",url:"https://doi.org/"+clean
+    };
+  }
+}
 
-    const children = [];
-    const para = (text, options = {}) => new Paragraph({
-      children: [new TextRun({text:String(text ?? ""), ...options})]
-    });
+async function runCitationAudit() {
+  const text=$("manuscriptText").value.trim();
+  if(!text) return setStatus("citationStatus","Upload or paste a manuscript first.",true);
 
-    children.push(new Paragraph({
-      text:"The Manuscript Studio",
-      heading:HeadingLevel.TITLE
-    }));
-    children.push(new Paragraph({
-      text:"Manuscript Similarity Screening Report",
-      heading:HeadingLevel.HEADING_1
-    }));
-    children.push(para("Generated: " + new Date(reportData.completedAt).toLocaleString()));
-    children.push(para("Manuscript word count: " + reportData.wordCount));
-    children.push(para("Scholarly source records retrieved: " + reportData.sources.length));
-    children.push(para("Potential matching passages: " + reportData.matches.length));
-    children.push(new Paragraph({text:"Important interpretation",heading:HeadingLevel.HEADING_2}));
-    children.push(para("This is an automated screening report based on discoverable scholarly metadata and available abstracts. It is not a definitive plagiarism determination and is not equivalent to a Turnitin or iThenticate report."));
-    children.push(para("Heuristic scores are internal screening indicators, not validated probabilities that plagiarism occurred."));
-    children.push(new Paragraph({text:"Search approach and limitations",heading:HeadingLevel.HEADING_2}));
-    children.push(para("Selected manuscript excerpts were searched through OpenAlex and Crossref where available. Retrieved abstracts were compared with manuscript sentences using normalized text and five-word shingles. Full-text coverage is not guaranteed."));
-    children.push(para("Search excerpts:"));
-    reportData.searchQueries.forEach(q => children.push(para("• " + q)));
+  $("citationButton").disabled=true;
+  $("citationResults").classList.add("hidden");
+  setStatus("citationStatus","Extracting citation and reference information...");
 
-    children.push(new Paragraph({text:"Potential matching passages",heading:HeadingLevel.HEADING_1}));
-    if (!reportData.matches.length) {
-      children.push(para("No potential matching passages were detected in the retrieved abstracts. This does not establish that the manuscript is free of overlap."));
+  try {
+    const referenceInfo=extractReferenceSection(text);
+    const audit=buildCitationAudit(text,referenceInfo);
+    const doiChecks=[];
+    const doiRefs=audit.references.filter(r=>r.doi);
+
+    for(let i=0;i<doiRefs.length;i++){
+      setStatus("citationStatus",`Checking DOI ${i+1} of ${doiRefs.length}...`);
+      const ref=doiRefs[i];
+      const check=await verifyDOI(ref.doi);
+      check.referenceText=ref.text;
+      check.referenceTitle=ref.title;
+      check.titleComparison=check.returnedTitle
+        ?(normalize(check.returnedTitle)===normalize(ref.title)
+          ?"Title text matches after basic normalization"
+          :"Title differs; manual comparison needed")
+        :"No title comparison available";
+      doiChecks.push(check);
+
+      if(check.status!=="DOI metadata found"){
+        audit.findings.push({
+          type:"DOI verification",severity:"Review",
+          item:ref.doi,detail:check.status
+        });
+      } else if(check.titleComparison!=="Title text matches after basic normalization"){
+        audit.findings.push({
+          type:"DOI/title consistency",severity:"Review",
+          item:ref.doi,
+          detail:check.titleComparison+". Compare the source record manually."
+        });
+      }
     }
 
-    reportData.matches.forEach((m, i) => {
-      children.push(new Paragraph({
-        text:`Match ${i+1}: ${m.kind}`,
-        heading:HeadingLevel.HEADING_2
-      }));
-      children.push(para(`Heuristic score: ${m.score}%`));
-      children.push(para("Manuscript passage:"));
-      children.push(para(m.manuscriptPassage));
-      children.push(para("Retrieved source passage:"));
-      children.push(para(m.sourcePassage || "No abstract passage available."));
-      children.push(para("Source: " + m.sourceTitle));
-      children.push(para("Details: " + [m.sourceAuthors,m.sourceYear,m.sourceJournal,m.provider].filter(Boolean).join(" | ")));
-      if (m.sourceDOI) children.push(para("DOI: " + m.sourceDOI));
-      if (m.sourceURL) children.push(para("Source URL: " + m.sourceURL));
-    });
+    citationData={
+      citations:audit.numeric.map(n=>({style:"Numeric",citation:"["+n+"]"}))
+        .concat(audit.authorYear.map(c=>({style:"Author-year",citation:c.raw}))),
+      references:audit.references,
+      findings:audit.findings,
+      doiChecks,completedAt:new Date().toISOString(),
+      style:audit.numberedStyle?"Numeric":"Author-year / unclassified"
+    };
 
-    children.push(new Paragraph({text:"Retrieved source records",heading:HeadingLevel.HEADING_1}));
-    reportData.sources.forEach((s,i) => {
-      children.push(new Paragraph({
-        text:`${i+1}. ${s.title}`,
-        heading:HeadingLevel.HEADING_2
-      }));
-      children.push(para([s.authors,s.year,s.journal,s.provider].filter(Boolean).join(" | ")));
-      if (s.doi) children.push(para("DOI: " + s.doi));
-      if (s.url) children.push(para("URL: " + s.url));
-      if (s.abstract) children.push(para("Abstract: " + s.abstract));
-    });
-
-    children.push(new Paragraph({text:"Recommended manual review",heading:HeadingLevel.HEADING_1}));
-    [
-      "Open each original source and verify whether the wording genuinely overlaps.",
-      "Check quotation marks, citation placement and the reference list.",
-      "Review common methodological language and standard terminology carefully.",
-      "Revise or cite passages where appropriate, following the target journal's policies.",
-      "Do not use this report alone to accuse an author of plagiarism."
-    ].forEach(item => children.push(para("• " + item)));
-
-    const doc = new Document({
-      creator:"The Manuscript Studio",
-      title:"Manuscript Similarity Screening Report",
-      description:"Automated scholarly abstract screening",
-      sections:[{
-        properties:{},
-        children
-      }]
-    });
-
-    const blob = await Packer.toBlob(doc);
-    downloadBlob(blob, "manuscript-similarity-report.docx");
-    setStatus("Word report generated. Check your browser's downloads.");
-  } catch (error) {
-    console.error("Word report error:", error);
-    setStatus("Could not generate the Word report: " + (error.message || "Unknown error"), true);
+    renderCitationAudit();
+    $("citationResults").classList.remove("hidden");
+    setStatus("citationStatus",
+      "Audit complete. "+citationData.findings.length+
+      " item(s) flagged for manual review. These are not confirmed errors.");
+  } catch(error) {
+    console.error(error);
+    setStatus("citationStatus","Citation audit failed: "+(error.message||"Unknown error"),true);
   } finally {
-    btn.disabled = false;
+    $("citationButton").disabled=false;
+  }
+}
+
+function renderCitationAudit() {
+  const d=citationData;
+  const stats=[
+    ["Citations detected",d.citations.length],
+    ["References extracted",d.references.length],
+    ["Items flagged",d.findings.length],
+    ["DOIs checked",d.doiChecks.length]
+  ];
+
+  $("citationStats").innerHTML=stats.map(([label,value])=>`
+    <div class="stat"><div class="number">${Number(value).toLocaleString()}</div>
+    <div class="stat-label">${escapeHTML(label)}</div></div>`).join("");
+
+  const findings=$("citationFindings");
+  findings.innerHTML="<h3>Audit findings</h3>";
+
+  if(!d.findings.length){
+    findings.innerHTML+='<div class="empty">No findings were flagged. This does not guarantee all references are correct.</div>';
+  } else {
+    d.findings.forEach((f,i)=>{
+      const item=document.createElement("article");
+      item.className="match";
+      item.innerHTML=`
+        <div class="match-head">
+          <strong>${i+1}. ${escapeHTML(f.type)}</strong>
+          <span class="pill ${f.severity==="Potential mismatch"?"exact":"possible"}">${escapeHTML(f.severity)}</span>
+        </div>
+        <div class="passage"><strong>Item</strong><p>${escapeHTML(f.item)}</p></div>
+        <p class="muted">${escapeHTML(f.detail)}</p>`;
+      findings.appendChild(item);
+    });
+  }
+
+  const doi=$("doiResults");
+  doi.innerHTML="";
+
+  if(!d.doiChecks.length){
+    doi.innerHTML='<div class="empty">No DOI-bearing references were detected, or the reference list was not extracted.</div>';
+  }
+
+  d.doiChecks.forEach((check,i)=>{
+    const item=document.createElement("article");
+    item.className="match";
+    item.innerHTML=`
+      <div class="source-title">${i+1}. DOI: ${escapeHTML(check.doi)}</div>
+      <p><span class="pill ${check.status==="DOI metadata found"?"":"warn"}">${escapeHTML(check.status)}</span></p>
+      <p class="muted">Reference title: ${escapeHTML(check.referenceTitle)}</p>
+      <p class="muted">Crossref title: ${escapeHTML(check.returnedTitle||"Not available")}</p>
+      <p class="muted">${escapeHTML(check.titleComparison||"")}</p>
+      <a href="${escapeHTML(check.url)}" target="_blank" rel="noopener noreferrer">Open DOI ↗</a>`;
+    doi.appendChild(item);
+  });
+}
+
+function downloadCitationCSV() {
+  if(!citationData.completedAt) return setStatus("citationStatus","Run the citation audit first.",true);
+
+  const rows=[["Category","Severity","Item","Finding","DOI","Crossref title","DOI status"]];
+
+  citationData.findings.forEach(f=>rows.push([
+    f.type,f.severity,f.item,f.detail,"","",""
+  ]));
+
+  citationData.doiChecks.forEach(d=>rows.push([
+    "DOI verification","Review",d.referenceText,d.titleComparison,
+    d.doi,d.returnedTitle,d.status
+  ]));
+
+  citationData.references.forEach(r=>rows.push([
+    "Extracted reference","",r.text,r.detailFlags.join("; "),r.doi,"",""
+  ]));
+
+  csvDownload(rows,"citation-reference-audit.csv");
+}
+
+/* ------------------ Word report generation ------------------ */
+
+async function makeWordDocument(title,sections) {
+  if(!window.docx||!window.docx.Document||!window.docx.Packer) {
+    throw new Error("Word report library did not load. Refresh the page and try again.");
+  }
+
+  const {Document,Packer,Paragraph,TextRun,HeadingLevel}=window.docx;
+  const children=[];
+
+  children.push(new Paragraph({text:"The Manuscript Studio",heading:HeadingLevel.TITLE}));
+  children.push(new Paragraph({text:title,heading:HeadingLevel.HEADING_1}));
+  children.push(new Paragraph({
+    children:[new TextRun("Generated: "+new Date().toLocaleString())]
+  }));
+
+  sections.forEach(section=>{
+    if(section.heading){
+      children.push(new Paragraph({text:section.heading,heading:HeadingLevel.HEADING_2}));
+    }
+    (section.lines||[]).forEach(line=>{
+      children.push(new Paragraph({children:[new TextRun(String(line))]}));
+    });
+  });
+
+  const doc=new Document({
+    creator:"The Manuscript Studio",
+    title,
+    sections:[{children}]
+  });
+
+  return Packer.toBlob(doc);
+}
+
+async function downloadSimilarityWord() {
+  if(!similarityData.completedAt) return setStatus("similarityStatus","Run the similarity search first.",true);
+
+  const button=$("similarityWordButton");
+  button.disabled=true;
+
+  try {
+    const d=similarityData;
+    const sections=[
+      {heading:"Screening summary",lines:[
+        "Manuscript word count: "+d.wordCount,
+        "Sources retrieved: "+d.sources.length,
+        "Potential matches: "+d.matches.length,
+        "Approximate flagged-word estimate: "+(d.matches.length?"~"+Math.min(100,Math.round(d.matches.reduce((s,m)=>s+m.sentenceWords,0)/Math.max(1,d.wordCount)*100))+"%":"0%"),
+        "Providers: "+[d.providers.openAlexOK?"OpenAlex":"",d.providers.crossrefOK?"Crossref":""].filter(Boolean).join(", ")
+      ]},
+      {heading:"Interpretation and limitations",lines:[
+        "This report screens selected manuscript excerpts against scholarly metadata and available abstracts.",
+        "The heuristic scores are not probabilities of plagiarism and are not equivalent to Turnitin or iThenticate scores.",
+        "Coverage is incomplete. Full text, subscription databases, books, theses, websites and student papers may not be included.",
+        "A human reviewer should inspect the original sources and citation context before drawing conclusions."
+      ]},
+      {heading:"Search excerpts",lines:d.queries.map(q=>"• "+q)},
+      {heading:"Potential matching passages",lines:d.matches.length?d.matches.flatMap((m,i)=>[
+        `Match ${i+1}: ${m.kind}; heuristic score ${m.score}%`,
+        "Manuscript: "+m.manuscriptPassage,
+        "Source passage: "+m.sourcePassage,
+        "Source: "+m.sourceTitle,
+        "Details: "+[m.sourceAuthors,m.sourceYear,m.sourceJournal,m.provider].filter(Boolean).join(" | "),
+        "DOI: "+(m.sourceDOI||"Not available"),
+        "URL: "+(m.sourceURL||"Not available")
+      ]):["No potential matches were detected in the retrieved abstracts. This does not establish originality."]},
+      {heading:"Retrieved scholarly sources",lines:d.sources.flatMap((s,i)=>[
+        `${i+1}. ${s.title}`,
+        [s.authors,s.year,s.journal,s.provider].filter(Boolean).join(" | "),
+        "DOI: "+(s.doi||"Not available"),
+        "URL: "+(s.url||"Not available"),
+        "Abstract: "+(s.abstract||"Not available")
+      ])}
+    ];
+
+    const blob=await makeWordDocument("Manuscript Similarity Screening Report",sections);
+    downloadBlob(blob,"manuscript-similarity-report.docx");
+    setStatus("similarityStatus","Word report generated. Check your browser downloads.");
+  } catch(error) {
+    console.error(error);
+    setStatus("similarityStatus","Word report failed: "+error.message,true);
+  } finally {
+    button.disabled=false;
+  }
+}
+
+async function downloadCitationWord() {
+  if(!citationData.completedAt) return setStatus("citationStatus","Run the citation audit first.",true);
+
+  const button=$("citationWordButton");
+  button.disabled=true;
+
+  try {
+    const d=citationData;
+    const sections=[
+      {heading:"Audit summary",lines:[
+        "Citations detected: "+d.citations.length,
+        "References extracted: "+d.references.length,
+        "Findings: "+d.findings.length,
+        "DOIs checked: "+d.doiChecks.length,
+        "Detected reference style: "+d.style
+      ]},
+      {heading:"Audit findings",lines:d.findings.length?d.findings.flatMap((f,i)=>[
+        `${i+1}. ${f.type} (${f.severity})`,
+        "Item: "+f.item,
+        "Finding: "+f.detail
+      ]):["No findings were flagged by the current checks. This does not guarantee all references are correct."]},
+      {heading:"DOI metadata checks",lines:d.doiChecks.length?d.doiChecks.flatMap((item,i)=>[
+        `${i+1}. DOI: ${item.doi}`,
+        "Status: "+item.status,
+        "Reference title: "+item.referenceTitle,
+        "Crossref title: "+(item.returnedTitle||"Not available"),
+        "Comparison: "+item.titleComparison,
+        "URL: "+item.url
+      ]):["No DOI-bearing references were checked."]},
+      {heading:"Limitations and recommendations",lines:[
+        "Citation detection supports selected common numeric and author-year patterns only.",
+        "Reference extraction depends on a clearly labelled reference-list heading and recognizable formatting.",
+        "A failed DOI lookup may reflect a missing Crossref record or a network issue.",
+        "A successful DOI lookup does not prove that a source supports the cited claim.",
+        "Review all findings against the original source and the target journal's style guide."
+      ]}
+    ];
+
+    const blob=await makeWordDocument("Citation and Reference Audit Report",sections);
+    downloadBlob(blob,"citation-reference-audit.docx");
+    setStatus("citationStatus","Word audit report generated. Check your browser downloads.");
+  } catch(error) {
+    console.error(error);
+    setStatus("citationStatus","Word report failed: "+error.message,true);
+  } finally {
+    button.disabled=false;
   }
 }
 </script>
